@@ -37,14 +37,9 @@
     <property name="title">
      <string>Fichier</string>
     </property>
-    <widget class="QMenu" name="menuEnregistrer">
-     <property name="title">
-      <string>Enregistrer</string>
-     </property>
-    </widget>
     <addaction name="actionNouveau"/>
     <addaction name="actionOuvrir"/>
-    <addaction name="menuEnregistrer"/>
+    <addaction name="actionEnregistrer"/>
     <addaction name="actionEnregistrer_sous"/>
     <addaction name="separator"/>
     <addaction name="actionFermer"/>
@@ -142,6 +137,12 @@
    </widget>
   </widget>
   <action name="actionToolBox">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="checked">
+    <bool>true</bool>
+   </property>
    <property name="text">
     <string>ToolBox</string>
    </property>
@@ -216,6 +217,11 @@
     <string>A propos </string>
    </property>
   </action>
+  <action name="actionEnregistrer">
+   <property name="text">
+    <string>Enregistrer</string>
+   </property>
+  </action>
  </widget>
  <layoutdefault spacing="6" margin="11"/>
  <customwidgets>
@@ -230,9 +236,9 @@
  <connections>
   <connection>
    <sender>actionToolBox</sender>
-   <signal>triggered(bool)</signal>
+   <signal>toggled(bool)</signal>
    <receiver>Barre_Toolbox</receiver>
-   <slot>show()</slot>
+   <slot>setVisible(bool)</slot>
    <hints>
     <hint type="sourcelabel">
      <x>-1</x>
