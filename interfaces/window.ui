@@ -37,11 +37,31 @@
     <property name="title">
      <string>Fichier</string>
     </property>
+    <widget class="QMenu" name="menuEnregistrer">
+     <property name="title">
+      <string>Enregistrer</string>
+     </property>
+    </widget>
+    <addaction name="actionNouveau"/>
+    <addaction name="actionOuvrir"/>
+    <addaction name="menuEnregistrer"/>
+    <addaction name="actionEnregistrer_sous"/>
+    <addaction name="separator"/>
+    <addaction name="actionFermer"/>
+    <addaction name="actionQuitter"/>
    </widget>
    <widget class="QMenu" name="menuEdition">
     <property name="title">
      <string>Edition</string>
     </property>
+    <addaction name="actionAnnuler"/>
+    <addaction name="actionRetablir"/>
+    <addaction name="separator"/>
+    <addaction name="actionCouper"/>
+    <addaction name="actionCopier"/>
+    <addaction name="actionColler"/>
+    <addaction name="actionSupprimer"/>
+    <addaction name="actionSelectionner_tout"/>
    </widget>
    <widget class="QMenu" name="menuAffichage">
     <property name="title">
@@ -49,9 +69,16 @@
     </property>
     <addaction name="actionToolBox"/>
    </widget>
+   <widget class="QMenu" name="menu">
+    <property name="title">
+     <string>?</string>
+    </property>
+    <addaction name="actionA_propos"/>
+   </widget>
    <addaction name="menuFichier"/>
    <addaction name="menuEdition"/>
    <addaction name="menuAffichage"/>
+   <addaction name="menu"/>
   </widget>
   <widget class="QToolBar" name="mainToolBar">
    <attribute name="toolBarArea">
@@ -62,7 +89,7 @@
    </attribute>
   </widget>
   <widget class="QStatusBar" name="statusBar"/>
-  <widget class="QDockWidget" name="dockWidget_2">
+  <widget class="QDockWidget" name="Barre_Toolbox">
    <property name="minimumSize">
     <size>
      <width>200</width>
@@ -119,6 +146,76 @@
     <string>ToolBox</string>
    </property>
   </action>
+  <action name="actionNouveau">
+   <property name="text">
+    <string>Nouveau</string>
+   </property>
+  </action>
+  <action name="actionOuvrir">
+   <property name="text">
+    <string>Ouvrir</string>
+   </property>
+  </action>
+  <action name="actionFermer">
+   <property name="text">
+    <string>Fermer</string>
+   </property>
+  </action>
+  <action name="actionQuitter">
+   <property name="text">
+    <string>Quitter</string>
+   </property>
+  </action>
+  <action name="actionEn">
+   <property name="text">
+    <string>En</string>
+   </property>
+  </action>
+  <action name="actionEnregistrer_sous">
+   <property name="text">
+    <string>Enregistrer sous...</string>
+   </property>
+  </action>
+  <action name="actionAnnuler">
+   <property name="text">
+    <string>Annuler</string>
+   </property>
+  </action>
+  <action name="actionRetablir">
+   <property name="text">
+    <string>Retablir</string>
+   </property>
+  </action>
+  <action name="actionCouper">
+   <property name="text">
+    <string>Couper</string>
+   </property>
+  </action>
+  <action name="actionCopier">
+   <property name="text">
+    <string>Copier</string>
+   </property>
+  </action>
+  <action name="actionColler">
+   <property name="text">
+    <string>Coller</string>
+   </property>
+  </action>
+  <action name="actionSupprimer">
+   <property name="text">
+    <string>Supprimer</string>
+   </property>
+  </action>
+  <action name="actionSelectionner_tout">
+   <property name="text">
+    <string>Selectionner tout</string>
+   </property>
+  </action>
+  <action name="actionA_propos">
+   <property name="text">
+    <string>A propos </string>
+   </property>
+  </action>
  </widget>
  <layoutdefault spacing="6" margin="11"/>
  <customwidgets>
@@ -130,5 +227,22 @@
   </customwidget>
  </customwidgets>
  <resources/>
- <connections/>
+ <connections>
+  <connection>
+   <sender>actionToolBox</sender>
+   <signal>triggered(bool)</signal>
+   <receiver>Barre_Toolbox</receiver>
+   <slot>show()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>99</x>
+     <y>279</y>
+    </hint>
+   </hints>
+  </connection>
+ </connections>
 </ui>
