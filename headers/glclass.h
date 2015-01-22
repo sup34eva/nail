@@ -21,6 +21,9 @@ protected:
 
 private:
     QOpenGLShaderProgram m_program;
+    GLuint VertexArrayID;
+    // Ceci identifiera notre tampon de sommets
+    GLuint vertexbuffer;
 };
 
 #endif // GLCLASS_H

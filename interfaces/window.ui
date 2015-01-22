@@ -92,7 +92,7 @@
     </size>
    </property>
    <attribute name="dockWidgetArea">
-    <number>1</number>
+    <number>2</number>
    </attribute>
    <widget class="QWidget" name="dockWidgetContents_2">
     <widget class="QToolBox" name="toolBox">
