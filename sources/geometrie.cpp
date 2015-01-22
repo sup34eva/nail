@@ -1,4 +1,4 @@
-#include "geometrie.h"
+#include <geometrie.h>
 
 geometrie::geometrie()
 {

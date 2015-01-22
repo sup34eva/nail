@@ -103,8 +103,8 @@
        <rect>
         <x>0</x>
         <y>0</y>
-        <width>98</width>
-        <height>28</height>
+        <width>201</width>
+        <height>417</height>
        </rect>
       </property>
       <attribute name="label">
@@ -125,7 +125,7 @@
   <customwidget>
    <class>GLclass</class>
    <extends>QWidget</extends>
-   <header>glclass.h</header>
+   <header location="global">glclass.h</header>
    <container>1</container>
   </customwidget>
  </customwidgets>

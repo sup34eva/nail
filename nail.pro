@@ -24,3 +24,5 @@ HEADERS  += headers\window.h \
     headers\geometrie.h
 
 FORMS    += interfaces\window.ui
+
+INCLUDEPATH += headers

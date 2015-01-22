@@ -1,4 +1,4 @@
-#include "glclass.h"
+#include <glclass.h>
 #include <GL/glu.h>
 #include <string>
 
