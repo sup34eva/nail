@@ -57,10 +57,21 @@ void GLclass::initializeGL()
 void GLclass::paintGL()
 {
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+    //Matrice de vue
+    QVector3D cam(3, 3, 3);
+    QVector3D cible(0, 0, 0);
+    QVector3D vert(0, 0, 1);
+    view.setToIdentity();
+    view.lookAt(cam, cible, vert);
+
     glDrawArrays(GL_TRIANGLES, 0, 3);
 }
 
-/*void GLclass::resizeGL(int width, int height)
+void GLclass::resizeGL(float width, float height)
 {
+    //Matrice de projection
+    projection.setToIdentity();
+    projection.perspective(0.70f, width/height, 1.0f, 1000.0f);
 
-}*/
+}

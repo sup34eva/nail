@@ -17,7 +17,7 @@ public:
 protected:
     void initializeGL();
     void paintGL();
-    //void resizeGL(int width, int height);
+    void resizeGL(float width,float height);
 
 private:
 
@@ -26,6 +26,9 @@ private:
     // Ceci identifiera notre tampon de sommets
     GLuint vertexbuffer;
     std::vector<GLfloat> triangleVertices;
+    QMatrix4x4 projection;
+    QMatrix4x4 view;
+    QMatrix4x4 transform;
 };
 
 #endif // GLCLASS_H
