@@ -26,3 +26,6 @@ HEADERS  += headers\window.h \
 FORMS    += interfaces\window.ui
 
 INCLUDEPATH += headers
+
+RESOURCES += \
+    ressource.qrc

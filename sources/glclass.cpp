@@ -1,5 +1,6 @@
 #include <glclass.h>
-#include <GL/glu.h>
+#include <QOpenGLShaderProgram>
+#include <QOpenGLShader>
 #include <string>
 
 GLclass::GLclass(QObject* parent)
@@ -17,40 +18,53 @@ void GLclass::initializeGL()
     glEnable(GL_DEPTH_TEST);
     glDepthFunc(GL_LESS);
     glEnable(GL_CULL_FACE);
-
-    static const GLfloat g_vertex_buffer_data[] = {
-       -1.0f, -1.0f, 0.0f,
-       1.0f, -1.0f, 0.0f,
-       0.0f,  1.0f, 0.0f,
-    };
-
-    /*glGenVertexArrays(1, &VertexArrayID);
-    glBindVertexArray(VertexArrayID);*/
-
-    glGenBuffers(1, &vertexbuffer);
-    glBindBuffer(GL_ARRAY_BUFFER, vertexbuffer);
-    glBufferData(GL_ARRAY_BUFFER, sizeof(g_vertex_buffer_data), g_vertex_buffer_data, GL_STATIC_DRAW);
+    glClearColor(0.0, 0.0, 0.0, 0.0);
 }
 
 void GLclass::paintGL()
 {
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-    // premier tampon d'attributs : les sommets
-    glEnableVertexAttribArray(0);
-    glBindBuffer(GL_ARRAY_BUFFER, vertexbuffer);
-    glVertexAttribPointer(
-       0,                  // attribut 0. Aucune raison particulière pour 0, mais cela doit correspondre au « layout » dans le shader
-       3,                  // taille
-       GL_FLOAT,           // type
-       GL_FALSE,           // normalisé ?
-       0,                  // nombre d'octets séparant deux sommets dans le tampon
-       (void*)0            // décalage du tableau de tampon
-    );
 
-    // Dessine le triangle !
-    glDrawArrays(GL_TRIANGLES, 0, 3); // Démarre à partir du sommet 0; 3 sommets au total -> 1 triangle
+    //shaders test
+    QOpenGLShaderProgram program(this);
 
-    glDisableVertexAttribArray(0);
+    //ad shaders to program
+    program.addShaderFromSourceFile(QOpenGLShader::Vertex, ":/shader/shaders/vertex.vert");
+    program.addShaderFromSourceFile(QOpenGLShader::Fragment, ":/shader/shaders/fragment.frag");
+    program.link();
+    program.bind();
+
+    int vertexLocation = program.attributeLocation("vertex");
+    int matrixLocation = program.uniformLocation("matrix");
+    int colorLocation = program.uniformLocation("color");
+
+    static GLfloat const triangleVertices[] = {
+        0.0f, 0.5f, 0.0f,
+        -0.5f,-0.5f, 0.0f,
+        0.5f,-0.5f, 0.0f
+    };
+
+    //couleurs RVBA
+    QColor white(255,  255,  255,  255);
+    QColor red(255,  0,  0,  255);
+    QColor green(0,  255,  0,  255);
+    QColor blue(0,  0,  255,  255);
+    QColor black(0,  0,  0,  255);
+
+    QColor color = green;
+    //QColor color(0, 255, 0, 255);
+
+    QMatrix4x4 pmvMatrix;
+    //pmvMatrix.ortho(rect());
+
+    program.enableAttributeArray(vertexLocation);
+    program.setAttributeArray(vertexLocation, triangleVertices, 3);
+    program.setUniformValue(matrixLocation, pmvMatrix);
+    program.setUniformValue(colorLocation, color);
+
+    glDrawArrays(GL_TRIANGLES, 0, 3);
+
+    program.disableAttributeArray(vertexLocation);
 }
 
 void GLclass::resizeGL(int width, int height)
