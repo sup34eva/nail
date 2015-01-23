@@ -8,7 +8,7 @@ Window::Window(QWidget *parent) :
     {
         ui->setupUi(this);
         widget = new QOpenGLWidget;
-        this->setWindowTitle("OpenGL Test");
+        this->setWindowTitle("Nail Creator");
     }
 
 Window::~Window()
