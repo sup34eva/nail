@@ -3,8 +3,9 @@
 #include <QOpenGLShader>
 #include <string>
 
-GLclass::GLclass(QObject* parent)
+GLclass::GLclass(QWidget* parent) : QOpenGLWidget (parent), m_program(this)
 {
+
 }
 
 GLclass::~GLclass()
@@ -15,30 +16,16 @@ GLclass::~GLclass()
 void GLclass::initializeGL()
 {
     initializeOpenGLFunctions();//sinon runtime error
-    glEnable(GL_DEPTH_TEST);
-    glDepthFunc(GL_LESS);
-    glEnable(GL_CULL_FACE);
-    glClearColor(0.0, 0.0, 0.0, 0.0);
-}
-
-void GLclass::paintGL()
-{
-    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
-    //shaders test
-    QOpenGLShaderProgram program(this);
-
     //ad shaders to program
-    program.addShaderFromSourceFile(QOpenGLShader::Vertex, ":/shader/shaders/vertex.vert");
-    program.addShaderFromSourceFile(QOpenGLShader::Fragment, ":/shader/shaders/fragment.frag");
-    program.link();
-    program.bind();
+    m_program.addShaderFromSourceFile(QOpenGLShader::Vertex, ":/shader/shaders/vertex.vert");
+    m_program.addShaderFromSourceFile(QOpenGLShader::Fragment, ":/shader/shaders/fragment.frag");
+    m_program.link();
+    m_program.bind();
 
-    int vertexLocation = program.attributeLocation("vertex");
-    int matrixLocation = program.uniformLocation("matrix");
-    int colorLocation = program.uniformLocation("color");
+    int colorLocation = m_program.uniformLocation("color");
+    int vertexLocation = m_program.attributeLocation("vertex");
 
-    static GLfloat const triangleVertices[] = {
+    triangleVertices = {
         0.0f, 0.5f, 0.0f,
         -0.5f,-0.5f, 0.0f,
         0.5f,-0.5f, 0.0f
@@ -57,17 +44,23 @@ void GLclass::paintGL()
     QMatrix4x4 pmvMatrix;
     //pmvMatrix.ortho(rect());
 
-    program.enableAttributeArray(vertexLocation);
-    program.setAttributeArray(vertexLocation, triangleVertices, 3);
-    program.setUniformValue(matrixLocation, pmvMatrix);
-    program.setUniformValue(colorLocation, color);
-
-    glDrawArrays(GL_TRIANGLES, 0, 3);
-
-    program.disableAttributeArray(vertexLocation);
+    m_program.enableAttributeArray(vertexLocation);
+    m_program.setUniformValue("matrix", pmvMatrix);
+    m_program.setUniformValue("color", color);
+    m_program.setAttributeArray(vertexLocation, &triangleVertices[0], 3);
+    glEnable(GL_DEPTH_TEST);
+    glDepthFunc(GL_LESS);
+    glEnable(GL_CULL_FACE);
+    glClearColor(0.0, 0.0, 0.0, 0.0);
 }
 
-void GLclass::resizeGL(int width, int height)
+void GLclass::paintGL()
+{
+    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+    glDrawArrays(GL_TRIANGLES, 0, 3);
+}
+
+/*void GLclass::resizeGL(int width, int height)
 {
 
-}
+}*/

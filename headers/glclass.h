@@ -10,20 +10,22 @@
 class GLclass : public QOpenGLWidget, protected QOpenGLFunctions
 {
 public:
-    GLclass(QObject* parent = 0);
+    GLclass(QWidget* parent = 0);
     ~GLclass();
     QSize sizeHint() const {  return QSize(400, 400); }
 
 protected:
     void initializeGL();
     void paintGL();
-    void resizeGL(int width, int height);
+    //void resizeGL(int width, int height);
 
 private:
+
     QOpenGLShaderProgram m_program;
     GLuint VertexArrayID;
     // Ceci identifiera notre tampon de sommets
     GLuint vertexbuffer;
+    std::vector<GLfloat> triangleVertices;
 };
 
 #endif // GLCLASS_H
