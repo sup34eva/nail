@@ -5,6 +5,7 @@
 #include <QOpenGLFunctions>
 #include <QOpenGLShader>
 #include <QOpenGLShaderProgram>
+#include <QOpenGLBuffer>
 
 
 class GLclass : public QOpenGLWidget, protected QOpenGLFunctions
@@ -22,10 +23,13 @@ protected:
 private:
 
     QOpenGLShaderProgram m_program;
+    static QOpenGLBuffer* vertex_buffer;
+    static QOpenGLBuffer* indice_buffer;
     GLuint VertexArrayID;
-    // Ceci identifiera notre tampon de sommets
-    GLuint vertexbuffer;
-    std::vector<GLfloat> triangleVertices;
+
+    std::vector<GLfloat> vertices;
+    std::vector<quint32> indices;
+
 };
 
 #endif // GLCLASS_H

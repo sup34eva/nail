@@ -1,7 +1,11 @@
 #include <glclass.h>
 #include <QOpenGLShaderProgram>
 #include <QOpenGLShader>
+#include <QOpenGLBuffer>
 #include <string>
+
+QOpenGLBuffer* GLclass::vertex_buffer = nullptr;
+QOpenGLBuffer* GLclass::indice_buffer = nullptr;
 
 GLclass::GLclass(QWidget* parent) : QOpenGLWidget (parent), m_program(this)
 {
@@ -25,11 +29,29 @@ void GLclass::initializeGL()
     int colorLocation = m_program.uniformLocation("color");
     int vertexLocation = m_program.attributeLocation("vertex");
 
-    triangleVertices = {
-        0.0f, 0.5f, 0.0f,
-        -0.5f,-0.5f, 0.0f,
-        0.5f,-0.5f, 0.0f
+    vertices = {
+        -0.5, -0.5, 0, // bottom left corner
+        -0.5,  0.5, 0, // top left corner
+        0.5,  0.5, 0,  // top right corner
+        0.5, -0.5, 0   // bottom right corner
     };
+
+    indices = {
+        2,1,0, // first triangle (bottom left - top left - top right)
+        3,2,0  // second triangle (bottom left - top right - bottom right)
+    };
+
+    vertex_buffer = new QOpenGLBuffer(QOpenGLBuffer::VertexBuffer);
+    vertex_buffer->create();
+    vertex_buffer->setUsagePattern(QOpenGLBuffer::StaticDraw);
+    if (!vertex_buffer->bind())
+        return; vertex_buffer->allocate(&vertices[0], vertices.size() * sizeof(GLfloat));
+
+    indice_buffer = new QOpenGLBuffer(QOpenGLBuffer::IndexBuffer); // Ou
+    indice_buffer->create();
+    indice_buffer->setUsagePattern(QOpenGLBuffer::StaticDraw);
+    if (!indice_buffer->bind())
+        return; indice_buffer->allocate(&indices[0], indices.size() * sizeof(quint32));
 
     //couleurs RVBA
     QColor white(255,  255,  255,  255);
@@ -39,15 +61,17 @@ void GLclass::initializeGL()
     QColor black(0,  0,  0,  255);
 
     QColor color = green;
-    //QColor color(0, 255, 0, 255);
 
     QMatrix4x4 pmvMatrix;
     //pmvMatrix.ortho(rect());
 
-    m_program.enableAttributeArray(vertexLocation);
     m_program.setUniformValue("matrix", pmvMatrix);
-    m_program.setUniformValue("color", color);
-    m_program.setAttributeArray(vertexLocation, &triangleVertices[0], 3);
+    m_program.setUniformValue(colorLocation, color);
+
+    vertex_buffer->bind();
+    m_program.setAttributeBuffer(vertexLocation, GL_FLOAT, 0, 3);
+    m_program.enableAttributeArray(vertexLocation);
+
     glEnable(GL_DEPTH_TEST);
     glDepthFunc(GL_LESS);
     glEnable(GL_CULL_FACE);
@@ -57,7 +81,9 @@ void GLclass::initializeGL()
 void GLclass::paintGL()
 {
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-    glDrawArrays(GL_TRIANGLES, 0, 3);
+    m_program.bind();
+    glDrawElements(GL_TRIANGLES, 2 * 3, GL_UNSIGNED_INT, 0);
+    m_program.release();
 }
 
 /*void GLclass::resizeGL(int width, int height)

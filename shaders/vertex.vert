@@ -1,7 +1,8 @@
 #version 330 core
 
-attribute highp vec4 vertex;
-uniform highp mat4 matrix;
+in vec4 vertex;
+uniform mat4 matrix;
+
 void main(void)
 {
    gl_Position = matrix * vertex;
