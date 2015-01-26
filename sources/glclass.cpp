@@ -20,7 +20,7 @@ GLclass::~GLclass()
 void GLclass::initializeGL()
 {
     initializeOpenGLFunctions();//sinon runtime error
-    //ad shaders to program
+    //ajout des shaders au program
     m_program.addShaderFromSourceFile(QOpenGLShader::Vertex, ":/shader/shaders/vertex.vert");
     m_program.addShaderFromSourceFile(QOpenGLShader::Fragment, ":/shader/shaders/fragment.frag");
     m_program.link();
@@ -29,28 +29,33 @@ void GLclass::initializeGL()
     int colorLocation = m_program.uniformLocation("color");
     int vertexLocation = m_program.attributeLocation("vertex");
 
+    //declaration des coordonnées vertices (points)
     vertices = {
-        -0.5, -0.5, 0, // bottom left corner
-        -0.5,  0.5, 0, // top left corner
-        0.5,  0.5, 0,  // top right corner
-        0.5, -0.5, 0   // bottom right corner
+        -0.5, -0.5, 0, //bas gauche (0)
+        -0.5,  0.5, 0, //haut gauche (1)
+        0.5,  0.5, 0,  //haut droite (2)
+        0.5, -0.5, 0   //bas droite (3)
     };
 
+    //declaration des triangles en utilisant les coodronnées de vertices
+    //!!! ordre -> sens aiguilles montre !!!
     indices = {
-        2,1,0, // first triangle (bottom left - top left - top right)
-        3,2,0  // second triangle (bottom left - top right - bottom right)
+        2,1,0, //1er triangle
+        3,2,0  //2eme triangle
     };
 
+    //declaration, allocation du buffer de vertices
     vertex_buffer = new QOpenGLBuffer(QOpenGLBuffer::VertexBuffer);
     vertex_buffer->create();
     vertex_buffer->setUsagePattern(QOpenGLBuffer::StaticDraw);
-    if (!vertex_buffer->bind())
+    if (!vertex_buffer->bind() )
         return; vertex_buffer->allocate(&vertices[0], vertices.size() * sizeof(GLfloat));
 
-    indice_buffer = new QOpenGLBuffer(QOpenGLBuffer::IndexBuffer); // Ou
+    //declaration, allocation du buffer d'indices
+    indice_buffer = new QOpenGLBuffer(QOpenGLBuffer::IndexBuffer);
     indice_buffer->create();
     indice_buffer->setUsagePattern(QOpenGLBuffer::StaticDraw);
-    if (!indice_buffer->bind())
+    if (!indice_buffer->bind() )
         return; indice_buffer->allocate(&indices[0], indices.size() * sizeof(quint32));
 
     //couleurs RVBA
@@ -60,6 +65,7 @@ void GLclass::initializeGL()
     QColor blue(0,  0,  255,  255);
     QColor black(0,  0,  0,  255);
 
+    //couleur d'affichage
     QColor color = green;
 
     QMatrix4x4 pmvMatrix;
