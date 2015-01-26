@@ -18,7 +18,7 @@ public:
 protected:
     void initializeGL();
     void paintGL();
-    //void resizeGL(int width, int height);
+    void resizeGL(float width,float height);
 
 private:
 
@@ -30,6 +30,9 @@ private:
     std::vector<GLfloat> vertices;
     std::vector<quint32> indices;
 
+    QMatrix4x4 projection;
+    QMatrix4x4 view;
+    QMatrix4x4 transform;
 };
 
 #endif // GLCLASS_H
