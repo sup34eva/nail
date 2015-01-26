@@ -83,11 +83,11 @@ void GLclass::paintGL()
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
     //Matrice de vue
-    QVector3D cam(3, 3, 3);
-    QVector3D cible(0, 0, 0);
-    QVector3D vert(0, 0, 1);
-    view.setToIdentity();
-    view.lookAt(cam, cible, vert);
+    QVector3D cam(3, 3, 3);//position de la camera
+    QVector3D cible(0, 0, 0);//position de la cible
+    QVector3D vert(0, 0, 1);//Vecteur vertical
+    view.setToIdentity();//Reset de la matrice de vue
+    view.lookAt(cam, cible, vert);// Prend en parametre les 3 d au dessus
 
     m_program.bind();
     glDrawElements(GL_TRIANGLES, 2 * 3, GL_UNSIGNED_INT, 0);
@@ -97,7 +97,7 @@ void GLclass::paintGL()
 void GLclass::resizeGL(float width, float height)
 {
     //Matrice de projection
-    projection.setToIdentity();
-    projection.perspective(0.70f, width/height, 1.0f, 1000.0f);
+    projection.setToIdentity(); //Reset de la matrice
+    projection.perspective(0.70f, width/height, 1.0f, 1000.0f); //(angle de vision, largeur/hauteur, minimum en dessous du quel ca ne s affiche pas, maximum au dessus du quel on de vera plus l'objet)
 
 }
