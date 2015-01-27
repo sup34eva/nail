@@ -17,6 +17,9 @@ public:
     explicit Window(QWidget *parent = 0);
     ~Window();
 
+private slots:
+    void on_actionColorer_triggered();
+
 private:
     Ui::Window *ui;
     QOpenGLWidget *widget;

@@ -3,4 +3,8 @@
         <file>shaders/fragment.frag</file>
         <file>shaders/vertex.vert</file>
     </qresource>
+    <qresource prefix="/icons">
+        <file>icons/cube.png</file>
+        <file>icons/nail.png</file>
+    </qresource>
 </RCC>

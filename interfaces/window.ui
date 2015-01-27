@@ -11,7 +11,11 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>Window</string>
+   <string>Nail Creator</string>
+  </property>
+  <property name="windowIcon">
+   <iconset resource="../ressource.qrc">
+    <normaloff>:/icons/icons/nail.png</normaloff>:/icons/icons/nail.png</iconset>
   </property>
   <property name="autoFillBackground">
    <bool>false</bool>
@@ -82,6 +86,7 @@
    <attribute name="toolBarBreak">
     <bool>false</bool>
    </attribute>
+   <addaction name="actionColorer"/>
   </widget>
   <widget class="QStatusBar" name="statusBar"/>
   <widget class="QDockWidget" name="Barre_Toolbox">
@@ -236,11 +241,6 @@
     <string>Quitter</string>
    </property>
   </action>
-  <action name="actionEn">
-   <property name="text">
-    <string>En</string>
-   </property>
-  </action>
   <action name="actionEnregistrer_sous">
    <property name="text">
     <string>Enregistrer sous...</string>
@@ -291,6 +291,18 @@
     <string>Enregistrer</string>
    </property>
   </action>
+  <action name="actionColorer">
+   <property name="icon">
+    <iconset resource="../ressource.qrc">
+     <normaloff>:/icons/icons/cube.png</normaloff>:/icons/icons/cube.png</iconset>
+   </property>
+   <property name="text">
+    <string>Colorer un cube</string>
+   </property>
+   <property name="toolTip">
+    <string>Colorer</string>
+   </property>
+  </action>
  </widget>
  <layoutdefault spacing="6" margin="11"/>
  <customwidgets>
@@ -301,7 +313,9 @@
    <container>1</container>
   </customwidget>
  </customwidgets>
- <resources/>
+ <resources>
+  <include location="../ressource.qrc"/>
+ </resources>
  <connections>
   <connection>
    <sender>actionToolBox</sender>
