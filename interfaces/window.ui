@@ -84,8 +84,9 @@
     <enum>TopToolBarArea</enum>
    </attribute>
    <attribute name="toolBarBreak">
-    <bool>false</bool>
+    <bool>true</bool>
    </attribute>
+   <addaction name="actionNew_cube"/>
    <addaction name="actionColorer"/>
   </widget>
   <widget class="QStatusBar" name="statusBar"/>
@@ -301,6 +302,18 @@
    </property>
    <property name="toolTip">
     <string>Colorer</string>
+   </property>
+  </action>
+  <action name="actionNew_cube">
+   <property name="icon">
+    <iconset resource="../ressource.qrc">
+     <normaloff>:/icons/icons/new.png</normaloff>:/icons/icons/new.png</iconset>
+   </property>
+   <property name="text">
+    <string>New cube</string>
+   </property>
+   <property name="toolTip">
+    <string>Nouveau cube </string>
    </property>
   </action>
  </widget>

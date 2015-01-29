@@ -20,6 +20,9 @@ public:
 private slots:
     void on_actionColorer_triggered();
 
+
+    void on_actionEnregistrer_sous_triggered();
+
 private:
     Ui::Window *ui;
     QOpenGLWidget *widget;
