@@ -1,6 +1,7 @@
 $(document).ready(function(){
         var canvas = document.getElementById("renderCanvas");
         var engine = new BABYLON.Engine(canvas, true);
+        var fpsLabel = document.getElementById("fpsLabel");
 
         var createScene = function () {
         
@@ -29,7 +30,7 @@ $(document).ready(function(){
             sphere.position.y = 1;
         
             // Our built-in 'ground' shape. Params: name, width, depth, subdivs, scene
-            var ground = BABYLON.Mesh.CreateGround("ground1", 6, 6, 2, scene);
+            var ground = BABYLON.Mesh.CreateGround("ground1", 10, 10, 2, scene);
         
             return scene;
         
@@ -39,10 +40,14 @@ $(document).ready(function(){
 
         engine.runRenderLoop(function () {
             scene.render();
+            fpsLabel.innerHTML = engine.getFps().toFixed() + " fps";
         });
 
         // Resize
         window.addEventListener("resize", function () {
             engine.resize();
         });
+
 })
+
+
