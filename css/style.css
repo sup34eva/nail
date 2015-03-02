@@ -5,6 +5,7 @@ html, body
     height: 100%;
     margin: 0;
     padding: 0;
+    background-color: #eee;
 }
 
 #renderCanvas
@@ -13,25 +14,32 @@ html, body
     height: 100%;
     touch-action: none;
 }
+
 #fpsLabel
 {
+    float: right;
+    color: #337ab7;
     position: relative;
-    cursor: default;
+    display: block;
+    padding: 10px 15px;
 }
+
 .container-fluid
 {
     margin: 0 !important;
 }
 
-.label
+.col-md-10
 {
-    padding: 2px 4px;
-    font-size: 11.844px;
-    font-weight: bold;
-    line-height: 14px;
-    color: #fff;
-    text-shadow: 0 -1px 0 rgba(0,0,0,0.25);
-    white-space: nowrap;
-    vertical-align: baseline;
-    background-color: #999;
+	padding: 0;
+}
+
+.container-fluid
+{
+	padding: 0;
+}
+
+aside.col-md-2
+{
+    border-top: 1px solid #337ab7;
 }
