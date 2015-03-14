@@ -23,3 +23,7 @@ html, body
 	padding-left: 0;
 	background-color: black;
 }
+
+.nav>li>a:focus, .nav>li>a:hover {
+background-color: black;
+}
