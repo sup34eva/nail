@@ -15,15 +15,27 @@ html, body
     touch-action: none;
 }
 
-.col-md-10 {
-	padding-left: 0;
+#fpsLabel
+{
+    float: right;
+    color: #337ab7;
+    position: relative;
+    display: block;
+    padding: 10px 15px;
 }
 
-.container-fluid {
-	padding-left: 0;
-	background-color: black;
+.container-fluid
+{
+    margin: 0 !important;
 }
 
-.nav>li>a:focus, .nav>li>a:hover {
-background-color: black;
+.col-md-10
+{
+	padding: 0;
 }
+
+.container-fluid
+{
+	padding: 0;
+}
+
