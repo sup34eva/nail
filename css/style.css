@@ -6,6 +6,7 @@ html, body
     margin: 0;
     padding: 0;
     background-color: black;
+    color: #337ab7;
 }
 
 #renderCanvas
@@ -18,7 +19,6 @@ html, body
 #fpsLabel
 {
     float: right;
-    color: #337ab7;
     position: relative;
     display: block;
     padding: 10px 15px;
@@ -39,3 +39,7 @@ html, body
 	padding: 0;
 }
 
+p
+{
+    color: #337ab7;
+}

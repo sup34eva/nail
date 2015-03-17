@@ -10,6 +10,7 @@ $(document).ready(function(){
         var canvas = document.getElementById("renderCanvas");
         var engine = new BABYLON.Engine(canvas, true);
         var fpsLabel = document.getElementById("fpsLabel");
+        var camPosTxt = document.getElementById("camPosTxt");
 
         var createScene = function () {
         
@@ -43,19 +44,22 @@ $(document).ready(function(){
             ground.material = new BABYLON.StandardMaterial("gMaterial", scene);
             ground.material.diffuseTexture = new BABYLON.Texture("img/ground.jpg", scene);
             ground.checkCollisions = true;
+            ground.position.y = -5;
 
             // Création d'une material
             var sMaterial = new BABYLON.StandardMaterial("skyboxMaterial", scene);
             sMaterial.backFaceCulling = false;
-            sMaterial.reflectionTexture = new BABYLON.CubeTexture("img/bluesky", scene);
+            sMaterial.reflectionTexture = new BABYLON.CubeTexture("img/skybox", scene);
             sMaterial.reflectionTexture.coordinatesMode = BABYLON.Texture.SKYBOX_MODE;
-
+            sMaterial.diffuseColor = new BABYLON.Color3(0, 0, 0);
+            sMaterial.specularColor = new BABYLON.Color3(0, 0, 0);
 
             // Création d'un cube avec la material adaptée
             var skybox = BABYLON.Mesh.CreateBox("skybox", 250, scene);
             skybox.material = sMaterial;
-
-
+            skybox.infiniteDistance = true;
+            
+            
 
             return scene;
         
@@ -65,12 +69,36 @@ $(document).ready(function(){
         function Sphere(){
             this.nom = document.getElementById('name').value;
             this.sphere = BABYLON.Mesh.CreateSphere(this.nom, 32, 1, scene);
+            var colorMat = new BABYLON.StandardMaterial("color", scene);
+            colorMat.emissiveColor = new BABYLON.Color3(R/255,G/255,B/255);
+            this.sphere.material = colorMat;
+            console.log(R, G, B);
         }
 
         var btn_sphere = document.getElementById('sphere');
+
+        //Convertisseur hexa en RGB*******************************************
+        var picker = document.getElementById('color'),
+            c, R, G , B;
+        function hexToR(h) {return parseInt(h.substring(0,2),16)}
+        function hexToG(h) {return parseInt(h.substring(2,4),16)}
+        function hexToB(h) {return parseInt(h.substring(4,6),16)}
+        function cutHex(h) {return (h.charAt(0)=="#") ? h.substring(1,7):h}
+        picker.onchange = function() {
+            c = cutHex(this.value);
+            R = hexToR(c);
+            G = hexToG(c);
+            B = hexToB(c);
+        };
+        picker.onchange();
+        //Fin convertisseur hexa en RGB****************************************
         
         btn_sphere.onclick = function() {
             s = new Sphere();
+            var button = document.createElement("button");
+            button.innerHTML= s.nom;
+            button.classList.add("nav-justified");
+            btn_sphere.parentNode.insertBefore(button,document.getElementById('name'));
             };
 
         var positiony = document.getElementById('posy');
@@ -95,18 +123,39 @@ $(document).ready(function(){
 
         taillex.onchange = function() {
             s.sphere.scaling.x = taillex.value;
+            if (document.getElementById('check').checked)
+            {
+                s.sphere.scaling.z = s.sphere.scaling.x;
+                s.sphere.scaling.y = s.sphere.scaling.x; 
+                tailley.value = s.sphere.scaling.x; 
+                taillez.value = s.sphere.scaling.x;
+            }
             };
 
         var tailley = document.getElementById('tailley');
 
         tailley.onchange = function() {
             s.sphere.scaling.y = tailley.value;
+            if (document.getElementById('check').checked)
+            {
+                s.sphere.scaling.z = s.sphere.scaling.x;
+                s.sphere.scaling.y = s.sphere.scaling.x; 
+                tailley.value = s.sphere.scaling.x; 
+                taillez.value = s.sphere.scaling.x;
+            }
             };
 
         var taillez = document.getElementById('taillez');
 
         taillez.onchange = function() {
             s.sphere.scaling.z = taillez.value;
+            if (document.getElementById('check').checked)
+            {
+                s.sphere.scaling.z = s.sphere.scaling.x;
+                s.sphere.scaling.y = s.sphere.scaling.x; 
+                tailley.value = s.sphere.scaling.x; 
+                taillez.value = s.sphere.scaling.x;
+            }
             };
 
         var name = document.getElementById('name');
@@ -116,14 +165,18 @@ $(document).ready(function(){
             };
 
 //*****************************Fin Creation et gestion de SPHERE*******************************************
+        document.getElementById('camReset').onclick = function() {
+            console.log("click");
+            scene.activeCamera.position = new BABYLON.Vector3(0, 0, 0);
+            };
 
         var scene = createScene();
 
         engine.runRenderLoop(function () {
             scene.render();
-            fpsLabel.innerHTML = engine.getFps().toFixed() + " fps";
-        });
-
+            fpsLabel.innerHTML = engine.getFps().toFixed() + " fps";            
+            camPosTxt.innerHTML = 'X:' + scene.activeCamera.position.x.toFixed(2) + '<br>Y:' + scene.activeCamera.position.y.toFixed(2) + "<br>Z:" + scene.activeCamera.position.z.toFixed(2);});
+        
         // Resize
         window.addEventListener("resize", function () {
             engine.resize();
@@ -227,4 +280,5 @@ $(document).ready(function(){
       pyramid.setIndices(indices);
 
       return pyramid;
+     
     }

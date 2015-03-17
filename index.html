@@ -59,16 +59,25 @@
         </section>
         
         <aside class="col-md-2">
-            <button id="sphere">Ajouter sphere</button>
-            <input type="text" value="Objet" id="name" />Nom
-            <input type="number" placeholder="1" id="taillex" />Taille x
-            <input type="number" placeholder="1" id="tailley" />Taille y
-            <input type="number" placeholder="1" id="taillez" />Taille z
-            <input type="number" placeholder="0" id="posy" />Pos Y
-            <input type="number" placeholder="0" id="posx" />Pos X
-            <input type="number" placeholder="0" id="posz" />Pos Z
+            <button class="nav-justified" id="sphere">Ajouter sphere</button>
+            <input type="text" value="Objet" id="name" /><p>Nom</p>
+            <input type="checkbox" id="check"><p>X = Y = Z</p>
+            <input type="number" placeholder="1" id="taillex" /><p>Taille x</p>
+            <input type="number" placeholder="1" id="tailley" /><p>Taille y</p>
+            <input type="number" placeholder="1" id="taillez" /><p>Taille z</p>
+            <input type="number" placeholder="0" id="posy" /><p>Pos Y</p>
+            <input type="number" placeholder="0" id="posx" /><p>Pos X</p>
+            <input type="number" placeholder="0" id="posz" /><p>Pos Z</p>
+            <input type="color" id="color" /><p>Couleur</p>
         </aside>
+        <footer class="col-md-12"> 
+           <div id="cameraPos">
+            Position de la caméra&nbsp;<button id="camReset">Reset</button>
+            <div id="camPosTxt"></div>
+          </div>
+        </footer>
     </div>
+
     <script src="js/jquery-2.1.3.min.js"></script>
     <script src="js/script.js"></script>
     <script src="js/bootstrap.min.js"></script>
