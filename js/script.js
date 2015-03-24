@@ -39,11 +39,23 @@ $(document).ready(function() {
         // This attaches the camera to the canvas
         camera.attachControl(canvas, true);
     
-        // This creates a light, aiming 0,1,0 - to the sky (non-mesh)
-        var light = new BABYLON.PointLight("DirLight", new BABYLON.Vector3(100, 100 , 100), scene);
-        light.diffuse = new BABYLON.Color3(1, 1, 1);
-        light.specular = new BABYLON.Color3(0.6, 0.6, 0.6);
-        light.intensity = 1.5;
+        // This creates a light
+        var light = new BABYLON.DirectionalLight("dir01", new BABYLON.Vector3(-1, -2, -1), scene);
+        light.position = new BABYLON.Vector3(125, 125, -125);
+        light.intensity = 1;
+        var lightSphere = BABYLON.Mesh.CreateSphere("sphere", 10, 10, scene);
+        lightSphere.position = light.position;
+        lightSphere.material = new BABYLON.StandardMaterial("light", scene);
+        lightSphere.material.emissiveColor = new BABYLON.Color3(1, 1, 0);
+
+        // sphere representing the light
+        var sphere = BABYLON.Mesh.CreateSphere("toto", 50, 5, scene);
+        sphere.position = new BABYLON.Vector3(5, -2, 10);
+        sphere.checkCollisions = true;
+        // Shadows
+        var shadowGenerator = new BABYLON.ShadowGenerator(4096, light);
+        shadowGenerator.getShadowMap().renderList.push(sphere);
+        shadowGenerator.usePoissonSampling = true;
     
         // Our built-in 'ground' shape. Params: name, width, depth, subdivs, scene
         var ground = BABYLON.Mesh.CreateGround("ground1", 250, 250, 2, scene);
@@ -51,7 +63,7 @@ $(document).ready(function() {
         ground.material.diffuseTexture = new BABYLON.Texture("img/super_ground.jpg", scene);
         ground.material.diffuseTexture.uScale = 30;
         ground.material.diffuseTexture.vScale = 30;
-        ground.material.backFaceCulling = false;//Allways show the front and the back of an element
+        ground.material.backFaceCulling = true;//Allways show the front and the back of an element
         ground.checkCollisions = true;
         ground.position.y = -5;
         ground.receiveShadows = true;
@@ -69,20 +81,48 @@ $(document).ready(function() {
         skybox.material = sMaterial;
         skybox.infiniteDistance = true;
         
-        
-
         return scene;
     
     };
+//*****************************Creation et gestion de MESH*******************************************
+    var geometries = {};
+    var meshCount = -1;
 
-//*****************************Creation et gestion de SPHERE*******************************************
-    function Sphere(){
-        this.nom = document.getElementById('name').value;
-        this.sphere = BABYLON.Mesh.CreateSphere(this.nom, 32, 1, scene);
+    function Mesh()
+    {
+        nom = document.getElementById('name').value;
+
+        var type = document.getElementById("mesh-type").value;
+        switch(type)
+        {
+            case "box":
+                mesh = BABYLON.Mesh.CreateBox(nom, 2, scene);
+                break;
+
+            case "sphere":
+                mesh = BABYLON.Mesh.CreateSphere(nom, 50, 2, scene);
+                break;
+
+            case "cylinder":
+                mesh = BABYLON.Mesh.CreateCylinder(nom, 2, 2, 2, 50, 1, scene, false);
+                break;
+
+            case "pyramid":
+                mesh = BABYLON.Mesh.CreatePyramid4(nom , 2, 2, scene, false);
+                break;
+
+          default:
+                mesh = BABYLON.Mesh.CreateSphere(nom, 50, 2, scene);
+                break;
+        }
+
         var colorMat = new BABYLON.StandardMaterial("color", scene);
         colorMat.emissiveColor = new BABYLON.Color3(R/255,G/255,B/255);
-        this.sphere.material = colorMat;
+        mesh.material = colorMat;
         console.log(R, G, B);
+
+        mesh.link = null;
+        return(mesh);
     }
 
     var btn_add = document.getElementById('btn_add');
@@ -103,77 +143,83 @@ $(document).ready(function() {
     picker.onchange();
     //Fin convertisseur hexa en RGB****************************************
     
-    btn_add.onclick = function() {
-        s = new Sphere();
-        var button = document.createElement("button");
+    btn_add.onclick = function()
+    {
+        meshCount ++;
+        var meshTab = [];
+
+        meshTab[meshCount] = new Mesh();
+        console.log(meshTab);
+        
+        /*var button = document.createElement("button");
         button.innerHTML= s.nom;
         ["btn", "btn-success", "nav-justified"].forEach(button.classList.add.bind(button.classList));
         btn_add.parentNode.appendChild(button,document.getElementById('btn_add'));
+        };*/
+
+        var positiony = document.getElementById('posy');
+
+        positiony.onchange = function() {
+            meshTab[meshCount].position.y = positiony.value;
         };
 
-    var positiony = document.getElementById('posy');
+        var positionx = document.getElementById('posx');
 
-    positiony.onchange = function() {
-        s.sphere.position.y = positiony.value;
+        positionx.onchange = function() {
+            meshTab[meshCount].position.x = positionx.value;
         };
 
-    var positionx = document.getElementById('posx');
+        var positionz = document.getElementById('posz');
 
-    positionx.onchange = function() {
-        s.sphere.position.x = positionx.value;
+        positionz.onchange = function() {
+            meshTab[meshCount].position.z = positionz.value;
         };
 
-    var positionz = document.getElementById('posz');
+        var taillex = document.getElementById('taillex');
 
-    positionz.onchange = function() {
-        s.sphere.position.z = positionz.value;
+        var check = document.getElementById('check');
+
+        taillex.onchange = function() {
+            m.mesh.scaling.x = taillex.value;
+            if (check.checked)
+            {
+                meshTab[meshCount].scaling.y = meshTab[meshCount].scaling.x; 
+                meshTab[meshCount].scaling.z = meshTab[meshCount].scaling.x;
+            }
         };
 
-    var taillex = document.getElementById('taillex');
-
-    var check = document.getElementById('check');
-
-    taillex.onchange = function() {
-        s.sphere.scaling.x = taillex.value;
-        if (check.checked)
-        {
-            s.sphere.scaling.y = s.sphere.scaling.x; 
-            s.sphere.scaling.z = s.sphere.scaling.x;
-        }
+        check.onclick = function() {
+            if ($(".hiden").css("display") == "none")
+            {
+                $(".hiden").css("display", "block");
+            }
+            else
+            {    
+                $(".hiden").css("display", "none");
+            }
         };
 
-    check.onclick = function() {
-        if ($(".hiden").css("display") == "none")
-        {
-            $(".hiden").css("display", "block");
-        }
-        else
-        {    
-            $(".hiden").css("display", "none");
-        }
+
+        var tailley = document.getElementById('tailley');
+
+        tailley.onchange = function() {
+            meshTab[meshCount].scaling.y = tailley.value;
+        };
+           
+        var taillez = document.getElementById('taillez');
+
+        taillez.onchange = function() {
+            meshTab[meshCount].scaling.z = taillez.value;
+        };
+
+        var name = document.getElementById('name');
+
+        name.onchange = function() {
+            meshTab[meshCount].name = name.value;
+        };
     };
+//*****************************Fin Creation et gestion de MESH*******************************************
 
-
-    var tailley = document.getElementById('tailley');
-
-    tailley.onchange = function() {
-        s.sphere.scaling.y = tailley.value;
-    };
-       
-    var taillez = document.getElementById('taillez');
-
-    taillez.onchange = function() {
-        s.sphere.scaling.z = taillez.value;
-        };
-
-    var name = document.getElementById('name');
-
-    name.onchange = function() {
-        s.sphere.name = name.value;
-    };
-
-//*****************************Fin Creation et gestion de SPHERE*******************************************
-   
     document.getElementById('camReset').onclick = function() {
         console.log("click");
         scene.activeCamera.position = new BABYLON.Vector3(0, 0, 0);

@@ -9,6 +9,11 @@ html, body
     color: #337ab7;
 }
 
+#mesh-type
+{
+    margin-bottom: 10px;
+}
+
 #renderCanvas
 {
     width: 100%;
