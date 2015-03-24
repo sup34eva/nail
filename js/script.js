@@ -48,9 +48,13 @@ $(document).ready(function() {
         // Our built-in 'ground' shape. Params: name, width, depth, subdivs, scene
         var ground = BABYLON.Mesh.CreateGround("ground1", 250, 250, 2, scene);
         ground.material = new BABYLON.StandardMaterial("gMaterial", scene);
-        ground.material.diffuseTexture = new BABYLON.Texture("img/ground.jpg", scene);
+        ground.material.diffuseTexture = new BABYLON.Texture("img/super_ground.jpg", scene);
+        ground.material.diffuseTexture.uScale = 30;
+        ground.material.diffuseTexture.vScale = 30;
+        ground.material.backFaceCulling = false;//Allways show the front and the back of an element
         ground.checkCollisions = true;
         ground.position.y = -5;
+        ground.receiveShadows = true;
 
         // Création d'une material
         var sMaterial = new BABYLON.StandardMaterial("skyboxMaterial", scene);
@@ -81,7 +85,7 @@ $(document).ready(function() {
         console.log(R, G, B);
     }
 
-    var btn_sphere = document.getElementById('sphere');
+    var btn_add = document.getElementById('btn_add');
 
     //Convertisseur hexa en RGB*******************************************
     var picker = document.getElementById('color'),
@@ -99,12 +103,12 @@ $(document).ready(function() {
     picker.onchange();
     //Fin convertisseur hexa en RGB****************************************
     
-    btn_sphere.onclick = function() {
+    btn_add.onclick = function() {
         s = new Sphere();
         var button = document.createElement("button");
         button.innerHTML= s.nom;
-        button.classList.add("nav-justified");
-        btn_sphere.parentNode.insertBefore(button,document.getElementById('name'));
+        ["btn", "btn-success", "nav-justified"].forEach(button.classList.add.bind(button.classList));
+        btn_add.parentNode.appendChild(button,document.getElementById('btn_add'));
         };
 
     var positiony = document.getElementById('posy');
@@ -127,41 +131,39 @@ $(document).ready(function() {
 
     var taillex = document.getElementById('taillex');
 
+    var check = document.getElementById('check');
+
     taillex.onchange = function() {
         s.sphere.scaling.x = taillex.value;
-        if (document.getElementById('check').checked)
+        if (check.checked)
         {
-            s.sphere.scaling.z = s.sphere.scaling.x;
             s.sphere.scaling.y = s.sphere.scaling.x; 
-            tailley.value = s.sphere.scaling.x; 
-            taillez.value = s.sphere.scaling.x;
+            s.sphere.scaling.z = s.sphere.scaling.x;
         }
         };
+
+    check.onclick = function() {
+        if ($(".hiden").css("display") == "none")
+        {
+            $(".hiden").css("display", "block");
+        }
+        else
+        {    
+            $(".hiden").css("display", "none");
+        }
+    };
+
 
     var tailley = document.getElementById('tailley');
 
     tailley.onchange = function() {
         s.sphere.scaling.y = tailley.value;
-        if (document.getElementById('check').checked)
-        {
-            s.sphere.scaling.z = s.sphere.scaling.x;
-            s.sphere.scaling.y = s.sphere.scaling.x; 
-            tailley.value = s.sphere.scaling.x; 
-            taillez.value = s.sphere.scaling.x;
-        }
-        };
-
+    };
+       
     var taillez = document.getElementById('taillez');
 
     taillez.onchange = function() {
         s.sphere.scaling.z = taillez.value;
-        if (document.getElementById('check').checked)
-        {
-            s.sphere.scaling.z = s.sphere.scaling.x;
-            s.sphere.scaling.y = s.sphere.scaling.x; 
-            tailley.value = s.sphere.scaling.x; 
-            taillez.value = s.sphere.scaling.x;
-        }
         };
 
     var name = document.getElementById('name');
@@ -182,7 +184,7 @@ $(document).ready(function() {
     engine.runRenderLoop(function () {
         scene.render();
         fpsLabel.innerHTML = engine.getFps().toFixed() + " fps";            
-        camPosTxt.innerHTML = 'X:' + scene.activeCamera.position.x.toFixed(2) + '&nbsp Y:' + scene.activeCamera.position.y.toFixed(2) + "&nbsp Z:" + scene.activeCamera.position.z.toFixed(2);
+        camPosTxt.innerHTML = 'Position de la caméra X:' + scene.activeCamera.position.x.toFixed(2) + '&nbsp Y:' + scene.activeCamera.position.y.toFixed(2) + "&nbsp Z:" + scene.activeCamera.position.z.toFixed(2);
     });
     
     // Resize

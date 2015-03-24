@@ -50,8 +50,10 @@
                   <li><a href="#">A propos</a></li>
                 </ul>
             </li>
-            <a class="btn" id="fullscreenButton">Fullscreen</a>
-            <li role="presentation" id="fpsLabel"></li>
+            <li role="presentation"><a id="fullscreenButton">Fullscreen</a></li>
+            <li role="presentation" id="fpsLabel" class="label1"></li>
+            <li role="presentation"><a id="camReset">Reset Cam</a></li>
+            <li role="presentation" id="camPosTxt" class="label1"></li>
         </ul>
     </nav>
     <div class="container-fluid">
@@ -62,87 +64,34 @@
           <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
             <div class="panel panel-default">
               <button type="button" class="nav-justified btn btn-primary collapsed" data-toggle="collapse" data-target="#collapseOne">
-                Sphere            
+                Objet            
               </button>
               <div id="collapseOne" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOne">
                 <div class="panel-body">
-                  <button class="btn btn-info nav-justified" id="sphere">Ajouter sphere</button>
-                  <input type="text" value="Objet" id="name" /><p>Nom</p>
-                  <input type="checkbox" id="check"><p>X = Y = Z</p>
-                  <input type="number" placeholder="1" id="taillex" /><p>Taille x</p>
-                  <input type="number" placeholder="1" id="tailley" /><p>Taille y</p>
-                  <input type="number" placeholder="1" id="taillez" /><p>Taille z</p>
-                  <input type="number" placeholder="0" id="posy" /><p>Pos Y</p>
-                  <input type="number" placeholder="0" id="posx" /><p>Pos X</p>
-                  <input type="number" placeholder="0" id="posz" /><p>Pos Z</p>
-                  <input type="color" id="color" /><p>Couleur</p>
+                  <button class="btn btn-info nav-justified" id="btn_add">Ajouter</button>
+                  <select name="cars" class="nav-justified">
+                    <option value="box">Cube</option>
+                    <option value="sphere">Sphere</option>
+                    <option value="cylinder">Cylindre</option>
+                    <option value="pyramid">Pyramide</option>
+                  </select>
                 </div>
               </div>
             </div>
-            <div class="panel panel-default">
-              <button type="button" class="nav-justified btn btn-primary collapsed" data-toggle="collapse" data-target="#collapseTwo">
-                Cube            
-              </button>
-              <div id="collapseTwo" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOne">
-                <div class="panel-body">
-                  <button class="btn btn-info nav-justified" id="sphere">Ajouter Cube</button>
-                  <input type="text" value="Objet" id="name" /><p>Nom</p>
-                  <input type="checkbox" id="check"><p>X = Y = Z</p>
-                  <input type="number" placeholder="1" id="taillex" /><p>Taille x</p>
-                  <input type="number" placeholder="1" id="tailley" /><p>Taille y</p>
-                  <input type="number" placeholder="1" id="taillez" /><p>Taille z</p>
-                  <input type="number" placeholder="0" id="posy" /><p>Pos Y</p>
-                  <input type="number" placeholder="0" id="posx" /><p>Pos X</p>
-                  <input type="number" placeholder="0" id="posz" /><p>Pos Z</p>
-                  <input type="color" id="color" /><p>Couleur</p>
-                </div>
-              </div>
-            </div>
-            <div class="panel panel-default">
-              <button type="button" class="nav-justified btn btn-primary collapsed" data-toggle="collapse" data-target="#collapseThree">
-                Pyramide            
-              </button>
-              <div id="collapseThree" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOne">
-                <div class="panel-body">
-                  <button class="btn btn-info nav-justified" id="sphere">Ajouter Pyramide</button>
-                  <input type="text" value="Objet" id="name" /><p>Nom</p>
-                  <input type="checkbox" id="check"><p>X = Y = Z</p>
-                  <input type="number" placeholder="1" id="taillex" /><p>Taille x</p>
-                  <input type="number" placeholder="1" id="tailley" /><p>Taille y</p>
-                  <input type="number" placeholder="1" id="taillez" /><p>Taille z</p>
-                  <input type="number" placeholder="0" id="posy" /><p>Pos Y</p>
-                  <input type="number" placeholder="0" id="posx" /><p>Pos X</p>
-                  <input type="number" placeholder="0" id="posz" /><p>Pos Z</p>
-                  <input type="color" id="color" /><p>Couleur</p>
-                </div>
-              </div>
-            </div>
-            <div class="panel panel-default">
-              <button type="button" class="nav-justified btn btn-primary collapsed" data-toggle="collapse" data-target="#collapseFour">
-                Cylindre            
-              </button>
-              <div id="collapseFour" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOne">
-                <div class="panel-body">
-                  <button class="btn btn-info nav-justified" id="sphere">Ajouter Cylindre</button>
-                  <input type="text" value="Objet" id="name" /><p>Nom</p>
-                  <input type="checkbox" id="check"><p>X = Y = Z</p>
-                  <input type="number" placeholder="1" id="taillex" /><p>Taille x</p>
-                  <input type="number" placeholder="1" id="tailley" /><p>Taille y</p>
-                  <input type="number" placeholder="1" id="taillez" /><p>Taille z</p>
-                  <input type="number" placeholder="0" id="posy" /><p>Pos Y</p>
-                  <input type="number" placeholder="0" id="posx" /><p>Pos X</p>
-                  <input type="number" placeholder="0" id="posz" /><p>Pos Z</p>
-                  <input type="color" id="color" /><p>Couleur</p>
-                </div>
-              </div>
-            </div>
-          </div>    
+          </div> 
         </aside>
         <footer class="col-md-12"> 
-           <div id="cameraPos">
-            Position de la caméra&nbsp;<button id="camReset">Reset</button>
-            <div id="camPosTxt"></div>
-          </div>
+          <ul class="nav nav-tabs espace">
+            <li role="presentation"><input type="text" value="Objet" id="name" /><p>Nom</p></li>
+            <li role="presentation"><input type="checkbox" id="check"><p>X = Y = Z</p></li>
+            <li role="presentation"><input type="number" placeholder="1" id="taillex" /><p>Taille x</p></li>
+            <li role="presentation"><input type="number" placeholder="1" id="tailley" class="hiden"/><p class="hiden">Taille y</p></li>
+            <li role="presentation"><input type="number" placeholder="1" id="taillez" class="hiden"/><p class="hiden">Taille z</p></li>
+            <li role="presentation"><input type="number" placeholder="0" id="posy" /><p>Pos Y</p></li>
+            <li role="presentation"><input type="number" placeholder="0" id="posx" /><p>Pos X</p></li>
+            <li role="presentation"><input type="number" placeholder="0" id="posz" /><p>Pos Z</p></li>
+            <li role="presentation"><input type="color" id="color" /><p>Couleur</p>
+          </ul>
         </footer>
     </div>
 

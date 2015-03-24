@@ -16,11 +16,11 @@ html, body
     touch-action: none;
 }
 
-#fpsLabel
+.label1
 {
-    float: right;
-    position: relative;
-    display: block;
+    float: right !important;
+    position: relative !important;
+    display: block !important;
     padding: 10px 15px;
 }
 
@@ -42,4 +42,32 @@ html, body
 p
 {
     color: #337ab7;
+}
+
+.btn-info
+{
+    margin-bottom: 10px;
+}
+
+.collapse.in {
+    overflow : auto;
+    height: 615px;
+}
+
+.hiden {
+    display: block;
+}
+
+.espace>li
+{
+    margin-left : 1%;
+    padding-top: 0.5%;
+}
+
+footer.col-md-12{
+    padding-left: 0%;
+}
+
+.btn-success{
+    margin-top: 1%;
 }
