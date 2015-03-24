@@ -1,188 +1,196 @@
-/*if (confirm('Pour accéder à ce site vous devez avoir 18 ans ou plus, cliquez sur "OK" si c\'est le cas.')) {
-    alert('Vous allez être redirigé vers le site.');
-}
+$(document).ready(function() {
+    var canvas = document.getElementById("renderCanvas");
+    var engine = new BABYLON.Engine(canvas, true);
+    var fpsLabel = document.getElementById("fpsLabel");
+    var camPosTxt = document.getElementById("camPosTxt");
 
-else {
-    alert("Désolé, vous n'avez pas accès à ce site.");
-}*/
+//*********************Full Screen******************************************************************
+    var fullscreen = document.getElementById("fullscreenButton");
 
-$(document).ready(function(){
-        var canvas = document.getElementById("renderCanvas");
-        var engine = new BABYLON.Engine(canvas, true);
-        var fpsLabel = document.getElementById("fpsLabel");
-        var camPosTxt = document.getElementById("camPosTxt");
+    fullscreen.onclick = function() {
+        if (canvas.requestFullscreen) {
+        canvas.requestFullscreen();
+        } else if (canvas.mozRequestFullScreen) {
+        canvas.mozRequestFullScreen();
+        } else if (canvas.webkitRequestFullscreen) {
+        canvas.webkitRequestFullscreen();
+        }
+    }
+//*********************FIN Full Screen*************************************************************
 
-        var createScene = function () {
+    var createScene = function () {
+    
+        // This creates a basic Babylon Scene object (non-mesh)
+        var scene = new BABYLON.Scene(engine);
+        scene.collisionsEnabled = true;
+
+        // This creates and positions a free camera (non-mesh)
+        var camera = new BABYLON.FreeCamera("camera1", new BABYLON.Vector3(0, 5, -10), scene);
+        camera.keysUp = [90]; // Touche Z
+        camera.keysDown = [83]; // Touche S
+        camera.keysLeft = [81]; // Touche Q
+        camera.keysRight = [68]; // Touche D;
+        camera.checkCollisions = true;
+
+
+        // This targets the camera to scene origin
+        camera.setTarget(BABYLON.Vector3.Zero());
+    
+        // This attaches the camera to the canvas
+        camera.attachControl(canvas, true);
+    
+        // This creates a light, aiming 0,1,0 - to the sky (non-mesh)
+        var light = new BABYLON.PointLight("DirLight", new BABYLON.Vector3(100, 100 , 100), scene);
+        light.diffuse = new BABYLON.Color3(1, 1, 1);
+        light.specular = new BABYLON.Color3(0.6, 0.6, 0.6);
+        light.intensity = 1.5;
+    
+        // Our built-in 'ground' shape. Params: name, width, depth, subdivs, scene
+        var ground = BABYLON.Mesh.CreateGround("ground1", 250, 250, 2, scene);
+        ground.material = new BABYLON.StandardMaterial("gMaterial", scene);
+        ground.material.diffuseTexture = new BABYLON.Texture("img/ground.jpg", scene);
+        ground.checkCollisions = true;
+        ground.position.y = -5;
+
+        // Création d'une material
+        var sMaterial = new BABYLON.StandardMaterial("skyboxMaterial", scene);
+        sMaterial.backFaceCulling = false;
+        sMaterial.reflectionTexture = new BABYLON.CubeTexture("img/skybox", scene);
+        sMaterial.reflectionTexture.coordinatesMode = BABYLON.Texture.SKYBOX_MODE;
+        sMaterial.diffuseColor = new BABYLON.Color3(0, 0, 0);
+        sMaterial.specularColor = new BABYLON.Color3(0, 0, 0);
+
+        // Création d'un cube avec la material adaptée
+        var skybox = BABYLON.Mesh.CreateBox("skybox", 500, scene);
+        skybox.material = sMaterial;
+        skybox.infiniteDistance = true;
         
-            // This creates a basic Babylon Scene object (non-mesh)
-            var scene = new BABYLON.Scene(engine);
-            scene.collisionsEnabled = true;
-
-            // This creates and positions a free camera (non-mesh)
-            var camera = new BABYLON.FreeCamera("camera1", new BABYLON.Vector3(0, 5, -10), scene);
-            camera.keysUp = [90]; // Touche Z
-            camera.keysDown = [83]; // Touche S
-            camera.keysLeft = [81]; // Touche Q
-            camera.keysRight = [68]; // Touche D;
-            camera.checkCollisions = true;
-
-
-            // This targets the camera to scene origin
-            camera.setTarget(BABYLON.Vector3.Zero());
         
-            // This attaches the camera to the canvas
-            camera.attachControl(canvas, true);
-        
-            // This creates a light, aiming 0,1,0 - to the sky (non-mesh)
-            var light = new BABYLON.PointLight("DirLight", new BABYLON.Vector3(100, 100 , 100), scene);
-            light.diffuse = new BABYLON.Color3(1, 1, 1);
-            light.specular = new BABYLON.Color3(0.6, 0.6, 0.6);
-            light.intensity = 1.5;
-        
-            // Our built-in 'ground' shape. Params: name, width, depth, subdivs, scene
-            var ground = BABYLON.Mesh.CreateGround("ground1", 250, 250, 2, scene);
-            ground.material = new BABYLON.StandardMaterial("gMaterial", scene);
-            ground.material.diffuseTexture = new BABYLON.Texture("img/ground.jpg", scene);
-            ground.checkCollisions = true;
-            ground.position.y = -5;
 
-            // Création d'une material
-            var sMaterial = new BABYLON.StandardMaterial("skyboxMaterial", scene);
-            sMaterial.backFaceCulling = false;
-            sMaterial.reflectionTexture = new BABYLON.CubeTexture("img/skybox", scene);
-            sMaterial.reflectionTexture.coordinatesMode = BABYLON.Texture.SKYBOX_MODE;
-            sMaterial.diffuseColor = new BABYLON.Color3(0, 0, 0);
-            sMaterial.specularColor = new BABYLON.Color3(0, 0, 0);
-
-            // Création d'un cube avec la material adaptée
-            var skybox = BABYLON.Mesh.CreateBox("skybox", 250, scene);
-            skybox.material = sMaterial;
-            skybox.infiniteDistance = true;
-            
-            
-
-            return scene;
-        
-        };
+        return scene;
+    
+    };
 
 //*****************************Creation et gestion de SPHERE*******************************************
-        function Sphere(){
-            this.nom = document.getElementById('name').value;
-            this.sphere = BABYLON.Mesh.CreateSphere(this.nom, 32, 1, scene);
-            var colorMat = new BABYLON.StandardMaterial("color", scene);
-            colorMat.emissiveColor = new BABYLON.Color3(R/255,G/255,B/255);
-            this.sphere.material = colorMat;
-            console.log(R, G, B);
-        }
+    function Sphere(){
+        this.nom = document.getElementById('name').value;
+        this.sphere = BABYLON.Mesh.CreateSphere(this.nom, 32, 1, scene);
+        var colorMat = new BABYLON.StandardMaterial("color", scene);
+        colorMat.emissiveColor = new BABYLON.Color3(R/255,G/255,B/255);
+        this.sphere.material = colorMat;
+        console.log(R, G, B);
+    }
 
-        var btn_sphere = document.getElementById('sphere');
+    var btn_sphere = document.getElementById('sphere');
 
-        //Convertisseur hexa en RGB*******************************************
-        var picker = document.getElementById('color'),
-            c, R, G , B;
-        function hexToR(h) {return parseInt(h.substring(0,2),16)}
-        function hexToG(h) {return parseInt(h.substring(2,4),16)}
-        function hexToB(h) {return parseInt(h.substring(4,6),16)}
-        function cutHex(h) {return (h.charAt(0)=="#") ? h.substring(1,7):h}
-        picker.onchange = function() {
-            c = cutHex(this.value);
-            R = hexToR(c);
-            G = hexToG(c);
-            B = hexToB(c);
+    //Convertisseur hexa en RGB*******************************************
+    var picker = document.getElementById('color'),
+        c, R, G , B;
+    function hexToR(h) {return parseInt(h.substring(0,2),16)}
+    function hexToG(h) {return parseInt(h.substring(2,4),16)}
+    function hexToB(h) {return parseInt(h.substring(4,6),16)}
+    function cutHex(h) {return (h.charAt(0)=="#") ? h.substring(1,7):h}
+    picker.onchange = function() {
+        c = cutHex(this.value);
+        R = hexToR(c);
+        G = hexToG(c);
+        B = hexToB(c);
+    };
+    picker.onchange();
+    //Fin convertisseur hexa en RGB****************************************
+    
+    btn_sphere.onclick = function() {
+        s = new Sphere();
+        var button = document.createElement("button");
+        button.innerHTML= s.nom;
+        button.classList.add("nav-justified");
+        btn_sphere.parentNode.insertBefore(button,document.getElementById('name'));
         };
-        picker.onchange();
-        //Fin convertisseur hexa en RGB****************************************
-        
-        btn_sphere.onclick = function() {
-            s = new Sphere();
-            var button = document.createElement("button");
-            button.innerHTML= s.nom;
-            button.classList.add("nav-justified");
-            btn_sphere.parentNode.insertBefore(button,document.getElementById('name'));
-            };
 
-        var positiony = document.getElementById('posy');
+    var positiony = document.getElementById('posy');
 
-        positiony.onchange = function() {
-            s.sphere.position.y = positiony.value;
-            };
+    positiony.onchange = function() {
+        s.sphere.position.y = positiony.value;
+        };
 
-        var positionx = document.getElementById('posx');
+    var positionx = document.getElementById('posx');
 
-        positionx.onchange = function() {
-            s.sphere.position.x = positionx.value;
-            };
+    positionx.onchange = function() {
+        s.sphere.position.x = positionx.value;
+        };
 
-        var positionz = document.getElementById('posz');
+    var positionz = document.getElementById('posz');
 
-        positionz.onchange = function() {
-            s.sphere.position.z = positionz.value;
-            };
+    positionz.onchange = function() {
+        s.sphere.position.z = positionz.value;
+        };
 
-        var taillex = document.getElementById('taillex');
+    var taillex = document.getElementById('taillex');
 
-        taillex.onchange = function() {
-            s.sphere.scaling.x = taillex.value;
-            if (document.getElementById('check').checked)
-            {
-                s.sphere.scaling.z = s.sphere.scaling.x;
-                s.sphere.scaling.y = s.sphere.scaling.x; 
-                tailley.value = s.sphere.scaling.x; 
-                taillez.value = s.sphere.scaling.x;
-            }
-            };
+    taillex.onchange = function() {
+        s.sphere.scaling.x = taillex.value;
+        if (document.getElementById('check').checked)
+        {
+            s.sphere.scaling.z = s.sphere.scaling.x;
+            s.sphere.scaling.y = s.sphere.scaling.x; 
+            tailley.value = s.sphere.scaling.x; 
+            taillez.value = s.sphere.scaling.x;
+        }
+        };
 
-        var tailley = document.getElementById('tailley');
+    var tailley = document.getElementById('tailley');
 
-        tailley.onchange = function() {
-            s.sphere.scaling.y = tailley.value;
-            if (document.getElementById('check').checked)
-            {
-                s.sphere.scaling.z = s.sphere.scaling.x;
-                s.sphere.scaling.y = s.sphere.scaling.x; 
-                tailley.value = s.sphere.scaling.x; 
-                taillez.value = s.sphere.scaling.x;
-            }
-            };
+    tailley.onchange = function() {
+        s.sphere.scaling.y = tailley.value;
+        if (document.getElementById('check').checked)
+        {
+            s.sphere.scaling.z = s.sphere.scaling.x;
+            s.sphere.scaling.y = s.sphere.scaling.x; 
+            tailley.value = s.sphere.scaling.x; 
+            taillez.value = s.sphere.scaling.x;
+        }
+        };
 
-        var taillez = document.getElementById('taillez');
+    var taillez = document.getElementById('taillez');
 
-        taillez.onchange = function() {
-            s.sphere.scaling.z = taillez.value;
-            if (document.getElementById('check').checked)
-            {
-                s.sphere.scaling.z = s.sphere.scaling.x;
-                s.sphere.scaling.y = s.sphere.scaling.x; 
-                tailley.value = s.sphere.scaling.x; 
-                taillez.value = s.sphere.scaling.x;
-            }
-            };
+    taillez.onchange = function() {
+        s.sphere.scaling.z = taillez.value;
+        if (document.getElementById('check').checked)
+        {
+            s.sphere.scaling.z = s.sphere.scaling.x;
+            s.sphere.scaling.y = s.sphere.scaling.x; 
+            tailley.value = s.sphere.scaling.x; 
+            taillez.value = s.sphere.scaling.x;
+        }
+        };
 
-        var name = document.getElementById('name');
+    var name = document.getElementById('name');
 
-        name.onchange = function() {
-            s.sphere.name = name.value;
-            };
+    name.onchange = function() {
+        s.sphere.name = name.value;
+    };
 
 //*****************************Fin Creation et gestion de SPHERE*******************************************
-        document.getElementById('camReset').onclick = function() {
-            console.log("click");
-            scene.activeCamera.position = new BABYLON.Vector3(0, 0, 0);
-            };
+   
+    document.getElementById('camReset').onclick = function() {
+        console.log("click");
+        scene.activeCamera.position = new BABYLON.Vector3(0, 0, 0);
+    };
 
-        var scene = createScene();
+    var scene = createScene();
 
-        engine.runRenderLoop(function () {
-            scene.render();
-            fpsLabel.innerHTML = engine.getFps().toFixed() + " fps";            
-            camPosTxt.innerHTML = 'X:' + scene.activeCamera.position.x.toFixed(2) + '<br>Y:' + scene.activeCamera.position.y.toFixed(2) + "<br>Z:" + scene.activeCamera.position.z.toFixed(2);});
-        
-        // Resize
-        window.addEventListener("resize", function () {
-            engine.resize();
-        });
+    engine.runRenderLoop(function () {
+        scene.render();
+        fpsLabel.innerHTML = engine.getFps().toFixed() + " fps";            
+        camPosTxt.innerHTML = 'X:' + scene.activeCamera.position.x.toFixed(2) + '&nbsp Y:' + scene.activeCamera.position.y.toFixed(2) + "&nbsp Z:" + scene.activeCamera.position.z.toFixed(2);
+    });
+    
+    // Resize
+    window.addEventListener("resize", function () {
+        engine.resize();
+    });
 
-    })
+})
 
     CreateLine = function (name, width, scene) {
         var line = BABYLON.Mesh.CreateLines(name, [
@@ -193,11 +201,12 @@ $(document).ready(function(){
         return line;
     }
 
+//****************************************Pyramide**************************************************
     BABYLON.Mesh.CreatePyramid4 = function (name, baseSize, height, scene, updatable) {
       var pyramid = new BABYLON.Mesh(name, scene);
 
     // Adding faces
-      var positions = [
+    var positions = [
         // Front face
         0,  height/2,  0,
         baseSize/2, -height/2, baseSize/2,
@@ -223,9 +232,9 @@ $(document).ready(function(){
         baseSize/2, -height/2, baseSize/2,
         baseSize/2, -height/2, -baseSize/2,
         -baseSize/2, -height/2, -baseSize/2
-      ];
+    ];
 
-      var normals = [
+    var normals = [
         height, baseSize/2, 0,
         height, baseSize/2, 0,
         height, baseSize/2, 0,
@@ -246,12 +255,12 @@ $(document).ready(function(){
         0, -1, 0,
         0, -1, 0,
         0, -1, 0
-      ];
+    ];
 
-      var indices = [];
-      var uvs = [];
-      var i = 0;
-      while (i < 12) {
+    var indices = [];
+    var uvs = [];
+    var i = 0;
+    while (i < 12) {
         indices.push(i+0);
         uvs.push(1.0, 1.0);
         indices.push(i+1);
@@ -259,26 +268,26 @@ $(document).ready(function(){
         indices.push(i+2);
         uvs.push(0.0, 0.0);
         i = i+3;
-      }
-
-      indices.push(12);
-      indices.push(13);
-      indices.push(14);
-
-      indices.push(12);
-      indices.push(14);
-      indices.push(15);
-
-      uvs.push(1.0, 1.0);
-      uvs.push(0.0, 1.0);
-      uvs.push(0.0, 0.0);
-      uvs.push(1.0, 0.0);
-
-      pyramid.setVerticesData(BABYLON.VertexBuffer.PositionKind, positions, updatable);
-      pyramid.setVerticesData(BABYLON.VertexBuffer.NormalKind, normals, updatable);
-      pyramid.setVerticesData(BABYLON.VertexBuffer.UVKind, uvs, updatable);
-      pyramid.setIndices(indices);
-
-      return pyramid;
-     
     }
+
+    indices.push(12);
+    indices.push(13);
+    indices.push(14);
+
+    indices.push(12);
+    indices.push(14);
+    indices.push(15);
+
+    uvs.push(1.0, 1.0);
+    uvs.push(0.0, 1.0);
+    uvs.push(0.0, 0.0);
+    uvs.push(1.0, 0.0);
+
+    pyramid.setVerticesData(BABYLON.VertexBuffer.PositionKind, positions, updatable);
+    pyramid.setVerticesData(BABYLON.VertexBuffer.NormalKind, normals, updatable);
+    pyramid.setVerticesData(BABYLON.VertexBuffer.UVKind, uvs, updatable);
+    pyramid.setIndices(indices);
+
+    return pyramid;     
+    }
+//****************************************Fin Pyramide***********************************************

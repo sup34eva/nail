@@ -8,7 +8,8 @@
         <script src="./js/babylon/cannon.js"></script>
         <script src="./js/babylon/Oimo.js"></script>
         <script src="./js/babylon/babylon.2.0.js"></script>
-    
+        <!--Favicon-->
+        <link rel="icon" href="img/favicon.ico">
         <!--css-->
         <link rel="stylesheet" href="./bootstrap-3.3.2-dist/css/bootstrap.min.css">
         <link rel="stylesheet" href="./css/style.css">
@@ -57,18 +58,85 @@
         <section class="col-md-10">
             <canvas id="renderCanvas"></canvas>
         </section>
-        
         <aside class="col-md-2">
-            <button class="nav-justified" id="sphere">Ajouter sphere</button>
-            <input type="text" value="Objet" id="name" /><p>Nom</p>
-            <input type="checkbox" id="check"><p>X = Y = Z</p>
-            <input type="number" placeholder="1" id="taillex" /><p>Taille x</p>
-            <input type="number" placeholder="1" id="tailley" /><p>Taille y</p>
-            <input type="number" placeholder="1" id="taillez" /><p>Taille z</p>
-            <input type="number" placeholder="0" id="posy" /><p>Pos Y</p>
-            <input type="number" placeholder="0" id="posx" /><p>Pos X</p>
-            <input type="number" placeholder="0" id="posz" /><p>Pos Z</p>
-            <input type="color" id="color" /><p>Couleur</p>
+          <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
+            <div class="panel panel-default">
+              <button type="button" class="nav-justified btn btn-primary collapsed" data-toggle="collapse" data-target="#collapseOne">
+                Sphere            
+              </button>
+              <div id="collapseOne" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOne">
+                <div class="panel-body">
+                  <button class="btn btn-info nav-justified" id="sphere">Ajouter sphere</button>
+                  <input type="text" value="Objet" id="name" /><p>Nom</p>
+                  <input type="checkbox" id="check"><p>X = Y = Z</p>
+                  <input type="number" placeholder="1" id="taillex" /><p>Taille x</p>
+                  <input type="number" placeholder="1" id="tailley" /><p>Taille y</p>
+                  <input type="number" placeholder="1" id="taillez" /><p>Taille z</p>
+                  <input type="number" placeholder="0" id="posy" /><p>Pos Y</p>
+                  <input type="number" placeholder="0" id="posx" /><p>Pos X</p>
+                  <input type="number" placeholder="0" id="posz" /><p>Pos Z</p>
+                  <input type="color" id="color" /><p>Couleur</p>
+                </div>
+              </div>
+            </div>
+            <div class="panel panel-default">
+              <button type="button" class="nav-justified btn btn-primary collapsed" data-toggle="collapse" data-target="#collapseTwo">
+                Cube            
+              </button>
+              <div id="collapseTwo" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOne">
+                <div class="panel-body">
+                  <button class="btn btn-info nav-justified" id="sphere">Ajouter Cube</button>
+                  <input type="text" value="Objet" id="name" /><p>Nom</p>
+                  <input type="checkbox" id="check"><p>X = Y = Z</p>
+                  <input type="number" placeholder="1" id="taillex" /><p>Taille x</p>
+                  <input type="number" placeholder="1" id="tailley" /><p>Taille y</p>
+                  <input type="number" placeholder="1" id="taillez" /><p>Taille z</p>
+                  <input type="number" placeholder="0" id="posy" /><p>Pos Y</p>
+                  <input type="number" placeholder="0" id="posx" /><p>Pos X</p>
+                  <input type="number" placeholder="0" id="posz" /><p>Pos Z</p>
+                  <input type="color" id="color" /><p>Couleur</p>
+                </div>
+              </div>
+            </div>
+            <div class="panel panel-default">
+              <button type="button" class="nav-justified btn btn-primary collapsed" data-toggle="collapse" data-target="#collapseThree">
+                Pyramide            
+              </button>
+              <div id="collapseThree" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOne">
+                <div class="panel-body">
+                  <button class="btn btn-info nav-justified" id="sphere">Ajouter Pyramide</button>
+                  <input type="text" value="Objet" id="name" /><p>Nom</p>
+                  <input type="checkbox" id="check"><p>X = Y = Z</p>
+                  <input type="number" placeholder="1" id="taillex" /><p>Taille x</p>
+                  <input type="number" placeholder="1" id="tailley" /><p>Taille y</p>
+                  <input type="number" placeholder="1" id="taillez" /><p>Taille z</p>
+                  <input type="number" placeholder="0" id="posy" /><p>Pos Y</p>
+                  <input type="number" placeholder="0" id="posx" /><p>Pos X</p>
+                  <input type="number" placeholder="0" id="posz" /><p>Pos Z</p>
+                  <input type="color" id="color" /><p>Couleur</p>
+                </div>
+              </div>
+            </div>
+            <div class="panel panel-default">
+              <button type="button" class="nav-justified btn btn-primary collapsed" data-toggle="collapse" data-target="#collapseFour">
+                Cylindre            
+              </button>
+              <div id="collapseFour" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOne">
+                <div class="panel-body">
+                  <button class="btn btn-info nav-justified" id="sphere">Ajouter Cylindre</button>
+                  <input type="text" value="Objet" id="name" /><p>Nom</p>
+                  <input type="checkbox" id="check"><p>X = Y = Z</p>
+                  <input type="number" placeholder="1" id="taillex" /><p>Taille x</p>
+                  <input type="number" placeholder="1" id="tailley" /><p>Taille y</p>
+                  <input type="number" placeholder="1" id="taillez" /><p>Taille z</p>
+                  <input type="number" placeholder="0" id="posy" /><p>Pos Y</p>
+                  <input type="number" placeholder="0" id="posx" /><p>Pos X</p>
+                  <input type="number" placeholder="0" id="posz" /><p>Pos Z</p>
+                  <input type="color" id="color" /><p>Couleur</p>
+                </div>
+              </div>
+            </div>
+          </div>    
         </aside>
         <footer class="col-md-12"> 
            <div id="cameraPos">
