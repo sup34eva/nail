@@ -152,7 +152,7 @@ $(document).ready(function() {
         console.log(meshTab);
         
         /*var button = document.createElement("button");
-        button.innerHTML= s.nom;
+        button.innerHTML= meshTab[meshCount].nom;
         ["btn", "btn-success", "nav-justified"].forEach(button.classList.add.bind(button.classList));
         btn_add.parentNode.appendChild(button,document.getElementById('btn_add'));
         };*/
@@ -175,18 +175,7 @@ $(document).ready(function() {
             meshTab[meshCount].position.z = positionz.value;
         };
 
-        var taillex = document.getElementById('taillex');
-
         var check = document.getElementById('check');
-
-        taillex.onchange = function() {
-            m.mesh.scaling.x = taillex.value;
-            if (check.checked)
-            {
-                meshTab[meshCount].scaling.y = meshTab[meshCount].scaling.x; 
-                meshTab[meshCount].scaling.z = meshTab[meshCount].scaling.x;
-            }
-        };
 
         check.onclick = function() {
             if ($(".hiden").css("display") == "none")
@@ -199,6 +188,16 @@ $(document).ready(function() {
             }
         };
 
+        var taillex = document.getElementById('taillex');
+
+        taillex.onchange = function() {
+            meshTab[meshCount].scaling.x = taillex.value;
+            if (check.checked)
+            {
+                meshTab[meshCount].scaling.y = meshTab[meshCount].scaling.x; 
+                meshTab[meshCount].scaling.z = meshTab[meshCount].scaling.x;
+            }
+        };
 
         var tailley = document.getElementById('tailley');
 
