@@ -115,13 +115,11 @@
         }
 
         mesh.type = type;
-        mesh.group = null;
 
         var colorMat = new BABYLON.StandardMaterial("color", scene);
-        colorMat.emissiveColor = new BABYLON.Color3(R/255,G/255,B/255);
+        colorMat.emissiveColor = new BABYLON.Color3(0.9, 0.9, 0.9);
+        colorMat.diffuseColor = new BABYLON.Color3(R/255,G/255,B/255);
         mesh.material = colorMat;
-
-        mesh.link = null;
         return(mesh);
     }
 
@@ -366,3 +364,46 @@
     return pyramid;     
     }
 //****************************************Fin Pyramide***********************************************
+//****************************************Save***********************************************
+    var save = document.getElementById("save");
+    save.onclick = function()
+    {
+        var meshs = meshTab.map(function(mesh)
+        {
+            return ["type", "position", "scaling", "material.diffuseColor", "name"].map(function(key)
+            {
+                var current = mesh;
+                return key.split(".").reduce(function(current, k)
+                {
+                    return current[k];
+                }, mesh);
+            });
+        });
+
+        var textToWrite = JSON.stringify(meshs);
+
+        var textFileAsBlob = new Blob([textToWrite], {type:'text/plain'});
+        var fileNameToSaveAs = "world.nail";
+
+        var downloadLink = document.createElement("a");
+        downloadLink.download = fileNameToSaveAs;
+        downloadLink.innerHTML = "Download File";
+        if (window.URL != null)
+        {
+            // Chrome allows the link to be clicked
+            // without actually adding it to the DOM.
+            downloadLink.href = window.URL.createObjectURL(textFileAsBlob);
+        }
+        else
+        {
+            // Firefox requires the link to be added to the DOM
+            // before it can be clicked.
+            downloadLink.href = window.URL.createObjectURL(textFileAsBlob);
+            downloadLink.onclick = destroyClickedElement;
+            downloadLink.style.display = "none";
+            document.body.appendChild(downloadLink);
+        }
+
+        downloadLink.click();
+    }
+//****************************************Fin Save***********************************************
