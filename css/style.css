@@ -89,6 +89,7 @@ p
     }
 }
 
+@media screen and (max-width: 1400px){
     .collapse.in {
         overflow : auto;
         height: 450px;
