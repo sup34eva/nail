@@ -170,8 +170,8 @@
 
     nom.onchange = function(){
         document.getElementById(index).innerHTML = nom.value;
+        meshTab[index].name = nom.value;
     };
-
 
     var positiony = document.getElementById('posy');
 
@@ -227,11 +227,24 @@
         meshTab[index].scaling.z = taillez.value;
     };
 
-    var name = document.getElementById('name');
+    var rotx = document.getElementById('rotx');
 
-    name.onchange = function() {
-        meshTab[index].name = name.value;
+    rotx.onchange = function() {
+        meshTab[index].rotation.x = rotx.value/100;
     };
+
+    var roty = document.getElementById('roty');
+
+    roty.onchange = function() {
+        meshTab[index].rotation.y = roty.value/100;
+    };
+       
+    var rotz = document.getElementById('rotz');
+
+    rotz.onchange = function() {
+        meshTab[index].rotation.z = rotz.value/100;
+    };
+
 //*****************************Fin Creation et gestion de MESH*******************************************
 
     document.getElementById('camReset').onclick = function() {
