@@ -115,6 +115,7 @@
         }
 
         mesh.type = type;
+        mesh.group = null;
 
         var colorMat = new BABYLON.StandardMaterial("color", scene);
         colorMat.emissiveColor = new BABYLON.Color3(R/255,G/255,B/255);
