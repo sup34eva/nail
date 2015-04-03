@@ -1,4 +1,3 @@
-$(document).ready(function() {
     var canvas = document.getElementById("renderCanvas");
     var engine = new BABYLON.Engine(canvas, true);
     var fpsLabel = document.getElementById("fpsLabel");
@@ -48,14 +47,15 @@ $(document).ready(function() {
         lightSphere.material = new BABYLON.StandardMaterial("light", scene);
         lightSphere.material.emissiveColor = new BABYLON.Color3(1, 1, 0);
 
-        // sphere representing the light
+        /*// sphere representing the light
         var sphere = BABYLON.Mesh.CreateSphere("toto", 50, 5, scene);
         sphere.position = new BABYLON.Vector3(5, -2, 10);
         sphere.checkCollisions = true;
+
         // Shadows
         var shadowGenerator = new BABYLON.ShadowGenerator(4096, light);
-        shadowGenerator.getShadowMap().renderList.push(sphere);
-        shadowGenerator.usePoissonSampling = true;
+        /*shadowGenerator.getShadowMap().renderList.push(sphere);
+        shadowGenerator.usePoissonSampling = true;*/
     
         // Our built-in 'ground' shape. Params: name, width, depth, subdivs, scene
         var ground = BABYLON.Mesh.CreateGround("ground1", 250, 250, 2, scene);
@@ -90,46 +90,45 @@ $(document).ready(function() {
 
     function Mesh()
     {
-        nom = document.getElementById('name').value;
-
         var type = document.getElementById("mesh-type").value;
         switch(type)
         {
             case "box":
-                mesh = BABYLON.Mesh.CreateBox(nom, 2, scene);
+                mesh = BABYLON.Mesh.CreateBox(nom.value, 2, scene);
                 break;
 
             case "sphere":
-                mesh = BABYLON.Mesh.CreateSphere(nom, 50, 2, scene);
+                mesh = BABYLON.Mesh.CreateSphere(nom.value, 50, 2, scene);
                 break;
 
             case "cylinder":
-                mesh = BABYLON.Mesh.CreateCylinder(nom, 2, 2, 2, 50, 1, scene, false);
+                mesh = BABYLON.Mesh.CreateCylinder(nom.value, 2, 2, 2, 50, 1, scene, false);
                 break;
 
             case "pyramid":
-                mesh = BABYLON.Mesh.CreatePyramid4(nom , 2, 2, scene, false);
+                mesh = BABYLON.Mesh.CreatePyramid4(nom.value , 2, 2, scene, false);
                 break;
 
           default:
-                mesh = BABYLON.Mesh.CreateSphere(nom, 50, 2, scene);
+                mesh = BABYLON.Mesh.CreateSphere(nom.value, 50, 2, scene);
                 break;
         }
+
+        mesh.type = type;
 
         var colorMat = new BABYLON.StandardMaterial("color", scene);
         colorMat.emissiveColor = new BABYLON.Color3(R/255,G/255,B/255);
         mesh.material = colorMat;
-        console.log(R, G, B);
 
         mesh.link = null;
         return(mesh);
     }
 
-    var btn_add = document.getElementById('btn_add');
+    
 
     //Convertisseur hexa en RGB*******************************************
     var picker = document.getElementById('color'),
-        c, R, G , B;
+        c, R = 229.5, G = 229.5, B = 229.5;
     function hexToR(h) {return parseInt(h.substring(0,2),16)}
     function hexToG(h) {return parseInt(h.substring(2,4),16)}
     function hexToB(h) {return parseInt(h.substring(4,6),16)}
@@ -139,83 +138,99 @@ $(document).ready(function() {
         R = hexToR(c);
         G = hexToG(c);
         B = hexToB(c);
+        meshTab[index].material.emissiveColor.r = R/255;
+        meshTab[index].material.emissiveColor.g = G/255;
+        meshTab[index].material.emissiveColor.b = B/255;
     };
-    picker.onchange();
     //Fin convertisseur hexa en RGB****************************************
     
+    var meshTab = []; //Tableau d'objets
+    var index = -1;
+    function indexation(x){ //En fonction du bouton cliqué donne l'index du tableau
+        index = x;
+    };
+
+    var btn_add = document.getElementById('btn_add');
     btn_add.onclick = function()
     {
-        meshCount ++;
-        var meshTab = [];
-
-        meshTab[meshCount] = new Mesh();
-        console.log(meshTab);
+        meshCount ++; //index tu tableau d'objets
+        index ++;
         
-        /*var button = document.createElement("button");
-        button.innerHTML= meshTab[meshCount].nom;
-        ["btn", "btn-success", "nav-justified"].forEach(button.classList.add.bind(button.classList));
-        btn_add.parentNode.appendChild(button,document.getElementById('btn_add'));
-        };*/
+        meshTab[meshCount] = new Mesh(); //Instanciation d'un objet 
+        
+        var button = document.createElement("button");// Cree un bouton 
+        button.innerHTML= document.getElementById('name').value; // Met un titre au bouton 
+        button.setAttribute("id", meshCount); // L'id sera l'index du tableau 
+        button.setAttribute("onClick","indexation(parseInt(this.id))") ; // Donne la function qui gere quel bouton est cliqué 
+        ["btn", "btn-success", "nav-justified"].forEach(button.classList.add.bind(button.classList)); // Ajoute des class
+        btn_add.parentNode.appendChild(button,document.getElementById('btn_add')); // Ajoute le bouton dans la page  
+    };  
 
-        var positiony = document.getElementById('posy');
+    var nom = document.getElementById('name');
 
-        positiony.onchange = function() {
-            meshTab[meshCount].position.y = positiony.value;
-        };
+    nom.onchange = function(){
+        document.getElementById(index).innerHTML = nom.value;
+    };
 
-        var positionx = document.getElementById('posx');
 
-        positionx.onchange = function() {
-            meshTab[meshCount].position.x = positionx.value;
-        };
+    var positiony = document.getElementById('posy');
 
-        var positionz = document.getElementById('posz');
+    positiony.onchange = function() {
+        meshTab[index].position.y = positiony.value;
+    };
 
-        positionz.onchange = function() {
-            meshTab[meshCount].position.z = positionz.value;
-        };
+    var positionx = document.getElementById('posx');
 
-        var check = document.getElementById('check');
+    positionx.onchange = function() {
+        meshTab[index].position.x = positionx.value;
+    };
 
-        check.onclick = function() {
-            if ($(".hiden").css("display") == "none")
-            {
-                $(".hiden").css("display", "block");
-            }
-            else
-            {    
-                $(".hiden").css("display", "none");
-            }
-        };
+    var positionz = document.getElementById('posz');
 
-        var taillex = document.getElementById('taillex');
+    positionz.onchange = function() {
+        meshTab[index].position.z = positionz.value;
+    };
 
-        taillex.onchange = function() {
-            meshTab[meshCount].scaling.x = taillex.value;
-            if (check.checked)
-            {
-                meshTab[meshCount].scaling.y = meshTab[meshCount].scaling.x; 
-                meshTab[meshCount].scaling.z = meshTab[meshCount].scaling.x;
-            }
-        };
+    var check = document.getElementById('check');
 
-        var tailley = document.getElementById('tailley');
+    check.onclick = function() {
+        if ($(".hiden").css("display") == "none")
+        {
+            $(".hiden").css("display", "block");
+        }
+        else
+        {    
+            $(".hiden").css("display", "none");
+        }
+    };
 
-        tailley.onchange = function() {
-            meshTab[meshCount].scaling.y = tailley.value;
-        };
-           
-        var taillez = document.getElementById('taillez');
+    var taillex = document.getElementById('taillex');
 
-        taillez.onchange = function() {
-            meshTab[meshCount].scaling.z = taillez.value;
-        };
+    taillex.onchange = function() {
+        meshTab[index].scaling.x = taillex.value;
+        if (check.checked)
+        {
+            meshTab[index].scaling.y = taillex.value; 
+            meshTab[index].scaling.z = taillex.value;
+        }
+    };
 
-        var name = document.getElementById('name');
+    var tailley = document.getElementById('tailley');
 
-        name.onchange = function() {
-            meshTab[meshCount].name = name.value;
-        };
+    tailley.onchange = function() {
+        meshTab[index].scaling.y = tailley.value;
+    };
+       
+    var taillez = document.getElementById('taillez');
+
+    taillez.onchange = function() {
+        meshTab[index].scaling.z = taillez.value;
+    };
+
+    var name = document.getElementById('name');
+
+    name.onchange = function() {
+        meshTab[index].name = name.value;
     };
 //*****************************Fin Creation et gestion de MESH*******************************************
 
@@ -237,7 +252,6 @@ $(document).ready(function() {
         engine.resize();
     });
 
-})
 
     CreateLine = function (name, width, scene) {
         var line = BABYLON.Mesh.CreateLines(name, [
