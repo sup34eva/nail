@@ -144,7 +144,7 @@
     //Fin convertisseur hexa en RGB****************************************
     
     var meshTab = []; //Tableau d'objets
-    var index = -1;
+    var index = 0;
     function indexation(x){ //En fonction du bouton cliqué donne l'index du tableau
         index = x;
     };
@@ -153,7 +153,7 @@
     btn_add.onclick = function()
     {
         meshCount ++; //index tu tableau d'objets
-        index ++;
+        index=meshCount;
         
         meshTab[meshCount] = new Mesh(); //Instanciation d'un objet 
         
@@ -162,8 +162,14 @@
         button.setAttribute("id", meshCount); // L'id sera l'index du tableau 
         button.setAttribute("onClick","indexation(parseInt(this.id))") ; // Donne la function qui gere quel bouton est cliqué 
         ["btn", "btn-success", "nav-justified"].forEach(button.classList.add.bind(button.classList)); // Ajoute des class
-        btn_add.parentNode.appendChild(button,document.getElementById('btn_add')); // Ajoute le bouton dans la page  
+        document.getElementById("objets").appendChild(button); // Ajoute le bouton dans la page  
     };  
+
+    var btn_sup = document.getElementById('btn_sup');
+        for(i=0; i<nodes.length; i++) {
+            }
+        }        
+    };
 
     var nom = document.getElementById('name');
 

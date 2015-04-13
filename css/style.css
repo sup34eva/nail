@@ -117,3 +117,8 @@ footer.col-md-12{
 input[type="number"]{
     width: 98px;
 }
+
+.btn-danger{
+    margin-top: -4%;
+    margin-bottom: 3%;
+}
