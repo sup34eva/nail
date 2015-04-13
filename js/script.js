@@ -166,7 +166,14 @@
     };  
 
     var btn_sup = document.getElementById('btn_sup');
+    btn_sup.onclick = function(){ //Fonction supp
+        meshTab[index].dispose(); //Supprime l'élement dans le canvas
+        document.getElementById(index).remove(); //Supprime le boutton
+        meshTab.splice(index,1); //Supprime la case du tableau 
+        var nodes = document.getElementById("objets").childNodes; 
         for(i=0; i<nodes.length; i++) {
+            if(nodes[i].id>index){ //Pour chaque élément ayant un id > a celui supprimer  
+                nodes[i].setAttribute("id", nodes[i].id-1); // Leur id décremente de 1
             }
         }        
     };
