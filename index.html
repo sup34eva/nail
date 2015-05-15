@@ -18,7 +18,7 @@
                   Fichier <span class="caret"></span>
                 </a>
                 <ul class="dropdown-menu" role="menu">
-                  <li><a href="#">Nouveau</a></li>
+                  <li><a href="/">Nouveau</a></li>
                   <li><a href="#">Ouvrir</a></li>
                   <li><a id="save">Enregistrer</a></li>
                   <li><a href="#">Enregistrer sous</a></li>
@@ -72,7 +72,8 @@
                   </select>
                   <button class="btn btn-info nav-justified" id="btn_add">Ajouter</button>
                   <button class="nav-justified btn btn-danger" id="btn_sup">Supprimer</button>
-                  <div id="objets"></div>
+                  <button class="btn btn-violet nav-justified" id="btn_grp">Grouper</button>
+                  <div id="objets" data-toggle="buttons"></div>
                 </div>
               </div>
             </div>
@@ -91,7 +92,7 @@
             <li role="presentation"><input type="number" value="0.0" id="roty" /><p>Rotation Y</p></li>
             <li role="presentation"><input type="number" value="0.0" id="rotx" /><p>Rotation X</p></li>
             <li role="presentation"><input type="number" value="0.0" id="rotz" /><p>Rotation Z</p></li>
-            <li role="presentation"><input type="color" id="color" /><p>Couleur</p>
+            <li role="presentation"><input type="color" id="color" value="#eeeeee"/><p>Couleur</p>
           </ul>
         </footer>
     </div>

@@ -120,5 +120,31 @@ input[type="number"]{
 
 .btn-danger{
     margin-top: -4%;
+}
+
+.btn-violet
+{
+    color: white;
+    background-color: #B733AF;
+    margin-top: 1.5%;
     margin-bottom: 3%;
+}
+
+.btn-violet:hover,.btn-violet:active
+{
+    outline: none;
+    border-color: #8E2288;
+    color: white;
+    background-color: #8E2288;
+}
+
+.btn-violet:focus{
+    outline: none;
+    border-color: #641B60;
+    color: white;
+    background-color: #641B60;
+}
+
+.btn-group{
+    width: 100%;
 }

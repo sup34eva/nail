@@ -141,12 +141,24 @@
         meshTab[index].material.emissiveColor.g = G/255;
         meshTab[index].material.emissiveColor.b = B/255;
     };
+
     //Fin convertisseur hexa en RGB****************************************
     
     var meshTab = []; //Tableau d'objets
     var index = 0;
     function indexation(x){ //En fonction du bouton cliqué donne l'index du tableau
         index = x;
+        positionx.value = meshTab[index].position.x;
+        positiony.value = meshTab[index].position.y;
+        positionz.value = meshTab[index].position.z;
+        nom.value = meshTab[index].name ;
+        taillex.value = meshTab[index].scaling.x;
+        tailley.value = meshTab[index].scaling.y;
+        taillez.value = meshTab[index].scaling.z;
+        rotx.value = meshTab[index].rotation.x*100;
+        roty.value = meshTab[index].rotation.y*100;
+        rotz.value = meshTab[index].rotation.z*100;
+        picker.value = "#" + Math.round(meshTab[index].material.emissiveColor.r*255).toString(16) + Math.round(meshTab[index].material.emissiveColor.g*255).toString(16) + Math.round(meshTab[index].material.emissiveColor.b*255).toString(16);
     };
 
     var btn_add = document.getElementById('btn_add');
@@ -157,25 +169,45 @@
         
         meshTab[meshCount] = new Mesh(); //Instanciation d'un objet 
         
-        var button = document.createElement("button");// Cree un bouton 
-        button.innerHTML= document.getElementById('name').value; // Met un titre au bouton 
+        var button = document.createElement("label");// Cree un bouton 
+        button.innerHTML= '<input type="radio">' + document.getElementById('name').value; // Met un titre au bouton 
         button.setAttribute("id", meshCount); // L'id sera l'index du tableau 
         button.setAttribute("onClick","indexation(parseInt(this.id))") ; // Donne la function qui gere quel bouton est cliqué 
-        ["btn", "btn-success", "nav-justified"].forEach(button.classList.add.bind(button.classList)); // Ajoute des class
-        document.getElementById("objets").appendChild(button); // Ajoute le bouton dans la page  
+        ["btn", "btn-success", "nav-justified"].forEach(function(e){button.classList.add(e)}); // Ajoute des class
+        document.getElementById("objets").appendChild(button); // Ajoute le bouton dans la page
+
+        positionx.value = 1;
+        positiony.value = 1;
+        positionz.value = 1;
+        taillex.value = 0;
+        tailley.value = 0;
+        taillez.value = 0;
+        rotx.value = 0.0;
+        roty.value = 0.0;
+        rotz.value = 0.0;
+        picker.value = "#FFFFFF"; 
     };  
 
     var btn_sup = document.getElementById('btn_sup');
     btn_sup.onclick = function(){ //Fonction supp
-        meshTab[index].dispose(); //Supprime l'élement dans le canvas
-        document.getElementById(index).remove(); //Supprime le boutton
-        meshTab.splice(index,1); //Supprime la case du tableau 
-        var nodes = document.getElementById("objets").childNodes; 
-        for(i=0; i<nodes.length; i++) {
-            if(nodes[i].id>index){ //Pour chaque élément ayant un id > a celui supprimer  
-                nodes[i].setAttribute("id", nodes[i].id-1); // Leur id décremente de 1
+        if (meshTab[index]){
+            meshTab[index].dispose(); //Supprime l'élement dans le canvas
+            document.getElementById(index).remove(); //Supprime le boutton
+            meshTab.splice(index,1); //Supprime la case du tableau 
+            var nodes = document.getElementById("objets").childNodes; 
+            for(i=0; i<nodes.length; i++) {
+                if(nodes[i].id>index){ //Pour chaque élément ayant un id > a celui supprimer  
+                    nodes[i].setAttribute("id", nodes[i].id-1); // Leur id décremente de 1
+                }
             }
-        }        
+        }
+           
+    };
+
+    var btn_grp = document.getElementById('btn_grp');
+
+    btn_grp.onclick = function(){ //Fonction groupe
+                 
     };
 
     var nom = document.getElementById('name');
