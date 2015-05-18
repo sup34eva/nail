@@ -73,6 +73,7 @@
                   <button class="btn btn-info nav-justified" id="btn_add">Ajouter</button>
                   <button class="nav-justified btn btn-danger" id="btn_sup">Supprimer</button>
                   <button class="btn btn-violet nav-justified" id="btn_grp">Grouper</button>
+                  <button class="btn btn-violet2 nav-justified" id="btn_ok">OK</button>
                   <div id="objets" data-toggle="buttons"></div>
                 </div>
               </div>
@@ -81,18 +82,22 @@
         </aside>
         <footer class="col-md-12"> 
           <ul class="nav nav-tabs espace">
-            <li role="presentation"><input type="text" value="Objet" id="name" /><p>Nom</p></li>
-            <li role="presentation"><input type="checkbox" id="check"><p>X = Y = Z</p></li>
-            <li role="presentation"><input type="number" value="1" id="taillex" /><p>Taille x</p></li>
-            <li role="presentation"><input type="number" value="1" id="tailley" class="hiden"/><p class="hiden">Taille y</p></li>
-            <li role="presentation"><input type="number" value="1" id="taillez" class="hiden"/><p class="hiden">Taille z</p></li>
-            <li role="presentation"><input type="number" value="0" id="posy" /><p>Pos Y</p></li>
-            <li role="presentation"><input type="number" value="0" id="posx" /><p>Pos X</p></li>
-            <li role="presentation"><input type="number" value="0" id="posz" /><p>Pos Z</p></li>
-            <li role="presentation"><input type="number" value="0.0" id="roty" /><p>Rotation Y</p></li>
-            <li role="presentation"><input type="number" value="0.0" id="rotx" /><p>Rotation X</p></li>
-            <li role="presentation"><input type="number" value="0.0" id="rotz" /><p>Rotation Z</p></li>
-            <li role="presentation"><input type="color" id="color" value="#eeeeee"/><p>Couleur</p>
+            <li role="presentation"><input type="text" value="Objet" id="name" class="ungrp"/><p class="ungrp">Nom</p></li>
+            <li role="presentation"><input type="checkbox" id="check" class="ungrp"><p class="ungrp">X = Y = Z</p></li>
+            <li role="presentation"><input type="number" value="1" id="taillex" class="ungrp"/><p class="ungrp">Taille x</p></li>
+            <li role="presentation"><input type="number" value="1" id="tailley" class="hiden ungrp"/><p class="hiden ungrp">Taille y</p></li>
+            <li role="presentation"><input type="number" value="1" id="taillez" class="hiden ungrp"/><p class="hiden ungrp">Taille z</p></li>
+            <li role="presentation"><input type="number" value="0" id="posy" class="ungrp"/><p class="ungrp">Pos Y</p></li>
+            <li role="presentation"><input type="number" value="0" id="posx" class="ungrp"/><p class="ungrp">Pos X</p></li>
+            <li role="presentation"><input type="number" value="0" id="posz" class="ungrp"/><p class="ungrp">Pos Z</p></li>
+            <li role="presentation"><input type="number" value="0.0" id="roty" class="ungrp"/><p class="ungrp">Rotation Y</p></li>
+            <li role="presentation"><input type="number" value="0.0" id="rotx" class="ungrp"/><p class="ungrp">Rotation X</p></li>
+            <li role="presentation"><input type="number" value="0.0" id="rotz" class="ungrp"/><p class="ungrp">Rotation Z</p></li>
+            <li role="presentation"><input type="color" id="color" value="#eeeeee" class="ungrp"/><p class="ungrp">Couleur</p>
+            <li role="presentation"><input type="text" value="Groupe" id="grp_name" class="grp"/><p class="grp">Nom du groupe</p></li>
+            <li role="presentation"><input type="number" value="0" id="grp_posy" class="grp"/><p class="grp">Pos Y</p></li>
+            <li role="presentation"><input type="number" value="0" id="grp_posx" class="grp"/><p class="grp">Pos X</p></li>
+            <li role="presentation"><input type="number" value="0" id="grp_posz" class="grp"/><p class="grp">Pos Z</p></li>
           </ul>
         </footer>
     </div>

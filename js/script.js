@@ -144,9 +144,11 @@
 
     //Fin convertisseur hexa en RGB****************************************
     
-    var meshTab = []; //Tableau d'objets
+    
     var index = 0;
     function indexation(x){ //En fonction du bouton cliqué donne l'index du tableau
+        $(".grp").css("display", "none");
+        $(".ungrp").css("display", "block");
         index = x;
         positionx.value = meshTab[index].position.x;
         positiony.value = meshTab[index].position.y;
@@ -161,6 +163,7 @@
         picker.value = "#" + Math.round(meshTab[index].material.emissiveColor.r*255).toString(16) + Math.round(meshTab[index].material.emissiveColor.g*255).toString(16) + Math.round(meshTab[index].material.emissiveColor.b*255).toString(16);
     };
 
+    var meshTab = []; //Tableau d'objets
     var btn_add = document.getElementById('btn_add');
     btn_add.onclick = function()
     {
@@ -188,55 +191,117 @@
         picker.value = "#FFFFFF"; 
     };  
 
+
     var btn_sup = document.getElementById('btn_sup');
     btn_sup.onclick = function(){ //Fonction supp
-        if (meshTab[index]){
-            meshTab[index].dispose(); //Supprime l'élement dans le canvas
-            document.getElementById(index).remove(); //Supprime le boutton
-            meshTab.splice(index,1); //Supprime la case du tableau 
-            var nodes = document.getElementById("objets").childNodes; 
-            for(i=0; i<nodes.length; i++) {
-                if(nodes[i].id>index){ //Pour chaque élément ayant un id > a celui supprimer  
-                    nodes[i].setAttribute("id", nodes[i].id-1); // Leur id décremente de 1
+        if (index>=0){
+            if (meshTab[index]){
+                meshTab[index].dispose(); //Supprime l'élement dans le canvas
+                document.getElementById(index).remove(); //Supprime le boutton
+                meshTab.splice(index,1); //Supprime la case du tableau 
+                var nodes = document.getElementById("objets").childNodes; 
+                for(i=0; i<nodes.length; i++) {
+                    if(nodes[i].id>index){ //Pour chaque élément ayant un id > a celui supprimer  
+                        nodes[i].setAttribute("id", nodes[i].id-1); // Leur id décremente de 1
+                    }
                 }
             }
         }
-           
+        else{
+            document.getElementById(index).remove(); //Supprime le boutton
+            grp_tab.splice(index,1);
+            var nodes = document.getElementById("objets").childNodes; 
+            for(i=0; i<nodes.length; i++) {
+                if(nodes[i].id<index){ //Pour chaque élément ayant un id < a celui supprimer  
+                    nodes[i].setAttribute("id", parseFloat(nodes[i].id)+1); // Leur id décremente de 1
+                }
+            }
+        }    
     };
 
     var btn_grp = document.getElementById('btn_grp');
-
+    var grp_tab = [];
+    var grp_count = -1; 
     btn_grp.onclick = function(){ //Fonction groupe
-                 
+        btn_ok.style.display = "block";
+        Array.prototype.slice.call(document.getElementById("objets").querySelectorAll("[type=radio]")).forEach(function(e){ e.type = "checkbox"; });
     };
 
-    var nom = document.getElementById('name');
+    var btn_ok = document.getElementById('btn_ok');
+    btn_ok.onclick = function(){ //Fonction groupe
+        btn_ok.style.display = "none";
+        grp_tab.push(Array.prototype.slice.call(document.getElementById("objets").querySelectorAll(":checked")).map(function(e) { return e.parentNode.id; }))
+        var button = document.createElement("label");// Cree un bouton 
+        button.innerHTML= '<input type="radio">' + "Groupe"; // Met un titre au bouton 
+        button.setAttribute("id", grp_count); // L'id sera l'index du tableau 
+        button.setAttribute("name", "Groupe");
+        button.setAttribute("onClick","grp_index(parseInt(this.id))") ; // Donne la function qui gere quel bouton est cliqué 
+        ["btn", "btn-violet", "nav-justified"].forEach(function(e){button.classList.add(e)}); // Ajoute des class
+        document.getElementById("objets").appendChild(button); // Ajoute le bouton dans la page
+        grp_count--; 
+        Array.prototype.slice.call(document.getElementById("objets").querySelectorAll("[type=checkbox]")).forEach(function(e){ e.type = "radio"; e.checked = false; });
+    };
 
+    //var index_grp = 0;
+    function grp_index(x){
+        $(".grp").css("display", "block");
+        $(".ungrp").css("display", "none");
+        index = x; 
+        grp_nom.value = document.getElementById(index).getAttribute("name");
+    }
+
+    var nom = document.getElementById('name');
     nom.onchange = function(){
         document.getElementById(index).innerHTML = nom.value;
         meshTab[index].name = nom.value;
     };
 
-    var positiony = document.getElementById('posy');
+    var grp_nom = document.getElementById('grp_name');
+    grp_nom.onchange = function(){
+        document.getElementById(index).setAttribute("name", grp_nom.value);
+        document.getElementById(index).innerHTML= '<input type="radio">' + grp_nom.value;
+    };
 
+ 
+    var positiony = document.getElementById('posy');
     positiony.onchange = function() {
         meshTab[index].position.y = positiony.value;
     };
 
-    var positionx = document.getElementById('posx');
 
+    var positionx = document.getElementById('posx');
     positionx.onchange = function() {
         meshTab[index].position.x = positionx.value;
     };
 
-    var positionz = document.getElementById('posz');
 
+    var positionz = document.getElementById('posz');
     positionz.onchange = function() {
         meshTab[index].position.z = positionz.value;
     };
 
-    var check = document.getElementById('check');
+    var grp_posx = document.getElementById('grp_posx');
+    grp_posx.onchange = function(){
+        grp_tab[Math.abs(index)-1].forEach(function(element, index){
+            meshTab[element].position.x = parseFloat(meshTab[element].position.x) + parseFloat(grp_posx.value);
+        })
+    };
 
+    var grp_posy = document.getElementById('grp_posy');
+    grp_posy.onchange = function(){
+        grp_tab[Math.abs(index)-1].forEach(function(element, index){
+            meshTab[element].position.y = parseFloat(meshTab[element].position.y) + parseFloat(grp_posy.value);
+        })
+    };
+
+    var grp_posz = document.getElementById('grp_posz');
+    grp_posz.onchange = function(){
+        grp_tab[Math.abs(index)-1].forEach(function(element, index){
+            meshTab[element].position.z = parseFloat(meshTab[element].position.z) + parseFloat(grp_posz.value);
+        })
+    };
+ 
+    var check = document.getElementById('check');
     check.onclick = function() {
         if ($(".hiden").css("display") == "none")
         {
@@ -248,8 +313,8 @@
         }
     };
 
-    var taillex = document.getElementById('taillex');
 
+    var taillex = document.getElementById('taillex');
     taillex.onchange = function() {
         meshTab[index].scaling.x = taillex.value;
         if (check.checked)
@@ -259,32 +324,32 @@
         }
     };
 
+ 
     var tailley = document.getElementById('tailley');
-
     tailley.onchange = function() {
         meshTab[index].scaling.y = tailley.value;
     };
        
-    var taillez = document.getElementById('taillez');
 
+    var taillez = document.getElementById('taillez');
     taillez.onchange = function() {
         meshTab[index].scaling.z = taillez.value;
     };
 
-    var rotx = document.getElementById('rotx');
 
+    var rotx = document.getElementById('rotx');
     rotx.onchange = function() {
         meshTab[index].rotation.x = rotx.value/100;
     };
 
-    var roty = document.getElementById('roty');
 
+    var roty = document.getElementById('roty');
     roty.onchange = function() {
         meshTab[index].rotation.y = roty.value/100;
     };
        
-    var rotz = document.getElementById('rotz');
 
+    var rotz = document.getElementById('rotz');
     rotz.onchange = function() {
         meshTab[index].rotation.z = rotz.value/100;
     };

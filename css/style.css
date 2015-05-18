@@ -114,6 +114,10 @@ footer.col-md-12{
     margin-top: 1%;
 }
 
+.btn-success.active{
+    color : black;
+}
+
 input[type="number"]{
     width: 98px;
 }
@@ -127,7 +131,6 @@ input[type="number"]{
     color: white;
     background-color: #B733AF;
     margin-top: 1.5%;
-    margin-bottom: 3%;
 }
 
 .btn-violet:hover,.btn-violet:active
@@ -138,13 +141,26 @@ input[type="number"]{
     background-color: #8E2288;
 }
 
-.btn-violet:focus{
+.btn-violet:focus,.btn-violet.active{
     outline: none;
     border-color: #641B60;
-    color: white;
+    color: black;
     background-color: #641B60;
 }
 
 .btn-group{
     width: 100%;
+}
+
+.btn-violet2,.btn-violet2:hover{
+    margin-top: 1%;
+    margin-bottom: 3%;
+    color: white;
+    background-color: #8E2288;
+    display: none;
+}
+
+.grp{
+    display: none; 
+    
 }
