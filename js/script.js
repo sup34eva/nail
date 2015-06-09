@@ -280,27 +280,54 @@
         meshTab[index].position.z = positionz.value;
     };
 
-    var grp_posx = document.getElementById('grp_posx');
-    grp_posx.onchange = function(){
+    var grp_posxp = document.getElementById('btnplusx');
+    grp_posxp.onclick = function()
+    {
         grp_tab[Math.abs(index)-1].forEach(function(element, index){
-            meshTab[element].position.x = parseFloat(meshTab[element].position.x) + parseFloat(grp_posx.value);
+            meshTab[element].position.x ++;
         })
     };
 
-    var grp_posy = document.getElementById('grp_posy');
-    grp_posy.onchange = function(){
+    var grp_posxm = document.getElementById('btnmoinsx');
+    grp_posxm.onclick = function()
+    {
         grp_tab[Math.abs(index)-1].forEach(function(element, index){
-            meshTab[element].position.y = parseFloat(meshTab[element].position.y) + parseFloat(grp_posy.value);
+            meshTab[element].position.x --;
         })
     };
 
-    var grp_posz = document.getElementById('grp_posz');
-    grp_posz.onchange = function(){
+    var grp_posyp = document.getElementById('btnplusy');
+    grp_posyp.onclick = function()
+    {
         grp_tab[Math.abs(index)-1].forEach(function(element, index){
-            meshTab[element].position.z = parseFloat(meshTab[element].position.z) + parseFloat(grp_posz.value);
+            meshTab[element].position.y ++;
         })
     };
- 
+
+    var grp_posym = document.getElementById('btnmoinsy');
+    grp_posym.onclick = function()
+    {
+        grp_tab[Math.abs(index)-1].forEach(function(element, index){
+            meshTab[element].position.y --;
+        })
+    };
+
+    var grp_poszp = document.getElementById('btnplusz');
+    grp_poszp.onclick = function()
+    {
+        grp_tab[Math.abs(index)-1].forEach(function(element, index){
+            meshTab[element].position.z ++;
+        })
+    };
+
+    var grp_poszm = document.getElementById('btnmoinsz');
+    grp_poszm.onclick = function()
+    {
+        grp_tab[Math.abs(index)-1].forEach(function(element, index){
+            meshTab[element].position.z --;
+        })
+    };
+   
     var check = document.getElementById('check');
     check.onclick = function() {
         if ($(".hiden").css("display") == "none")
