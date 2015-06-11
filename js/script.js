@@ -19,11 +19,11 @@
 
     var createScene = function () {
 
-        // This creates a basic Babylon Scene object (non-mesh)
+        //scene
         var scene = new BABYLON.Scene(engine);
         scene.collisionsEnabled = true;
 
-        // This creates and positions a free camera (non-mesh)
+        // free camera (non-mesh)
         var camera = new BABYLON.FreeCamera("camera1", new BABYLON.Vector3(0, 5, -10), scene);
         camera.keysUp = [90]; // Touche Z
         camera.keysDown = [83]; // Touche S
@@ -35,31 +35,22 @@
         // This targets the camera to scene origin
         camera.setTarget(BABYLON.Vector3.Zero());
 
-        // This attaches the camera to the canvas
+        // attach camera to canvas
         camera.attachControl(canvas, true);
 
-        // This creates a light
-        var light = new BABYLON.DirectionalLight("dir01", new BABYLON.Vector3(-1, -2, -1), scene);
-        light.position = new BABYLON.Vector3(125, 125, -125);
-        light.intensity = 1;
-        var lightSphere = BABYLON.Mesh.CreateSphere("sphere", 10, 10, scene);
-        lightSphere.position = light.position;
-        lightSphere.material = new BABYLON.StandardMaterial("light", scene);
-        lightSphere.material.emissiveColor = new BABYLON.Color3(1, 1, 0);
+        //light
+        var hemLlight = new BABYLON.HemisphericLight("hemLlight", new BABYLON.Vector3(0, 1, 0), scene);
+        hemLlight.intensity = 0.4;
+        hemLlight.diffuse = new BABYLON.Color3(0.9, 1, 1);
 
-        /*// sphere representing the light
-        var sphere = BABYLON.Mesh.CreateSphere("toto", 50, 5, scene);
-        sphere.position = new BABYLON.Vector3(5, -2, 10);
-        sphere.checkCollisions = true;
+        var dirLight = new BABYLON.DirectionalLight("dirLight", new BABYLON.Vector3(-1, -1, -1), scene);
+        dirLight.intensity = 0.65;
+        dirLight.diffuse = new BABYLON.Color3(1, 1, 0.9);
 
-        // Shadows
-        var shadowGenerator = new BABYLON.ShadowGenerator(4096, light);
-        /*shadowGenerator.getShadowMap().renderList.push(sphere);
-        shadowGenerator.usePoissonSampling = true;*/
-
-        // Our built-in 'ground' shape. Params: name, width, depth, subdivs, scene
+        //ground
         var ground = BABYLON.Mesh.CreateGround("ground1", 250, 250, 2, scene);
         ground.material = new BABYLON.StandardMaterial("gMaterial", scene);
+        ground.material.specularColor = new BABYLON.Color3(0, 0, 0);
         ground.material.diffuseTexture = new BABYLON.Texture("img/super_ground.jpg", scene);
         ground.material.diffuseTexture.uScale = 30;
         ground.material.diffuseTexture.vScale = 30;
@@ -117,7 +108,6 @@
         mesh.type = type;
 
         var colorMat = new BABYLON.StandardMaterial("color", scene);
-        colorMat.emissiveColor = new BABYLON.Color3(0.9, 0.9, 0.9);
         colorMat.diffuseColor = new BABYLON.Color3(R/255,G/255,B/255);
         mesh.material = colorMat;
         return(mesh);
@@ -137,9 +127,9 @@
         R = hexToR(c);
         G = hexToG(c);
         B = hexToB(c);
-        meshTab[index].material.emissiveColor.r = R/255;
-        meshTab[index].material.emissiveColor.g = G/255;
-        meshTab[index].material.emissiveColor.b = B/255;
+        meshTab[index].material.diffuseColor.r = R/255;
+        meshTab[index].material.diffuseColor.g = G/255;
+        meshTab[index].material.diffuseColor.b = B/255;
     };
 
     //Fin convertisseur hexa en RGB****************************************
@@ -160,7 +150,7 @@
         rotx.value = meshTab[index].rotation.x*100;
         roty.value = meshTab[index].rotation.y*100;
         rotz.value = meshTab[index].rotation.z*100;
-        picker.value = "#" + Math.round(meshTab[index].material.emissiveColor.r*255).toString(16) + Math.round(meshTab[index].material.emissiveColor.g*255).toString(16) + Math.round(meshTab[index].material.emissiveColor.b*255).toString(16);
+        picker.value = "#" + Math.round(meshTab[index].material.diffuseColor.r*255).toString(16) + Math.round(meshTab[index].material.diffuseColor.g*255).toString(16) + Math.round(meshTab[index].material.diffuseColor.b*255).toString(16);
     };
 
     var meshTab = []; //Tableau d'objets
@@ -536,7 +526,6 @@
                 position : mesh.position,
                 scaling : mesh.scaling,
                 diffuseColor : mesh.material.diffuseColor,
-                emissiveColor : mesh.material.emissiveColor,
                 name : mesh.name
             };
         });
@@ -635,7 +624,6 @@
                 //gestion du material
                 mesh.material = new BABYLON.StandardMaterial("color", scene);
                 mesh.material.diffuseColor = e.diffuseColor;
-                mesh.material.emissiveColor = e.emissiveColor;
 
                 //ajout du bouton dans l'interface
                 var button = document.createElement("label");// Cree un bouton
