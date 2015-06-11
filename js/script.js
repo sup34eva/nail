@@ -206,6 +206,7 @@
                     }
                 }
             }
+            meshCount --;
         }
         else{
             document.getElementById(index).remove(); //Supprime le boutton
@@ -216,6 +217,7 @@
                     nodes[i].setAttribute("id", parseFloat(nodes[i].id)+1); // Leur id décremente de 1
                 }
             }
+            grp_count ++;
         }    
     };
 
