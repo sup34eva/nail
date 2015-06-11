@@ -58,7 +58,7 @@
         // Création d'une material
         var sMaterial = new BABYLON.StandardMaterial("skyboxMaterial", scene);
         sMaterial.backFaceCulling = false;
-        sMaterial.reflectionTexture = new BABYLON.CubeTexture("img/skybox", scene);
+        sMaterial.reflectionTexture = new BABYLON.CubeTexture("img/skybox/vertigo", scene);
         sMaterial.reflectionTexture.coordinatesMode = BABYLON.Texture.SKYBOX_MODE;
         sMaterial.diffuseColor = new BABYLON.Color3(0, 0, 0);
         sMaterial.specularColor = new BABYLON.Color3(0, 0, 0);
