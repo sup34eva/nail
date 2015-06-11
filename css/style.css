@@ -168,3 +168,8 @@ input[type="number"]{
 .btn-group-vertical>.btn, .btn-group>.btn{
     width: 60px;
 }
+
+.nav>li.grp 
+{
+    display : none ;
+}
