@@ -161,10 +161,40 @@ input[type="number"]{
 }
 
 .grp{
-    display: none; 
-    
+    display: none;
+
 }
 
 .btn-group-vertical>.btn, .btn-group>.btn{
     width: 60px;
+}
+
+li > .save{
+    cursor: pointer !important;
+}
+.fileinputs {
+	position: relative;
+}
+
+.fakefile {
+	position: absolute;
+	top: 0px;
+	left: 0px;
+	z-index: 1;
+}
+
+input.file {
+	position: relative;
+	text-align: right;
+	-moz-opacity:0 ;
+	filter:alpha(opacity: 0);
+	opacity: 0;
+	z-index: 2;
+}
+
+.fakefile > input{
+    margin-left: 20px;
+    border: none;
+    color: #333;
+    cursor: pointer !important;
 }

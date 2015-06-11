@@ -18,24 +18,30 @@
                   Fichier <span class="caret"></span>
                 </a>
                 <ul class="dropdown-menu" role="menu">
-                  <li><a href="/">Nouveau</a></li>
-                  <li><a href="#">Ouvrir</a></li>
-                  <li><a id="save">Enregistrer</a></li>
-                  <li><a href="#">Enregistrer sous</a></li>
+                    <li><a href="/">Nouveau</a></li>
+                    <li>
+                        <div class="fileinputs">
+                        	<input id="load" type="file" class="file" />
+                        	<div class="fakefile">
+                        		<input value="Ouvrir"/>
+                        	</div>
+                        </div>
+                    </li>
+                    <li><a data-toggle="modal" data-target="#modalSave">Enregistrer sous</a></li>
                 </ul>
             </li>
             <li role="presentation" class="dropdown">
                 <a class="dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-expanded="false">
-                  Edition <span class="caret"></span>
+                    Edition <span class="caret"></span>
                 </a>
                 <ul class="dropdown-menu" role="menu">
-                  <li><a href="#">Annuler</a></li>
-                  <li><a href="#">Retablir</a></li>
-                  <li class="divider"></li>
-                  <li><a href="#">Couper</a></li>
-                  <li><a href="#">Copier</a></li>
-                  <li><a href="#">Coller</a></li>
-                  <li><a href="#">Supprimer</a></li>
+                    <li><a href="#">Annuler</a></li>
+                    <li><a href="#">Retablir</a></li>
+                    <li class="divider"></li>
+                    <li><a href="#">Couper</a></li>
+                    <li><a href="#">Copier</a></li>
+                    <li><a href="#">Coller</a></li>
+                    <li><a href="#">Supprimer</a></li>
                 </ul>
             </li>
             <li role="presentation" class="dropdown">
@@ -60,7 +66,7 @@
           <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
             <div class="panel panel-default">
               <button type="button" class="nav-justified btn btn-primary collapsed" data-toggle="collapse" data-target="#collapseOne">
-                Objet            
+                Objet
               </button>
               <div id="collapseOne" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOne">
                 <div class="panel-body">
@@ -78,9 +84,9 @@
                 </div>
               </div>
             </div>
-          </div> 
+          </div>
         </aside>
-        <footer class="col-md-12"> 
+        <footer class="col-md-12">
           <ul class="nav nav-tabs espace">
             <li role="presentation"><input type="text" value="Objet" id="name" class="ungrp"/><p class="ungrp">Nom</p></li>
             <li role="presentation"><input type="checkbox" id="check" class="ungrp"><p class="ungrp">X = Y = Z</p></li>
@@ -102,6 +108,28 @@
         </footer>
     </div>
 
+    <!-- Modal Save-->
+    <form class="modal fade" id="modalSave" tabindex="-1" role="dialog" aria-labelledby="modalSave" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title" id="myModalLabel">Enregistrer sous</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="input-group">
+                        <input type="text" class="form-control" id="fileNameInput" placeholder="World">
+                        <div class="input-group-addon">.nail</div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="reset" class="btn btn-default" data-dismiss="modal">Annuler</button>
+                    <button id="save" type="submit" class="btn btn-primary">Enregistrer</button>
+                </div>
+            </div>
+        </div>
+    </form>
+
     <!-- Babylon.js -->
     <script src="./js/babylon/cannon.js"></script>
     <script src="./js/babylon/Oimo.js"></script>
@@ -110,7 +138,6 @@
     <script src="js/jquery-2.1.3.min.js"></script>
     <script src="js/bootstrap.min.js"></script>
     <script src="js/script.js"></script>
-    
+
 </body>
 </html>
-

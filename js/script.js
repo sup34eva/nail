@@ -18,7 +18,7 @@
 //*********************FIN Full Screen*************************************************************
 
     var createScene = function () {
-    
+
         // This creates a basic Babylon Scene object (non-mesh)
         var scene = new BABYLON.Scene(engine);
         scene.collisionsEnabled = true;
@@ -34,10 +34,10 @@
 
         // This targets the camera to scene origin
         camera.setTarget(BABYLON.Vector3.Zero());
-    
+
         // This attaches the camera to the canvas
         camera.attachControl(canvas, true);
-    
+
         // This creates a light
         var light = new BABYLON.DirectionalLight("dir01", new BABYLON.Vector3(-1, -2, -1), scene);
         light.position = new BABYLON.Vector3(125, 125, -125);
@@ -56,7 +56,7 @@
         var shadowGenerator = new BABYLON.ShadowGenerator(4096, light);
         /*shadowGenerator.getShadowMap().renderList.push(sphere);
         shadowGenerator.usePoissonSampling = true;*/
-    
+
         // Our built-in 'ground' shape. Params: name, width, depth, subdivs, scene
         var ground = BABYLON.Mesh.CreateGround("ground1", 250, 250, 2, scene);
         ground.material = new BABYLON.StandardMaterial("gMaterial", scene);
@@ -80,9 +80,9 @@
         var skybox = BABYLON.Mesh.CreateBox("skybox", 500, scene);
         skybox.material = sMaterial;
         skybox.infiniteDistance = true;
-        
+
         return scene;
-    
+
     };
 //*****************************Creation et gestion de MESH*******************************************
     var geometries = {};
@@ -123,7 +123,7 @@
         return(mesh);
     }
 
-    
+
 
     //Convertisseur hexa en RGB*******************************************
     var picker = document.getElementById('color'),
@@ -143,8 +143,8 @@
     };
 
     //Fin convertisseur hexa en RGB****************************************
-    
-    
+
+
     var index = 0;
     function indexation(x){ //En fonction du bouton cliqué donne l'index du tableau
         $(".grp").css("display", "none");
@@ -169,13 +169,13 @@
     {
         meshCount ++; //index tu tableau d'objets
         index=meshCount;
-        
-        meshTab[meshCount] = new Mesh(); //Instanciation d'un objet 
-        
-        var button = document.createElement("label");// Cree un bouton 
-        button.innerHTML= '<input type="radio">' + document.getElementById('name').value; // Met un titre au bouton 
-        button.setAttribute("id", meshCount); // L'id sera l'index du tableau 
-        button.setAttribute("onClick","indexation(parseInt(this.id))") ; // Donne la function qui gere quel bouton est cliqué 
+
+        meshTab[meshCount] = new Mesh(); //Instanciation d'un objet
+
+        var button = document.createElement("label");// Cree un bouton
+        button.innerHTML= '<input type="radio">' + document.getElementById('name').value; // Met un titre au bouton
+        button.setAttribute("id", meshCount); // L'id sera l'index du tableau
+        button.setAttribute("onClick","indexation(parseInt(this.id))") ; // Donne la function qui gere quel bouton est cliqué
         ["btn", "btn-success", "nav-justified"].forEach(function(e){button.classList.add(e)}); // Ajoute des class
         document.getElementById("objets").appendChild(button); // Ajoute le bouton dans la page
 
@@ -188,8 +188,8 @@
         rotx.value = 0.0;
         roty.value = 0.0;
         rotz.value = 0.0;
-        picker.value = "#FFFFFF"; 
-    };  
+        picker.value = "#FFFFFF";
+    };
 
 
     var btn_sup = document.getElementById('btn_sup');
@@ -198,10 +198,10 @@
             if (meshTab[index]){
                 meshTab[index].dispose(); //Supprime l'élement dans le canvas
                 document.getElementById(index).remove(); //Supprime le boutton
-                meshTab.splice(index,1); //Supprime la case du tableau 
-                var nodes = document.getElementById("objets").childNodes; 
+                meshTab.splice(index,1); //Supprime la case du tableau
+                var nodes = document.getElementById("objets").childNodes;
                 for(i=0; i<nodes.length; i++) {
-                    if(nodes[i].id>index){ //Pour chaque élément ayant un id > a celui supprimer  
+                    if(nodes[i].id>index){ //Pour chaque élément ayant un id > a celui supprimer
                         nodes[i].setAttribute("id", nodes[i].id-1); // Leur id décremente de 1
                     }
                 }
@@ -210,18 +210,18 @@
         else{
             document.getElementById(index).remove(); //Supprime le boutton
             grp_tab.splice(index,1);
-            var nodes = document.getElementById("objets").childNodes; 
+            var nodes = document.getElementById("objets").childNodes;
             for(i=0; i<nodes.length; i++) {
-                if(nodes[i].id<index){ //Pour chaque élément ayant un id < a celui supprimer  
+                if(nodes[i].id<index){ //Pour chaque élément ayant un id < a celui supprimer
                     nodes[i].setAttribute("id", parseFloat(nodes[i].id)+1); // Leur id décremente de 1
                 }
             }
-        }    
+        }
     };
 
     var btn_grp = document.getElementById('btn_grp');
     var grp_tab = [];
-    var grp_count = -1; 
+    var grp_count = -1;
     btn_grp.onclick = function(){ //Fonction groupe
         btn_ok.style.display = "block";
         Array.prototype.slice.call(document.getElementById("objets").querySelectorAll("[type=radio]")).forEach(function(e){ e.type = "checkbox"; });
@@ -229,40 +229,59 @@
 
     var btn_ok = document.getElementById('btn_ok');
     btn_ok.onclick = function(){ //Fonction groupe
-        btn_ok.style.display = "none";
-        grp_tab.push(Array.prototype.slice.call(document.getElementById("objets").querySelectorAll(":checked")).map(function(e) { return e.parentNode.id; }))
-        var button = document.createElement("label");// Cree un bouton 
-        button.innerHTML= '<input type="radio">' + "Groupe"; // Met un titre au bouton 
-        button.setAttribute("id", grp_count); // L'id sera l'index du tableau 
-        button.setAttribute("name", "Groupe");
-        button.setAttribute("onClick","grp_index(parseInt(this.id))") ; // Donne la function qui gere quel bouton est cliqué 
-        ["btn", "btn-violet", "nav-justified"].forEach(function(e){button.classList.add(e)}); // Ajoute des class
-        document.getElementById("objets").appendChild(button); // Ajoute le bouton dans la page
-        grp_count--; 
-        Array.prototype.slice.call(document.getElementById("objets").querySelectorAll("[type=checkbox]")).forEach(function(e){ e.type = "radio"; e.checked = false; });
+
+        if(document.getElementById("objets").querySelectorAll(":checked").length > 1)
+        {
+            btn_ok.style.display = "none";
+            grp_tab.push({
+                name: "Groupe",
+                objects: Array.prototype.slice.call(document.getElementById("objets").querySelectorAll(":checked")).map(function(e) {
+                    return e.parentNode.id;
+                })
+            });
+            var button = document.createElement("label");// Cree un bouton
+            button.innerHTML= '<input type="radio">' + "Groupe"; // Met un titre au bouton
+            button.setAttribute("id", grp_count); // L'id sera l'index du tableau
+            button.setAttribute("name", "Groupe");
+            button.setAttribute("onClick","grp_index(parseInt(this.id))") ; // Donne la function qui gere quel bouton est cliqué
+            ["btn", "btn-violet", "nav-justified"].forEach(function(e){button.classList.add(e)}); // Ajoute des class
+            document.getElementById("objets").appendChild(button); // Ajoute le bouton dans la page
+            grp_count--;
+            Array.prototype.slice.call(document.getElementById("objets").querySelectorAll("[type=checkbox]")).forEach(function(e){
+                e.type = "radio";
+                e.checked = false;
+            });
+        }
+        else {
+            alert("Selectionnez au moins 2 objets.");
+            btn_ok.style.display = "none";
+        }
     };
 
     //var index_grp = 0;
     function grp_index(x){
         $(".grp").css("display", "block");
         $(".ungrp").css("display", "none");
-        index = x; 
+        index = x;
         grp_nom.value = document.getElementById(index).getAttribute("name");
     }
 
     var nom = document.getElementById('name');
-    nom.onchange = function(){
-        document.getElementById(index).innerHTML = nom.value;
+    nom.oninput = function(){
+        document.getElementById(index).innerHTML = '<input type="radio">' + nom.value;
         meshTab[index].name = nom.value;
     };
 
     var grp_nom = document.getElementById('grp_name');
-    grp_nom.onchange = function(){
+    grp_nom.oninput = function(){
         document.getElementById(index).setAttribute("name", grp_nom.value);
         document.getElementById(index).innerHTML= '<input type="radio">' + grp_nom.value;
+        grp_tab[Math.abs(index)-1].name = grp_nom.value;
+        console.log(grp_nom.value);
+        console.log(index);
     };
 
- 
+
     var positiony = document.getElementById('posy');
     positiony.onchange = function() {
         meshTab[index].position.y = positiony.value;
@@ -283,7 +302,7 @@
     var grp_posxp = document.getElementById('btnplusx');
     grp_posxp.onclick = function()
     {
-        grp_tab[Math.abs(index)-1].forEach(function(element, index){
+        grp_tab[Math.abs(index)-1].objects.forEach(function(element, index){
             meshTab[element].position.x ++;
         })
     };
@@ -291,7 +310,7 @@
     var grp_posxm = document.getElementById('btnmoinsx');
     grp_posxm.onclick = function()
     {
-        grp_tab[Math.abs(index)-1].forEach(function(element, index){
+        grp_tab[Math.abs(index)-1].objects.forEach(function(element, index){
             meshTab[element].position.x --;
         })
     };
@@ -299,7 +318,7 @@
     var grp_posyp = document.getElementById('btnplusy');
     grp_posyp.onclick = function()
     {
-        grp_tab[Math.abs(index)-1].forEach(function(element, index){
+        grp_tab[Math.abs(index)-1].objects.forEach(function(element, index){
             meshTab[element].position.y ++;
         })
     };
@@ -307,7 +326,7 @@
     var grp_posym = document.getElementById('btnmoinsy');
     grp_posym.onclick = function()
     {
-        grp_tab[Math.abs(index)-1].forEach(function(element, index){
+        grp_tab[Math.abs(index)-1].objects.forEach(function(element, index){
             meshTab[element].position.y --;
         })
     };
@@ -315,7 +334,7 @@
     var grp_poszp = document.getElementById('btnplusz');
     grp_poszp.onclick = function()
     {
-        grp_tab[Math.abs(index)-1].forEach(function(element, index){
+        grp_tab[Math.abs(index)-1].objects.forEach(function(element, index){
             meshTab[element].position.z ++;
         })
     };
@@ -323,11 +342,11 @@
     var grp_poszm = document.getElementById('btnmoinsz');
     grp_poszm.onclick = function()
     {
-        grp_tab[Math.abs(index)-1].forEach(function(element, index){
+        grp_tab[Math.abs(index)-1].objects.forEach(function(element, index){
             meshTab[element].position.z --;
         })
     };
-   
+
     var check = document.getElementById('check');
     check.onclick = function() {
         if ($(".hiden").css("display") == "none")
@@ -335,7 +354,7 @@
             $(".hiden").css("display", "block");
         }
         else
-        {    
+        {
             $(".hiden").css("display", "none");
         }
     };
@@ -346,17 +365,17 @@
         meshTab[index].scaling.x = taillex.value;
         if (check.checked)
         {
-            meshTab[index].scaling.y = taillex.value; 
+            meshTab[index].scaling.y = taillex.value;
             meshTab[index].scaling.z = taillex.value;
         }
     };
 
- 
+
     var tailley = document.getElementById('tailley');
     tailley.onchange = function() {
         meshTab[index].scaling.y = tailley.value;
     };
-       
+
 
     var taillez = document.getElementById('taillez');
     taillez.onchange = function() {
@@ -374,7 +393,7 @@
     roty.onchange = function() {
         meshTab[index].rotation.y = roty.value/100;
     };
-       
+
 
     var rotz = document.getElementById('rotz');
     rotz.onchange = function() {
@@ -392,10 +411,10 @@
 
     engine.runRenderLoop(function () {
         scene.render();
-        fpsLabel.innerHTML = engine.getFps().toFixed() + " fps";            
+        fpsLabel.innerHTML = engine.getFps().toFixed() + " fps";
         camPosTxt.innerHTML = 'Position de la caméra X:' + scene.activeCamera.position.x.toFixed(2) + '&nbsp Y:' + scene.activeCamera.position.y.toFixed(2) + "&nbsp Z:" + scene.activeCamera.position.z.toFixed(2);
     });
-    
+
     // Resize
     window.addEventListener("resize", function () {
         engine.resize();
@@ -407,7 +426,7 @@
             new BABYLON.Vector3(-(width), 0, 0),
             new BABYLON.Vector3(width, 0, 0)
         ], scene);
-        
+
         return line;
     }
 
@@ -498,29 +517,43 @@
     pyramid.setVerticesData(BABYLON.VertexBuffer.UVKind, uvs, updatable);
     pyramid.setIndices(indices);
 
-    return pyramid;     
+    return pyramid;
     }
 //****************************************Fin Pyramide***********************************************
 //****************************************Save***********************************************
-    var save = document.getElementById("save");
-    save.onclick = function()
+    var save = document.getElementById("modalSave");
+    save.onsubmit = function(e)
     {
+        e.preventDefault();//empeche de recharger la page
+
         var meshs = meshTab.map(function(mesh)
         {
-            return ["type", "position", "scaling", "material.diffuseColor", "name"].map(function(key)
-            {
-                var current = mesh;
-                return key.split(".").reduce(function(current, k)
-                {
-                    return current[k];
-                }, mesh);
-            });
+            return {
+                type : mesh.type,
+                position : mesh.position,
+                scaling : mesh.scaling,
+                diffuseColor : mesh.material.diffuseColor,
+                emissiveColor : mesh.material.emissiveColor,
+                name : mesh.name
+            };
         });
 
-        var textToWrite = JSON.stringify(meshs);
+        var objectsToWrite = {
+            meshs : meshs,
+            grp_tab : grp_tab
+            //zones
+            //links
+        };
+
+        var textToWrite = JSON.stringify(objectsToWrite);
 
         var textFileAsBlob = new Blob([textToWrite], {type:'text/plain'});
-        var fileNameToSaveAs = "world.nail";
+
+        var fileNameToSaveAs = $("#fileNameInput").val() + ".nail";
+        if(fileNameToSaveAs == ".nail")
+        {
+            fileNameToSaveAs = "World" + fileNameToSaveAs;
+        }
 
         var downloadLink = document.createElement("a");
         downloadLink.download = fileNameToSaveAs;
@@ -542,5 +575,98 @@
         }
 
         downloadLink.click();
+        $("#modalSave").modal('hide');
     }
 //****************************************Fin Save***********************************************
+
+//****************************************Load***********************************************
+    var loadInput = document.getElementById("load");
+
+    loadInput.onchange = function()
+    {
+        var file = loadInput.files[0];
+
+        var fr = new FileReader();
+        fr.onloadend = function()
+        {
+            var data = JSON.parse(fr.result);
+            console.log(data);
+
+            //supprime tous les meshs du canvas
+            meshTab.forEach(function(mesh){
+                mesh.dispose();
+            });
+            //supprime les boutons
+            $("#objets").empty();
+            meshTab = [];
+
+            var meshCount = 0;
+            data.meshs.forEach(function(e){
+                var mesh;
+                switch(e.type)
+                {
+                    case "box":
+                        mesh = BABYLON.Mesh.CreateBox(e.name, 2, scene);
+                        break;
+
+                    case "sphere":
+                        mesh = BABYLON.Mesh.CreateSphere(e.name, 50, 2, scene);
+                        break;
+
+                    case "cylinder":
+                        mesh = BABYLON.Mesh.CreateCylinder(e.name, 2, 2, 2, 50, 1, scene, false);
+                        break;
+
+                    case "pyramid":
+                        mesh = BABYLON.Mesh.CreatePyramid4(e.name , 2, 2, scene, false);
+                        break;
+
+                  default:
+                        mesh = BABYLON.Mesh.CreateSphere(e.name, 50, 2, scene);
+                        break;
+                }
+
+                mesh.position = e.position;
+                mesh.scaling = e.scaling;
+
+                //gestion du material
+                mesh.material = new BABYLON.StandardMaterial("color", scene);
+                mesh.material.diffuseColor = e.diffuseColor;
+                mesh.material.emissiveColor = e.emissiveColor;
+
+                //ajout du bouton dans l'interface
+                var button = document.createElement("label");// Cree un bouton
+                button.innerHTML= '<input type="radio">' + e.name; // Met un titre au bouton
+                button.setAttribute("id", meshCount); // L'id sera l'index du tableau
+                button.setAttribute("onClick","indexation(parseInt(this.id))") ; // Donne la function qui gere quel bouton est cliqué
+                ["btn", "btn-success", "nav-justified"].forEach(function(e){
+                    button.classList.add(e)
+                }); // Ajoute des class
+                document.getElementById("objets").appendChild(button); // Ajoute le bouton dans la page
+
+                //ajout dans le tableau
+                meshTab[meshCount] = mesh;
+                meshCount ++;
+
+            });
+
+            grp_tab = data.grp_tab;
+
+            var grp_count = 0;
+            grp_tab.forEach(function(e){
+                //ajout du bouton de groupe
+                var button = document.createElement("label");// Cree un bouton
+                button.innerHTML= '<input type="radio">' + e.name; // Met un titre au bouton
+                button.setAttribute("id", grp_count); // L'id sera l'index du tableau
+                button.setAttribute("name", "Groupe");
+                button.setAttribute("onClick","grp_index(parseInt(this.id))") ; // Donne la function qui gere quel bouton est cliqué
+                ["btn", "btn-violet", "nav-justified"].forEach(function(e){button.classList.add(e)}); // Ajoute des class
+                document.getElementById("objets").appendChild(button); // Ajoute le bouton dans la page
+
+                grp_count ++;
+            });
+
+        }
+        fr.readAsText(file);
+    }
+//****************************************Fin Load***********************************************
