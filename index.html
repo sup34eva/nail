@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+
+    <title>Nail JS</title>
+    <!--Favicon-->
+    <link rel="icon" href="img/favicon.ico">
+    <!--css-->
+    <link rel="stylesheet" href="./bootstrap-3.3.2-dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="./css/style.css">
+</head>
+
+<body>
+    <nav>
+        <ul class="nav nav-pills">
+            <li role="presentation" class="dropdown">
+                <a class="dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-expanded="false">
+
+                  Fichier <span class="caret"></span>
+
+                </a>
+                <ul class="dropdown-menu" role="menu">
+                    <li><a href="/">Nouveau</a></li>
+                    <li>
+                        <div class="fileinputs">
+                            <input id="load" type="file" class="file" />
+                            <div class="fakefile">
+                                <input value="Ouvrir" />
+                            </div>
+                        </div>
+                    </li>
+                    <li><a data-toggle="modal" data-target="#modalSave">Enregistrer sous</a></li>
+                </ul>
+            </li>
+            <li role="presentation" class="dropdown">
+                <a class="dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-expanded="false">
+
+                    Edition <span class="caret"></span>
+
+                </a>
+                <ul class="dropdown-menu" role="menu">
+                    <li><a href="#">Annuler</a></li>
+                    <li><a href="#">Retablir</a></li>
+                    <li class="divider"></li>
+                    <li><a href="#">Couper</a></li>
+                    <li><a href="#">Copier</a></li>
+                    <li><a href="#">Coller</a></li>
+                    <li><a href="#">Supprimer</a></li>
+                </ul>
+            </li>
+            <li role="presentation" class="dropdown">
+                <a class="dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-expanded="false">
+
+                  ? <span class="caret"></span>
+
+                </a>
+                <ul class="dropdown-menu" role="menu">
+                    <li><a href="#">A propos</a></li>
+                </ul>
+            </li>
+            <li role="presentation"><a id="fullscreenButton">Fullscreen</a></li>
+            <li role="presentation" id="fpsLabel" class="label1"></li>
+            <li role="presentation"><a id="camReset">Reset Cam</a></li>
+            <li role="presentation" id="camPosTxt" class="label1"></li>
+        </ul>
+    </nav>
+    <div class="container-fluid">
+        <section class="col-md-10">
+            <canvas id="renderCanvas"></canvas>
+        </section>
+        <aside class="col-md-2">
+            <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
+                <div class="panel panel-default">
+                    <button type="button" class="nav-justified btn btn-primary collapsed" data-toggle="collapse" data-target="#collapseOne">
+                        Objet
+                    </button>
+                    <div id="collapseOne" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOne">
+                        <div class="panel-body">
+                            <select class="nav-justified" id="mesh-type">
+                                <option value="box">Cube</option>
+                                <option value="sphere">Sphere</option>
+                                <option value="cylinder">Cylindre</option>
+                                <option value="pyramid">Pyramide</option>
+                            </select>
+                            <button class="btn btn-info nav-justified" id="btn_add">Ajouter</button>
+                            <button class="nav-justified btn btn-danger" id="btn_sup">Supprimer</button>
+                            <button class="btn btn-violet nav-justified" id="btn_grp">Grouper</button>
+                            <button class="btn btn-violet2 nav-justified" id="btn_ok_grp">OK</button>
+                            <div id="objets" data-toggle="buttons"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </aside>
+        <footer class="col-md-12">
+            <ul class="nav nav-tabs espace">
+                <li role="presentation">
+                    <input type="text" value="Objet" id="name" class="ungrp" />
+                    <p class="ungrp">Nom</p>
+                </li>
+                <li role="presentation">
+                    <input type="checkbox" id="check" class="ungrp">
+                    <p class="ungrp">X = Y = Z</p>
+                </li>
+                <li role="presentation">
+                    <input type="number" value="1" id="taillex" class="ungrp" />
+                    <p class="ungrp">Taille x</p>
+                </li>
+                <li role="presentation">
+                    <input type="number" value="1" id="tailley" class="hiden ungrp" />
+                    <p class="hiden ungrp">Taille y</p>
+                </li>
+                <li role="presentation">
+                    <input type="number" value="1" id="taillez" class="hiden ungrp" />
+                    <p class="hiden ungrp">Taille z</p>
+                </li>
+                <li role="presentation">
+                    <input type="number" value="0" id="posy" class="ungrp" />
+                    <p class="ungrp">Pos Y</p>
+                </li>
+                <li role="presentation">
+                    <input type="number" value="0" id="posx" class="ungrp" />
+                    <p class="ungrp">Pos X</p>
+                </li>
+                <li role="presentation">
+                    <input type="number" value="0" id="posz" class="ungrp" />
+                    <p class="ungrp">Pos Z</p>
+                </li>
+                <li role="presentation">
+                    <input type="number" value="0.0" id="roty" class="ungrp" />
+                    <p class="ungrp">Rotation Y</p>
+                </li>
+                <li role="presentation">
+                    <input type="number" value="0.0" id="rotx" class="ungrp" />
+                    <p class="ungrp">Rotation X</p>
+                </li>
+                <li role="presentation">
+                    <input type="number" value="0.0" id="rotz" class="ungrp" />
+                    <p class="ungrp">Rotation Z</p>
+                </li>
+                <li role="presentation">
+                    <input type="color" id="color" value="#eeeeee" class="ungrp" />
+                    <p class="ungrp">Couleur</p>
+                    <li role="presentation">
+                        <input type="text" value="Groupe" id="grp_name" class="grp" />
+                        <p class="grp">Nom du groupe</p>
+                    </li>
+                    <li role="presentation" class="grp">
+                        <div class="btn-group grp">
+                            <button class="btn btn-xs" id="btnmoinsx">-</button>
+                            <button class="btn btn-xs" id="btnplusx">+</button>
+                        </div>Pos x</li>
+                    <li role="presentation" class="grp">
+                        <div class="btn-group grp">
+                            <button class="btn btn-xs" id="btnmoinsy">-</button>
+                            <button class="btn btn-xs" id="btnplusy">+</button>
+                        </div>Pos y</li>
+                    <li role="presentation" class="grp">
+                        <div class="btn-group grp">
+                            <button class="btn btn-xs" id="btnmoinsz">-</button>
+                            <button class="btn btn-xs" id="btnplusz">+</button>
+                        </div>Pos z</li>
+            </ul>
+        </footer>
+    </div>
+
+    <!-- Modal Save-->
+    <form class="modal fade" id="modalSave" tabindex="-1" role="dialog" aria-labelledby="modalSave" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                    <h4 class="modal-title" id="myModalLabel">Enregistrer sous</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="input-group">
+                        <input type="text" class="form-control" id="fileNameInput" placeholder="World">
+                        <div class="input-group-addon">.nail</div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="reset" class="btn btn-default" data-dismiss="modal">Annuler</button>
+                    <button id="save" type="submit" class="btn btn-primary">Enregistrer</button>
+                </div>
+            </div>
+        </div>
+    </form>
+
+    <!-- Babylon.js -->
+    <script src="./js/babylon/cannon.js"></script>
+    <script src="./js/babylon/Oimo.js"></script>
+    <script src="./js/babylon/babylon.2.0.debug.js"></script>
+
+    <script src="js/jquery-2.1.3.min.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+    <script src="js/script.js"></script>
+    <script src="js/actions.js"></script>
+
+</body>
+
+</html>

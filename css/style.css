@@ -1,5 +1,4 @@
-html, body
-{
+html, body {
     overflow: hidden;
     width: 100%;
     height: 100%;
@@ -8,198 +7,150 @@ html, body
     background-color: black;
     color: #337ab7;
 }
-
-#mesh-type
-{
+#mesh-type {
     margin-bottom: 10px;
 }
-
-@media screen and (min-width: 1800px){
-    #renderCanvas
-    {
+@media screen and (min-width: 1800px) {
+    #renderCanvas {
         width: 1550px;
         height: 862px;
         touch-action: none;
     }
 }
-
-@media screen and (max-width: 1799px){
-    #renderCanvas
-    {
+@media screen and (max-width: 1799px) {
+    #renderCanvas {
         width: 1325px;
         height: 670px;
         touch-action: none;
     }
 }
-
-@media screen and (max-width: 1400px){
-    #renderCanvas
-    {
+@media screen and (max-width: 1400px) {
+    #renderCanvas {
         width: 1127px;
         height: 540px;
         touch-action: none;
     }
 }
-
-
-.label1
-{
+.label1 {
     float: right !important;
     position: relative !important;
     display: block !important;
     padding: 10px 15px;
-
 }
-.container-fluid
-{
+.container-fluid {
     margin: 0 !important;
 }
-
-.col-md-10
-{
-	padding: 0;
+.col-md-10 {
+    padding: 0;
 }
-
-.container-fluid
-{
-	padding: 0;
+.container-fluid {
+    padding: 0;
 }
-
-p
-{
+p {
     color: #337ab7;
 }
-
-.btn-info
-{
+.btn-info {
     margin-bottom: 10px;
 }
-
-@media screen and (min-width: 1801px){
+@media screen and (min-width: 1801px) {
     .collapse.in {
         overflow : auto;
         height: 650px;
     }
 }
-
-@media screen and (max-width: 1800px){
+@media screen and (max-width: 1800px) {
     .collapse.in {
         overflow : auto;
         height: 550px;
     }
 }
-
-@media screen and (max-width: 1400px){
+@media screen and (max-width: 1400px) {
     .collapse.in {
-        overflow : auto;
+        overflow: auto;
         height: 450px;
     }
 }
-
 .hiden {
     display: block;
 }
-
-.espace>li
-{
-    margin-left : 1%;
+.espace>li {
+    margin-left: 1%;
     padding-top: 0.5%;
 }
-
-footer.col-md-12{
+footer.col-md-12 {
     padding-left: 0%;
 }
-
-.btn-success{
+.btn-success {
     margin-top: 1%;
 }
-
-.btn-success.active{
-    color : black;
+.btn-success.active {
+    color: black;
 }
-
-input[type="number"]{
+input[type="number"] {
     width: 98px;
 }
-
-.btn-danger{
+.btn-danger {
     margin-top: -4%;
 }
-
-.btn-violet
-{
+.btn-violet {
     color: white;
     background-color: #B733AF;
     margin-top: 1.5%;
 }
-
-.btn-violet:hover,.btn-violet:active
-{
+.btn-violet:hover, .btn-violet:active {
     outline: none;
     border-color: #8E2288;
     color: white;
     background-color: #8E2288;
 }
-
-.btn-violet:focus,.btn-violet.active{
+.btn-violet:focus, .btn-violet.active {
     outline: none;
     border-color: #641B60;
     color: black;
     background-color: #641B60;
 }
-
-.btn-group{
+.btn-group {
     width: 100%;
 }
-
-.btn-violet2,.btn-violet2:hover{
+.btn-violet2, .btn-violet2:hover {
     margin-top: 1%;
     margin-bottom: 3%;
     color: white;
     background-color: #8E2288;
     display: none;
 }
-
-.grp{
+.grp {
     display: none;
-
 }
-
-.btn-group-vertical>.btn, .btn-group>.btn{
+.btn-group-vertical>.btn, .btn-group>.btn {
     width: 60px;
 }
-
-li > .save{
+li > .save {
     cursor: pointer !important;
 }
 .fileinputs {
-	position: relative;
+    position: relative;
 }
-
 .fakefile {
-	position: absolute;
-	top: 0px;
-	left: 0px;
-	z-index: 1;
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    z-index: 1;
 }
-
 input.file {
-	position: relative;
-	text-align: right;
-	-moz-opacity:0 ;
-	filter:alpha(opacity: 0);
-	opacity: 0;
-	z-index: 2;
+    position: relative;
+    text-align: right;
+    -moz-opacity: 0;
+    filter: alpha(opacity: 0);
+    opacity: 0;
+    z-index: 2;
 }
-
-.fakefile > input{
+.fakefile > input {
     margin-left: 20px;
     border: none;
     color: #333;
     cursor: pointer !important;
 }
-
-.nav>li.grp
-{
-    display : none ;
+.nav>li.grp {
+    display: none;
 }
