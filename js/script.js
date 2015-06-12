@@ -3,34 +3,16 @@
     var fpsLabel = document.getElementById("fpsLabel");
     var camPosTxt = document.getElementById("camPosTxt");
 
-//*********************Full Screen******************************************************************
-    var fullscreen = document.getElementById("fullscreenButton");
+    var meshTab = []; //Tableau d'objets
 
-    fullscreen.onclick = function() {
-        if (canvas.requestFullscreen) {
-        canvas.requestFullscreen();
-        } else if (canvas.mozRequestFullScreen) {
-        canvas.mozRequestFullScreen();
-        } else if (canvas.webkitRequestFullscreen) {
-        canvas.webkitRequestFullscreen();
-        }
-    }
-//*********************FIN Full Screen*************************************************************
-
-    var createScene = function () {
-
+    var createScene = function() {
         //scene
         var scene = new BABYLON.Scene(engine);
         scene.collisionsEnabled = true;
 
         // free camera (non-mesh)
         var camera = new BABYLON.FreeCamera("camera1", new BABYLON.Vector3(0, 5, -10), scene);
-        camera.keysUp = [90]; // Touche Z
-        camera.keysDown = [83]; // Touche S
-        camera.keysLeft = [81]; // Touche Q
-        camera.keysRight = [68]; // Touche D;
         camera.checkCollisions = true;
-
 
         // This targets the camera to scene origin
         camera.setTarget(BABYLON.Vector3.Zero());
@@ -51,10 +33,24 @@
         var ground = BABYLON.Mesh.CreateGround("ground1", 250, 250, 2, scene);
         ground.material = new BABYLON.StandardMaterial("gMaterial", scene);
         ground.material.specularColor = new BABYLON.Color3(0, 0, 0);
-        ground.material.diffuseTexture = new BABYLON.Texture("img/super_ground.jpg", scene);
+
+        ground.material.diffuseTexture = new BABYLON.Texture("img/ground/diffuse.png", scene);
         ground.material.diffuseTexture.uScale = 30;
         ground.material.diffuseTexture.vScale = 30;
-        ground.material.backFaceCulling = true;//Allways show the front and the back of an element
+
+        ground.material.ambientTexture = new BABYLON.Texture("img/ground/ambient.png", scene);
+        ground.material.ambientTexture.uScale = 30;
+        ground.material.ambientTexture.vScale = 30;
+
+        ground.material.specularTexture = new BABYLON.Texture("img/ground/specular.png", scene);
+        ground.material.specularTexture.uScale = 30;
+        ground.material.specularTexture.vScale = 30;
+
+        ground.material.bumpTexture = new BABYLON.Texture("img/ground/normal.png", scene);
+        ground.material.bumpTexture.uScale = 30;
+        ground.material.bumpTexture.vScale = 30;
+
+        ground.material.backFaceCulling = true; //Allways show the front and the back of an element
         ground.checkCollisions = true;
         ground.position.y = -5;
         ground.receiveShadows = true;
@@ -62,7 +58,7 @@
         // Création d'une material
         var sMaterial = new BABYLON.StandardMaterial("skyboxMaterial", scene);
         sMaterial.backFaceCulling = false;
-        sMaterial.reflectionTexture = new BABYLON.CubeTexture("img/skybox", scene);
+        sMaterial.reflectionTexture = new BABYLON.CubeTexture("img/skybox/vertigo", scene);
         sMaterial.reflectionTexture.coordinatesMode = BABYLON.Texture.SKYBOX_MODE;
         sMaterial.diffuseColor = new BABYLON.Color3(0, 0, 0);
         sMaterial.specularColor = new BABYLON.Color3(0, 0, 0);
@@ -73,17 +69,13 @@
         skybox.infiniteDistance = true;
 
         return scene;
-
     };
-//*****************************Creation et gestion de MESH*******************************************
-    var geometries = {};
+    //****************Creation et gestion de MESH***********************************
     var meshCount = -1;
 
-    function Mesh()
-    {
+    function Mesh() {
         var type = document.getElementById("mesh-type").value;
-        switch(type)
-        {
+        switch (type) {
             case "box":
                 mesh = BABYLON.Mesh.CreateBox(nom.value, 2, scene);
                 break;
@@ -97,10 +89,10 @@
                 break;
 
             case "pyramid":
-                mesh = BABYLON.Mesh.CreatePyramid4(nom.value , 2, 2, scene, false);
+                mesh = BABYLON.Mesh.CreatePyramid4(nom.value, 2, 2, scene, false);
                 break;
 
-          default:
+            default:
                 mesh = BABYLON.Mesh.CreateSphere(nom.value, 50, 2, scene);
                 break;
         }
@@ -108,151 +100,81 @@
         mesh.type = type;
 
         var colorMat = new BABYLON.StandardMaterial("color", scene);
-        colorMat.diffuseColor = new BABYLON.Color3(R/255,G/255,B/255);
+        colorMat.diffuseColor = new BABYLON.Color3(R / 255, G / 255, B / 255);
         mesh.material = colorMat;
-        return(mesh);
+        return (mesh);
     }
 
 
 
-    //Convertisseur hexa en RGB*******************************************
+    //*********Convertisseur hexa en RGB****************************************
     var picker = document.getElementById('color'),
-        c, R = 229.5, G = 229.5, B = 229.5;
-    function hexToR(h) {return parseInt(h.substring(0,2),16)}
-    function hexToG(h) {return parseInt(h.substring(2,4),16)}
-    function hexToB(h) {return parseInt(h.substring(4,6),16)}
-    function cutHex(h) {return (h.charAt(0)=="#") ? h.substring(1,7):h}
+        c, R = 229.5,
+        G = 229.5,
+        B = 229.5;
+
+    function hexToR(h) {
+        return parseInt(h.substring(0, 2), 16)
+    }
+
+    function hexToG(h) {
+        return parseInt(h.substring(2, 4), 16)
+    }
+
+    function hexToB(h) {
+        return parseInt(h.substring(4, 6), 16)
+    }
+
+    function cutHex(h) {
+        return (h.charAt(0) == "#") ? h.substring(1, 7) : h
+    }
     picker.onchange = function() {
         c = cutHex(this.value);
+
         R = hexToR(c);
         G = hexToG(c);
         B = hexToB(c);
-        meshTab[index].material.diffuseColor.r = R/255;
-        meshTab[index].material.diffuseColor.g = G/255;
-        meshTab[index].material.diffuseColor.b = B/255;
+
+        meshTab[index].material.diffuseColor.r = R / 255;
+        meshTab[index].material.diffuseColor.g = G / 255;
+        meshTab[index].material.diffuseColor.b = B / 255;
     };
 
-    //Fin convertisseur hexa en RGB****************************************
-
+    //*********Convertisseur hexa en RGB****************************************
 
     var index = 0;
-    function indexation(x){ //En fonction du bouton cliqué donne l'index du tableau
+
+    function indexation(x) { //En fonction du bouton cliqué donne l'index du tableau
         $(".grp").css("display", "none");
         $(".ungrp").css("display", "block");
         index = x;
         positionx.value = meshTab[index].position.x;
         positiony.value = meshTab[index].position.y;
         positionz.value = meshTab[index].position.z;
-        nom.value = meshTab[index].name ;
+        nom.value = meshTab[index].name;
         taillex.value = meshTab[index].scaling.x;
         tailley.value = meshTab[index].scaling.y;
         taillez.value = meshTab[index].scaling.z;
-        rotx.value = meshTab[index].rotation.x*100;
-        roty.value = meshTab[index].rotation.y*100;
-        rotz.value = meshTab[index].rotation.z*100;
-        picker.value = "#" + Math.round(meshTab[index].material.diffuseColor.r*255).toString(16) + Math.round(meshTab[index].material.diffuseColor.g*255).toString(16) + Math.round(meshTab[index].material.diffuseColor.b*255).toString(16);
+        rotx.value = meshTab[index].rotation.x * 100;
+        roty.value = meshTab[index].rotation.y * 100;
+        rotz.value = meshTab[index].rotation.z * 100;
+        picker.value = "#" + Math.round(meshTab[index].material.diffuseColor.r * 255).toString(16) + Math.round(meshTab[index].material.diffuseColor.g * 255).toString(16) + Math.round(meshTab[index].material.diffuseColor.b * 255).toString(16);
     };
 
-    var meshTab = []; //Tableau d'objets
-    var btn_add = document.getElementById('btn_add');
-    btn_add.onclick = function()
-    {
-        meshCount ++; //index tu tableau d'objets
-        index=meshCount;
-
-        meshTab[meshCount] = new Mesh(); //Instanciation d'un objet
-
-        var button = document.createElement("label");// Cree un bouton
-        button.innerHTML= '<input type="radio">' + document.getElementById('name').value; // Met un titre au bouton
-        button.setAttribute("id", meshCount); // L'id sera l'index du tableau
-        button.setAttribute("onClick","indexation(parseInt(this.id))") ; // Donne la function qui gere quel bouton est cliqué
-        ["btn", "btn-success", "nav-justified"].forEach(function(e){button.classList.add(e)}); // Ajoute des class
-        document.getElementById("objets").appendChild(button); // Ajoute le bouton dans la page
-
-        positionx.value = 1;
-        positiony.value = 1;
-        positionz.value = 1;
-        taillex.value = 0;
-        tailley.value = 0;
-        taillez.value = 0;
-        rotx.value = 0.0;
-        roty.value = 0.0;
-        rotz.value = 0.0;
-        picker.value = "#FFFFFF";
-    };
-
-
-    var btn_sup = document.getElementById('btn_sup');
-    btn_sup.onclick = function(){ //Fonction supp
-        if (index>=0){
-            if (meshTab[index]){
-                meshTab[index].dispose(); //Supprime l'élement dans le canvas
-                document.getElementById(index).remove(); //Supprime le boutton
-                meshTab.splice(index,1); //Supprime la case du tableau
-                var nodes = document.getElementById("objets").childNodes;
-                for(i=0; i<nodes.length; i++) {
-                    if(nodes[i].id>index){ //Pour chaque élément ayant un id > a celui supprimer
-                        nodes[i].setAttribute("id", nodes[i].id-1); // Leur id décremente de 1
-                    }
-                }
-            }
-            meshCount --;
-        }
-        else{
-            document.getElementById(index).remove(); //Supprime le boutton
-            grp_tab.splice(index,1);
-            var nodes = document.getElementById("objets").childNodes;
-            for(i=0; i<nodes.length; i++) {
-                if(nodes[i].id<index){ //Pour chaque élément ayant un id < a celui supprimer
-                    nodes[i].setAttribute("id", parseFloat(nodes[i].id)+1); // Leur id décremente de 1
-                }
-            }
-
-            grp_count ++;
-        }
-    };
+    //*********Groups****************************************
 
     var btn_grp = document.getElementById('btn_grp');
     var grp_tab = [];
     var grp_count = -1;
-    btn_grp.onclick = function(){ //Fonction groupe
+    btn_grp.onclick = function() { //Fonction groupe
         btn_ok.style.display = "block";
-        Array.prototype.slice.call(document.getElementById("objets").querySelectorAll("[type=radio]")).forEach(function(e){ e.type = "checkbox"; });
-    };
-
-    var btn_ok = document.getElementById('btn_ok');
-    btn_ok.onclick = function(){ //Fonction groupe
-
-        if(document.getElementById("objets").querySelectorAll(":checked").length > 1)
-        {
-            btn_ok.style.display = "none";
-            grp_tab.push({
-                name: "Groupe",
-                objects: Array.prototype.slice.call(document.getElementById("objets").querySelectorAll(":checked")).map(function(e) {
-                    return e.parentNode.id;
-                })
-            });
-            var button = document.createElement("label");// Cree un bouton
-            button.innerHTML= '<input type="radio">' + "Groupe"; // Met un titre au bouton
-            button.setAttribute("id", grp_count); // L'id sera l'index du tableau
-            button.setAttribute("name", "Groupe");
-            button.setAttribute("onClick","grp_index(parseInt(this.id))") ; // Donne la function qui gere quel bouton est cliqué
-            ["btn", "btn-violet", "nav-justified"].forEach(function(e){button.classList.add(e)}); // Ajoute des class
-            document.getElementById("objets").appendChild(button); // Ajoute le bouton dans la page
-            grp_count--;
-            Array.prototype.slice.call(document.getElementById("objets").querySelectorAll("[type=checkbox]")).forEach(function(e){
-                e.type = "radio";
-                e.checked = false;
-            });
-        }
-        else {
-            alert("Selectionnez au moins 2 objets.");
-            btn_ok.style.display = "none";
-        }
+        Array.prototype.slice.call(document.getElementById("objets").querySelectorAll("[type=radio]")).forEach(function(e) {
+            e.type = "checkbox";
+        });
     };
 
     //var index_grp = 0;
-    function grp_index(x){
+    function grp_index(x) {
         $(".grp").css("display", "block");
         $(".ungrp").css("display", "none");
         index = x;
@@ -260,140 +182,21 @@
     }
 
     var nom = document.getElementById('name');
-    nom.oninput = function(){
+    nom.oninput = function() {
         document.getElementById(index).innerHTML = '<input type="radio">' + nom.value;
         meshTab[index].name = nom.value;
     };
 
     var grp_nom = document.getElementById('grp_name');
-    grp_nom.oninput = function(){
+    grp_nom.oninput = function() {
         document.getElementById(index).setAttribute("name", grp_nom.value);
-        document.getElementById(index).innerHTML= '<input type="radio">' + grp_nom.value;
-        grp_tab[Math.abs(index)-1].name = grp_nom.value;
+        document.getElementById(index).innerHTML = '<input type="radio">' + grp_nom.value;
+        grp_tab[Math.abs(index) - 1].name = grp_nom.value;
         console.log(grp_nom.value);
         console.log(index);
     };
 
-
-    var positiony = document.getElementById('posy');
-    positiony.onchange = function() {
-        meshTab[index].position.y = positiony.value;
-    };
-
-
-    var positionx = document.getElementById('posx');
-    positionx.onchange = function() {
-        meshTab[index].position.x = positionx.value;
-    };
-
-
-    var positionz = document.getElementById('posz');
-    positionz.onchange = function() {
-        meshTab[index].position.z = positionz.value;
-    };
-
-    var grp_posxp = document.getElementById('btnplusx');
-    grp_posxp.onclick = function()
-    {
-        grp_tab[Math.abs(index)-1].objects.forEach(function(element, index){
-            meshTab[element].position.x ++;
-        })
-    };
-
-    var grp_posxm = document.getElementById('btnmoinsx');
-    grp_posxm.onclick = function()
-    {
-        grp_tab[Math.abs(index)-1].objects.forEach(function(element, index){
-            meshTab[element].position.x --;
-        })
-    };
-
-    var grp_posyp = document.getElementById('btnplusy');
-    grp_posyp.onclick = function()
-    {
-        grp_tab[Math.abs(index)-1].objects.forEach(function(element, index){
-            meshTab[element].position.y ++;
-        })
-    };
-
-    var grp_posym = document.getElementById('btnmoinsy');
-    grp_posym.onclick = function()
-    {
-        grp_tab[Math.abs(index)-1].objects.forEach(function(element, index){
-            meshTab[element].position.y --;
-        })
-    };
-
-    var grp_poszp = document.getElementById('btnplusz');
-    grp_poszp.onclick = function()
-    {
-        grp_tab[Math.abs(index)-1].objects.forEach(function(element, index){
-            meshTab[element].position.z ++;
-        })
-    };
-
-    var grp_poszm = document.getElementById('btnmoinsz');
-    grp_poszm.onclick = function()
-    {
-        grp_tab[Math.abs(index)-1].objects.forEach(function(element, index){
-            meshTab[element].position.z --;
-        })
-    };
-
-    var check = document.getElementById('check');
-    check.onclick = function() {
-        if ($(".hiden").css("display") == "none")
-        {
-            $(".hiden").css("display", "block");
-        }
-        else
-        {
-            $(".hiden").css("display", "none");
-        }
-    };
-
-
-    var taillex = document.getElementById('taillex');
-    taillex.onchange = function() {
-        meshTab[index].scaling.x = taillex.value;
-        if (check.checked)
-        {
-            meshTab[index].scaling.y = taillex.value;
-            meshTab[index].scaling.z = taillex.value;
-        }
-    };
-
-
-    var tailley = document.getElementById('tailley');
-    tailley.onchange = function() {
-        meshTab[index].scaling.y = tailley.value;
-    };
-
-
-    var taillez = document.getElementById('taillez');
-    taillez.onchange = function() {
-        meshTab[index].scaling.z = taillez.value;
-    };
-
-
-    var rotx = document.getElementById('rotx');
-    rotx.onchange = function() {
-        meshTab[index].rotation.x = rotx.value/100;
-    };
-
-
-    var roty = document.getElementById('roty');
-    roty.onchange = function() {
-        meshTab[index].rotation.y = roty.value/100;
-    };
-
-
-    var rotz = document.getElementById('rotz');
-    rotz.onchange = function() {
-        meshTab[index].rotation.z = rotz.value/100;
-    };
-
-//*****************************Fin Creation et gestion de MESH*******************************************
+    //***********Fin Creation et gestion de MESH************************************
 
     document.getElementById('camReset').onclick = function() {
         console.log("click");
@@ -402,19 +205,19 @@
 
     var scene = createScene();
 
-    engine.runRenderLoop(function () {
+    engine.runRenderLoop(function() {
         scene.render();
         fpsLabel.innerHTML = engine.getFps().toFixed() + " fps";
         camPosTxt.innerHTML = 'Position de la caméra X:' + scene.activeCamera.position.x.toFixed(2) + '&nbsp Y:' + scene.activeCamera.position.y.toFixed(2) + "&nbsp Z:" + scene.activeCamera.position.z.toFixed(2);
     });
 
     // Resize
-    window.addEventListener("resize", function () {
+    window.addEventListener("resize", function() {
         engine.resize();
     });
 
 
-    CreateLine = function (name, width, scene) {
+    CreateLine = function(name, width, scene) {
         var line = BABYLON.Mesh.CreateLines(name, [
             new BABYLON.Vector3(-(width), 0, 0),
             new BABYLON.Vector3(width, 0, 0)
@@ -423,241 +226,146 @@
         return line;
     }
 
-//****************************************Pyramide**************************************************
-    BABYLON.Mesh.CreatePyramid4 = function (name, baseSize, height, scene, updatable) {
-      var pyramid = new BABYLON.Mesh(name, scene);
-
-    // Adding faces
-    var positions = [
-        // Front face
-        0,  height/2,  0,
-        baseSize/2, -height/2, baseSize/2,
-        -baseSize/2, -height/2, baseSize/2,
-
-        // Right face
-        0, height/2, 0,
-        baseSize/2, -height/2, -baseSize/2,
-        baseSize/2, -height/2, baseSize/2,
-
-        // Back face
-        0, height/2,  0,
-        -baseSize/2, -height/2, -baseSize/2,
-        baseSize/2, -height/2, -baseSize/2,
-
-        // Left face
-        0, height/2,  0,
-        -baseSize/2, -height/2, baseSize/2,
-        -baseSize/2, -height/2, -baseSize/2,
-
-        // Bottom face
-        -baseSize/2, -height/2, baseSize/2,
-        baseSize/2, -height/2, baseSize/2,
-        baseSize/2, -height/2, -baseSize/2,
-        -baseSize/2, -height/2, -baseSize/2
-    ];
-
-    var normals = [
-        height, baseSize/2, 0,
-        height, baseSize/2, 0,
-        height, baseSize/2, 0,
-
-        0, baseSize/2, height,
-        0, baseSize/2, height,
-        0, baseSize/2, height,
-
-        -height, baseSize/2, 0,
-        -height, baseSize/2, 0,
-        -height, baseSize/2, 0,
-
-        0, baseSize/2, -height,
-        0, baseSize/2, -height,
-        0, baseSize/2, -height,
-
-        0, -1, 0,
-        0, -1, 0,
-        0, -1, 0,
-        0, -1, 0
-    ];
-
-    var indices = [];
-    var uvs = [];
-    var i = 0;
-    while (i < 12) {
-        indices.push(i+0);
-        uvs.push(1.0, 1.0);
-        indices.push(i+1);
-        uvs.push(0.0, 1.0);
-        indices.push(i+2);
-        uvs.push(0.0, 0.0);
-        i = i+3;
-    }
-
-    indices.push(12);
-    indices.push(13);
-    indices.push(14);
-
-    indices.push(12);
-    indices.push(14);
-    indices.push(15);
-
-    uvs.push(1.0, 1.0);
-    uvs.push(0.0, 1.0);
-    uvs.push(0.0, 0.0);
-    uvs.push(1.0, 0.0);
-
-    pyramid.setVerticesData(BABYLON.VertexBuffer.PositionKind, positions, updatable);
-    pyramid.setVerticesData(BABYLON.VertexBuffer.NormalKind, normals, updatable);
-    pyramid.setVerticesData(BABYLON.VertexBuffer.UVKind, uvs, updatable);
-    pyramid.setIndices(indices);
-
-    return pyramid;
-    }
-//****************************************Fin Pyramide***********************************************
-//****************************************Save***********************************************
+    //***********************************Save***************************************
     var save = document.getElementById("modalSave");
-    save.onsubmit = function(e)
-    {
-        e.preventDefault();//empeche de recharger la page
+    save.onsubmit = function(e) {
+            e.preventDefault(); //empeche de recharger la page
 
-        var meshs = meshTab.map(function(mesh)
-        {
-            return {
-                type : mesh.type,
-                position : mesh.position,
-                scaling : mesh.scaling,
-                diffuseColor : mesh.material.diffuseColor,
-                name : mesh.name
+            var meshs = meshTab.map(function(mesh) {
+                return {
+                    type: mesh.type,
+                    position: mesh.position,
+                    scaling: mesh.scaling,
+                    diffuseColor: mesh.material.diffuseColor,
+                    name: mesh.name
+                };
+            });
+
+            var objectsToWrite = {
+                meshs: meshs,
+                grp_tab: grp_tab
+                    //zones
+                    //links
             };
-        });
 
-        var objectsToWrite = {
-            meshs : meshs,
-            grp_tab : grp_tab
-            //zones
-            //links
-        };
+            var textToWrite = JSON.stringify(objectsToWrite);
 
-        var textToWrite = JSON.stringify(objectsToWrite);
+            var textFileAsBlob = new Blob([textToWrite], {
+                type: 'text/plain'
+            });
 
-        var textFileAsBlob = new Blob([textToWrite], {type:'text/plain'});
+            var fileNameToSaveAs = $("#fileNameInput").val() + ".nail";
+            if (fileNameToSaveAs == ".nail") {
+                fileNameToSaveAs = "World" + fileNameToSaveAs;
+            }
 
-        var fileNameToSaveAs = $("#fileNameInput").val() + ".nail";
-        if(fileNameToSaveAs == ".nail")
-        {
-            fileNameToSaveAs = "World" + fileNameToSaveAs;
+            var downloadLink = document.createElement("a");
+            downloadLink.download = fileNameToSaveAs;
+            downloadLink.innerHTML = "Download File";
+            if (window.URL != null) {
+                // Chrome allows the link to be clicked
+                // without actually adding it to the DOM.
+                downloadLink.href = window.URL.createObjectURL(textFileAsBlob);
+            } else {
+                // Firefox requires the link to be added to the DOM
+                // before it can be clicked.
+                downloadLink.href = window.URL.createObjectURL(textFileAsBlob);
+                downloadLink.onclick = destroyClickedElement;
+                downloadLink.style.display = "none";
+                document.body.appendChild(downloadLink);
+            }
+
+            downloadLink.click();
+            $("#modalSave").modal('hide');
         }
+        //*******************************Fin Save***************************************
 
-        var downloadLink = document.createElement("a");
-        downloadLink.download = fileNameToSaveAs;
-        downloadLink.innerHTML = "Download File";
-        if (window.URL != null)
-        {
-            // Chrome allows the link to be clicked
-            // without actually adding it to the DOM.
-            downloadLink.href = window.URL.createObjectURL(textFileAsBlob);
-        }
-        else
-        {
-            // Firefox requires the link to be added to the DOM
-            // before it can be clicked.
-            downloadLink.href = window.URL.createObjectURL(textFileAsBlob);
-            downloadLink.onclick = destroyClickedElement;
-            downloadLink.style.display = "none";
-            document.body.appendChild(downloadLink);
-        }
-
-        downloadLink.click();
-        $("#modalSave").modal('hide');
-    }
-//****************************************Fin Save***********************************************
-
-//****************************************Load***********************************************
+    //***************************Load***********************************************
     var loadInput = document.getElementById("load");
 
-    loadInput.onchange = function()
-    {
-        var file = loadInput.files[0];
+    loadInput.onchange = function() {
+            var file = loadInput.files[0];
 
-        var fr = new FileReader();
-        fr.onloadend = function()
-        {
-            var data = JSON.parse(fr.result);
-            console.log(data);
+            var fr = new FileReader();
+            fr.onloadend = function() {
+                var data = JSON.parse(fr.result);
+                console.log(data);
 
-            //supprime tous les meshs du canvas
-            meshTab.forEach(function(mesh){
-                mesh.dispose();
-            });
-            //supprime les boutons
-            $("#objets").empty();
-            meshTab = [];
+                //supprime tous les meshs du canvas
+                meshTab.forEach(function(mesh) {
+                    mesh.dispose();
+                });
+                //supprime les boutons
+                $("#objets").empty();
+                meshTab = [];
 
-            var meshCount = 0;
-            data.meshs.forEach(function(e){
-                var mesh;
-                switch(e.type)
-                {
-                    case "box":
-                        mesh = BABYLON.Mesh.CreateBox(e.name, 2, scene);
-                        break;
+                var meshCount = 0;
+                data.meshs.forEach(function(e) {
+                    var mesh;
+                    switch (e.type) {
+                        case "box":
+                            mesh = BABYLON.Mesh.CreateBox(e.name, 2, scene);
+                            break;
 
-                    case "sphere":
-                        mesh = BABYLON.Mesh.CreateSphere(e.name, 50, 2, scene);
-                        break;
+                        case "sphere":
+                            mesh = BABYLON.Mesh.CreateSphere(e.name, 50, 2, scene);
+                            break;
 
-                    case "cylinder":
-                        mesh = BABYLON.Mesh.CreateCylinder(e.name, 2, 2, 2, 50, 1, scene, false);
-                        break;
+                        case "cylinder":
+                            mesh = BABYLON.Mesh.CreateCylinder(e.name, 2, 2, 2, 50, 1, scene, false);
+                            break;
 
-                    case "pyramid":
-                        mesh = BABYLON.Mesh.CreatePyramid4(e.name , 2, 2, scene, false);
-                        break;
+                        case "pyramid":
+                            mesh = BABYLON.Mesh.CreatePyramid4(e.name, 2, 2, scene, false);
+                            break;
 
-                  default:
-                        mesh = BABYLON.Mesh.CreateSphere(e.name, 50, 2, scene);
-                        break;
-                }
+                        default:
+                            mesh = BABYLON.Mesh.CreateSphere(e.name, 50, 2, scene);
+                            break;
+                    }
 
-                mesh.position = e.position;
-                mesh.scaling = e.scaling;
+                    mesh.position = e.position;
+                    mesh.scaling = e.scaling;
 
-                //gestion du material
-                mesh.material = new BABYLON.StandardMaterial("color", scene);
-                mesh.material.diffuseColor = e.diffuseColor;
+                    //gestion du material
+                    mesh.material = new BABYLON.StandardMaterial("color", scene);
+                    mesh.material.diffuseColor = e.diffuseColor;
 
-                //ajout du bouton dans l'interface
-                var button = document.createElement("label");// Cree un bouton
-                button.innerHTML= '<input type="radio">' + e.name; // Met un titre au bouton
-                button.setAttribute("id", meshCount); // L'id sera l'index du tableau
-                button.setAttribute("onClick","indexation(parseInt(this.id))") ; // Donne la function qui gere quel bouton est cliqué
-                ["btn", "btn-success", "nav-justified"].forEach(function(e){
-                    button.classList.add(e)
-                }); // Ajoute des class
-                document.getElementById("objets").appendChild(button); // Ajoute le bouton dans la page
+                    //ajout du bouton dans l'interface
+                    var button = document.createElement("label"); // Cree un bouton
+                    button.innerHTML = '<input type="radio">' + e.name; // Met un titre au bouton
+                    button.setAttribute("id", meshCount); // L'id sera l'index du tableau
+                    button.setAttribute("onClick", "indexation(parseInt(this.id))"); // Donne la function qui gere quel bouton est cliqué
+                    ["btn", "btn-success", "nav-justified"].forEach(function(e) {
+                        button.classList.add(e)
+                    }); // Ajoute des class
+                    document.getElementById("objets").appendChild(button); // Ajoute le bouton dans la page
 
-                //ajout dans le tableau
-                meshTab[meshCount] = mesh;
-                meshCount ++;
+                    //ajout dans le tableau
+                    meshTab[meshCount] = mesh;
+                    meshCount++;
 
-            });
+                });
 
-            grp_tab = data.grp_tab;
+                grp_tab = data.grp_tab;
 
-            var grp_count = 0;
-            grp_tab.forEach(function(e){
-                //ajout du bouton de groupe
-                var button = document.createElement("label");// Cree un bouton
-                button.innerHTML= '<input type="radio">' + e.name; // Met un titre au bouton
-                button.setAttribute("id", grp_count); // L'id sera l'index du tableau
-                button.setAttribute("name", "Groupe");
-                button.setAttribute("onClick","grp_index(parseInt(this.id))") ; // Donne la function qui gere quel bouton est cliqué
-                ["btn", "btn-violet", "nav-justified"].forEach(function(e){button.classList.add(e)}); // Ajoute des class
-                document.getElementById("objets").appendChild(button); // Ajoute le bouton dans la page
+                var grp_count = 0;
+                grp_tab.forEach(function(e) {
+                    //ajout du bouton de groupe
+                    var button = document.createElement("label"); // Cree un bouton
+                    button.innerHTML = '<input type="radio">' + e.name; // Met un titre au bouton
+                    button.setAttribute("id", grp_count); // L'id sera l'index du tableau
+                    button.setAttribute("name", "Groupe");
+                    button.setAttribute("onClick", "grp_index(parseInt(this.id))"); // Donne la function qui gere quel bouton est cliqué
+                    ["btn", "btn-violet", "nav-justified"].forEach(function(e) {
+                        button.classList.add(e)
+                    }); // Ajoute des class
+                    document.getElementById("objets").appendChild(button); // Ajoute le bouton dans la page
 
-                grp_count ++;
-            });
+                    grp_count++;
+                });
 
+            }
+            fr.readAsText(file);
         }
-        fr.readAsText(file);
-    }
-//****************************************Fin Load***********************************************
+        //********************************Fin Load**************************************
