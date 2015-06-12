@@ -71,28 +71,37 @@
             <canvas id="renderCanvas"></canvas>
         </section>
         <aside class="col-md-2">
-            <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
-                <div class="panel panel-default">
-                    <button type="button" class="nav-justified btn btn-primary collapsed" data-toggle="collapse" data-target="#collapseOne">
-                        Objet
-                    </button>
-                    <div id="collapseOne" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOne">
-                        <div class="panel-body">
-                            <select class="nav-justified" id="mesh-type">
-                                <option value="box">Cube</option>
-                                <option value="sphere">Sphere</option>
-                                <option value="cylinder">Cylindre</option>
-                                <option value="pyramid">Pyramide</option>
-                            </select>
-                            <button class="btn btn-info nav-justified" id="btn_add">Ajouter</button>
-                            <button class="nav-justified btn btn-danger" id="btn_sup">Supprimer</button>
-                            <button class="btn btn-violet nav-justified" id="btn_grp">Grouper</button>
-                            <button class="btn btn-violet2 nav-justified" id="btn_ok_grp">OK</button>
-                            <div id="objets" data-toggle="buttons"></div>
-                        </div>
-                    </div>
+          <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
+            <div class="panel panel-default">
+              <button type="button" class="nav-justified btn btn-primary collapsed" data-toggle="collapse" data-parent="#accordion" data-target="#collapseOne">
+                Objet
+              </button>
+              <div id="collapseOne" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOne">
+                <div class="panel-body">
+                  <select class="nav-justified" id="mesh-type">
+                    <option value="box">Cube</option>
+                    <option value="sphere">Sphere</option>
+                    <option value="cylinder">Cylindre</option>
+                    <option value="pyramid">Pyramide</option>
+                  </select>
+                  <button class="btn btn-info nav-justified" id="btn_add">Ajouter</button>
+                  <button class="nav-justified btn btn-danger" id="btn_sup">Supprimer</button>
+                  <button class="btn btn-violet nav-justified" id="btn_grp">Grouper</button>
+                  <button class="btn btn-violet2 nav-justified" id="btn_ok">OK</button>
+                  <div id="objets" data-toggle="buttons"></div>
                 </div>
             </div>
+            <div class="panel panel-default">
+              <button type="button" class="nav-justified btn btn-primary collapsed" data-toggle="collapse" data-parent="#accordion" data-target="#collapseTwo">
+                Zones
+              </button>
+              <div id="collapseTwo" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingTwo">
+                <div class="panel-body">
+                  <button class="btn btn-info nav-justified" id="zone_add">Ajouter</button>
+                </div>
+              </div>
+            </div>
+          </div>
         </aside>
         <footer class="col-md-12">
             <ul class="nav nav-tabs espace">
