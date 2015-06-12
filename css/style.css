@@ -78,14 +78,14 @@ p
 @media screen and (min-width: 1801px){
     .collapse.in {
         overflow : auto;
-        height: 800px;
+        height: 650px;
     }
 }
 
 @media screen and (max-width: 1800px){
     .collapse.in {
         overflow : auto;
-        height: 615px;
+        height: 550px;
     }
 }
 
