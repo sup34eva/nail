@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+
+    <title>Nail JS</title>
+    <!--Favicon-->
+    <link rel="icon" href="img/favicon.ico">
+    <!--css-->
+    <link rel="stylesheet" href="./bootstrap-3.3.2-dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="./css/style.css">
+</head>
+
+<body>
+    <nav>
+        <ul class="nav nav-pills">
+            <li role="presentation" class="dropdown">
+                <a class="dropdown-toggle"  href="index.html" role="button" aria-expanded="false">
+                Accueil
+                </a>
+            </li>
+        </ul>
+    </nav>
+        <div id="text">
+                    <br />
+                    <br />           
+            <p align="center"> Le but de ce logiciel nail (editeur de monde) est de pouvoir crée un monde 
+                sans aucune restriction. <br />
+                Pour vous deplacer dans l'environnement avec les flèches Haut, Bas, Gauche, Droite.<br />
+                Vous pouvez ajouter plusieurs objet predefini en cliquant sur le menu objet qui 
+                ce trouve sur la droite de la fenetre.<br />
+               
+                Pour chaque objet crée vous pouvez modifier : le nom , la taille et la couleur de chaque objet. <br />
+                Vous pouvez aussi modifier sa taille( largeur, longeur) tout ceci a l'aide du l'infobox qui ce situe en bas de votre écran. <br />
+                Vous avez le choix de regrouper plusieurs objet dans une ou plusieurs groupe pour pouvoir les modifiers ou les deplacer en même temps.<br /> Pour ceci il vous suffit de cliquer sur les vos noms d'objet et ensuite de cliquer sur grouper. <br />
+
+                
+                Dans le menu objet nous avons 3 bouton qui vous permettra d'ajouter un objet de votre choix 
+                en le selectionnant dans le menu deroulant. <br />
+                de le supprimer en cliquant sur le bouton supprimer.<br /></p>
+
+               <p align="center"> Vous disposez de 4 objet 2D : </p>
+            <ul align="center">
+                <li>Rectangle</li>
+                <li>Ligne </li>
+                <li>Cercle </li>
+                <li>Trapeze</li>
+            </ul>
+
+               <p align="center"> Vous disposez de 4 objet 3D :</p>
+            <ul >
+                <li> Cylindre</li>
+                <li>Cube </li>
+                <li>Pyramide</li>
+                <li>Sphere</li>
+             </ul>
+               <p align="center"> Vous pouvez mettre le logiciel en plein ecran a l'aide du bouton Fullscreen.<br />
+                Et le bouton ResetCam permet de centrer la camera a son point de depart. <br />
+                vous pouvez aussi editer vos objet a l'aide de l'onglet edition dans le menu 
+                qui vous permettra de copier coller couper supprimer vos objets. <br/>
+
+
+                Vous pouvez aussi enregistrer votre monde, afin de pouvoir re-ouvrir est continuer
+                plus tard grace a l'onglet fichier.<br />  
+                
+            </p>
+        </div>
+    <div class="container-fluid">
+        
+        <footer class="col-md-12">
+   
+        </footer>
+    </div>
+
+    <!-- Babylon.js -->
+    <script src="http://www.babylonjs.com/cannon.js"></script>
+    <script src="http://www.babylonjs.com/Oimo.js"></script>
+    <script src="http://www.babylonjs.com/babylon.js"></script>
+
+    <script src="js/jquery-2.1.3.min.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+    <script src="js/zones.js"></script>
+    <script src="js/script.js"></script>
+    <script src="js/actions.js"></script>
+    <script src="js/objets.js"></script>
+
+
+</body>
+
+</html>
