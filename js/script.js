@@ -150,6 +150,10 @@ function Mesh() {
             mesh = new BABYLON.Mesh.CreateDisc(nom.value, 2, 50, world.scenes[world.zone_id].scene);
             break;
 
+        case "trapezoid":
+            mesh = new BABYLON.Mesh.CreateTrapezoid(nom.value, 1, 2, 1, world.scenes[world.zone_id].scene);
+            break;
+
         default:
             alert("Ce type d'objet n'existe pas");
             break;
@@ -356,6 +360,10 @@ loadInput.onchange = function() {
 
                     case "circle":
                         mesh = new BABYLON.Mesh.CreateDisc(e.name, 2, 50, world.scenes[world.zone_id].scene);
+                        break;
+
+                    case "trapezoid":
+                        mesh = new BABYLON.Mesh.CreateTrapezoid(e.name, 1, 2, 1, 50, world.scenes[world.zone_id].scene);
                         break;
                 }
 

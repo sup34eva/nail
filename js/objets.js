@@ -79,4 +79,50 @@ BABYLON.Mesh.CreatePyramid4 = function(name, baseSize, height, scene, updatable)
     pyramid.setIndices(indices);
 
     return pyramid;
-}
+};
+
+BABYLON.Mesh.CreateTrapezoid = function(name, topWidth, botWidth, hight, scene){
+
+    topWidth = topWidth / 2;
+    botWidth = botWidth / 2;
+    hight = hight / 2;
+
+    var trapezoid = new BABYLON.Mesh(name, scene);
+
+    var indices = [
+        0, 1, 2,
+        1, 3, 2
+    ];
+
+    var positions = [
+        //corner bottom left
+        -botWidth, -hight, 0,
+
+        //corner bottom right
+		botWidth, -hight, 0,
+
+        //corner top left
+		-topWidth, hight, 0,
+
+        //corner top right
+		topWidth, hight, 0
+    ];
+
+    var normals = [
+        0, 0, -1,
+		0, 0, -1,
+		0, 0, -1,
+		0, 0, -1
+    ];
+    var uvs = [
+        0, 0, 1, 0, 1, 1, 0, 1
+    ];
+
+    trapezoid.setVerticesData(BABYLON.VertexBuffer.PositionKind, positions);
+    trapezoid.setVerticesData(BABYLON.VertexBuffer.NormalKind, normals);
+    trapezoid.setVerticesData(BABYLON.VertexBuffer.UVKind, uvs);
+    trapezoid.setIndices(indices);
+
+    return trapezoid;
+
+};
