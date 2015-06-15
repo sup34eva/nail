@@ -4,6 +4,7 @@
     var camPosTxt = document.getElementById("camPosTxt");
 
     var meshTab = []; //Tableau d'objets
+    var grp_tab = [];//tableau de groupes
 
     var createScene = function() {
         //scene
@@ -22,15 +23,17 @@
 
         //light
         var hemLlight = new BABYLON.HemisphericLight("hemLlight", new BABYLON.Vector3(0, 1, 0), scene);
-        hemLlight.intensity = 0.4;
-        hemLlight.diffuse = new BABYLON.Color3(0.9, 1, 1);
+        hemLlight.intensity = 250 / 400;
+        hemLlight.diffuse = new BABYLON.Color3(153 / 255, 190 / 255, 221 / 255);
 
-        var dirLight = new BABYLON.DirectionalLight("dirLight", new BABYLON.Vector3(-1, -1, -1), scene);
-        dirLight.intensity = 0.65;
-        dirLight.diffuse = new BABYLON.Color3(1, 1, 0.9);
+
+        var dirLight = new BABYLON.DirectionalLight("dirLight", new BABYLON.Vector3(-0.8, -0.95, 0.9), scene);
+        dirLight.intensity = 1;
+        dirLight.diffuse = new BABYLON.Color3(245 / 255, 241 / 255, 214 / 255);
 
         //ground
         var ground = BABYLON.Mesh.CreateGround("ground1", 250, 250, 2, scene);
+        ground.renderingGroupId = 1;
         ground.material = new BABYLON.StandardMaterial("gMaterial", scene);
         ground.material.specularColor = new BABYLON.Color3(0, 0, 0);
 
@@ -49,8 +52,7 @@
         ground.material.bumpTexture = new BABYLON.Texture("img/ground/normal.png", scene);
         ground.material.bumpTexture.uScale = 30;
         ground.material.bumpTexture.vScale = 30;
-
-        ground.material.backFaceCulling = true; //Allways show the front and the back of an element
+        
         ground.checkCollisions = true;
         ground.position.y = -5;
         ground.receiveShadows = true;
@@ -92,15 +94,33 @@
                 mesh = BABYLON.Mesh.CreatePyramid4(nom.value, 2, 2, scene, false);
                 break;
 
+            case "line":
+                mesh = BABYLON.Mesh.CreateLines(nom.value, [
+                    new BABYLON.Vector3(-1, 0, 0),
+                    new BABYLON.Vector3(1, 0, 0),
+                ], scene);
+                break;
+
+            case "plane":
+                mesh = BABYLON.Mesh.CreatePlane(nom.value, 1, scene);
+                mesh.scaling.x = 2;
+                break;
+
+            case "circle":
+                mesh = new BABYLON.Mesh.CreateDisc(nom.value, 2, 50, scene);
+                break;
+
             default:
-                mesh = BABYLON.Mesh.CreateSphere(nom.value, 50, 2, scene);
+                alert("Ce type d'objet n'existe pas");
                 break;
         }
 
         mesh.type = type;
+        mesh.renderingGroupId = 1;
 
         var colorMat = new BABYLON.StandardMaterial("color", scene);
         colorMat.diffuseColor = new BABYLON.Color3(R / 255, G / 255, B / 255);
+        colorMat.backFaceCulling = false;
         mesh.material = colorMat;
         return (mesh);
     }
@@ -140,7 +160,7 @@
         meshTab[index].material.diffuseColor.b = B / 255;
     };
 
-    //*********Convertisseur hexa en RGB****************************************
+    //*********retourne les valeurs pour index du tableau***********************
 
     var index = 0;
 
@@ -164,7 +184,6 @@
     //*********Groups****************************************
 
     var btn_grp = document.getElementById('btn_grp');
-    var grp_tab = [];
     var grp_count = -1;
     btn_grp.onclick = function() { //Fonction groupe
         btn_ok.style.display = "block";
@@ -196,12 +215,8 @@
         console.log(index);
     };
 
-    //***********Fin Creation et gestion de MESH************************************
+    //***********Fin groupes************************************
 
-    document.getElementById('camReset').onclick = function() {
-        console.log("click");
-        scene.activeCamera.position = new BABYLON.Vector3(0, 0, 0);
-    };
 
     var scene = createScene();
 
@@ -211,25 +226,14 @@
         camPosTxt.innerHTML = 'Position de la caméra X:' + scene.activeCamera.position.x.toFixed(2) + '&nbsp Y:' + scene.activeCamera.position.y.toFixed(2) + "&nbsp Z:" + scene.activeCamera.position.z.toFixed(2);
     });
 
-    // Resize
+    //On Resize
     window.addEventListener("resize", function() {
         engine.resize();
     });
 
-
-    CreateLine = function(name, width, scene) {
-        var line = BABYLON.Mesh.CreateLines(name, [
-            new BABYLON.Vector3(-(width), 0, 0),
-            new BABYLON.Vector3(width, 0, 0)
-        ], scene);
-
-        return line;
-    }
-
     //***********************************Save***************************************
-    var save = document.getElementById("modalSave");
-    save.onsubmit = function(e) {
-            e.preventDefault(); //empeche de recharger la page
+    var save = document.getElementById("saveLink");
+    save.onclick = function(e) {
 
             var meshs = meshTab.map(function(mesh) {
                 return {
@@ -250,33 +254,12 @@
 
             var textToWrite = JSON.stringify(objectsToWrite);
 
-            var textFileAsBlob = new Blob([textToWrite], {
-                type: 'text/plain'
+            var textFileAsBlob = new File([textToWrite], "world.nail", {
+                type: 'application/octet-stream'
             });
 
-            var fileNameToSaveAs = $("#fileNameInput").val() + ".nail";
-            if (fileNameToSaveAs == ".nail") {
-                fileNameToSaveAs = "World" + fileNameToSaveAs;
-            }
+            save.href = window.URL.createObjectURL(textFileAsBlob);
 
-            var downloadLink = document.createElement("a");
-            downloadLink.download = fileNameToSaveAs;
-            downloadLink.innerHTML = "Download File";
-            if (window.URL != null) {
-                // Chrome allows the link to be clicked
-                // without actually adding it to the DOM.
-                downloadLink.href = window.URL.createObjectURL(textFileAsBlob);
-            } else {
-                // Firefox requires the link to be added to the DOM
-                // before it can be clicked.
-                downloadLink.href = window.URL.createObjectURL(textFileAsBlob);
-                downloadLink.onclick = destroyClickedElement;
-                downloadLink.style.display = "none";
-                document.body.appendChild(downloadLink);
-            }
-
-            downloadLink.click();
-            $("#modalSave").modal('hide');
         }
         //*******************************Fin Save***************************************
 
@@ -319,8 +302,20 @@
                             mesh = BABYLON.Mesh.CreatePyramid4(e.name, 2, 2, scene, false);
                             break;
 
-                        default:
-                            mesh = BABYLON.Mesh.CreateSphere(e.name, 50, 2, scene);
+                        case "line":
+                            mesh = BABYLON.Mesh.CreateLines(e.name, [
+                                new BABYLON.Vector3(-1, 0, 0),
+                                new BABYLON.Vector3(1, 0, 0),
+                            ], scene);
+                            break;
+
+                        case "plane":
+                            mesh = BABYLON.Mesh.CreatePlane(e.name, 1, scene);
+                            mesh.scaling.x = 2;
+                            break;
+
+                        case "circle":
+                            mesh = new BABYLON.Mesh.CreateDisc(e.name, 2, 50, scene);
                             break;
                     }
 

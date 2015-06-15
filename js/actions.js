@@ -10,7 +10,7 @@ fullscreen.onclick = function() {
             canvas.webkitRequestFullscreen();
         }
     }
-    //*********************Ajout objet**********************************************
+//*********************Ajout objet**********************************************
 var btn_add = document.getElementById('btn_add');
 btn_add.onclick = function() {
     meshCount++; //index tu tableau d'objets
@@ -206,4 +206,10 @@ positionx.onchange = function() {
 var positionz = document.getElementById('posz');
 positionz.onchange = function() {
     meshTab[index].position.z = positionz.value;
+};
+
+var camReset = document.getElementById('camReset');
+camReset.onclick = function() {
+    console.log("click");
+    scene.activeCamera.position = new BABYLON.Vector3(0, 0, 0);
 };
