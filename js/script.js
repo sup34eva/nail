@@ -62,66 +62,53 @@ var createScene = function() {
     skybox.material = sMaterial;
     skybox.infiniteDistance = true;
 
-    //mur 1
+    //creation des murs
+    var wallMaterial = new BABYLON.StandardMaterial("gMaterial", world.scenes[world.zone_id].scene);
+    wallMaterial.alpha  = 0;
+    wallMaterial.specularColor = new BABYLON.Color4(0, 0, 0, 0);
 
-    var Mur1 = BABYLON.Mesh.CreateBox("Mur1", 1, world.scenes[world.zone_id].scene);
-        Mur1.scaling = new BABYLON.Vector3(1000, 500, 1);
-        Mur1.position.x = 0;
-        Mur1.position.z = -500;
-        Mur1.position.y = 245;
-        Mur1.rotation.y = 0;
-        Mur1.checkCollisions = true;
-        Mur1.material = new BABYLON.StandardMaterial("mMaterial", world.scenes[world.zone_id].scene)
-        Mur1.material.diffuseTexture = new BABYLON.Texture("../img/mur_cactus.png", world.scenes[world.zone_id].scene);
-        Mur1.material.diffuseTexture.hasAlpha = true;
-        Mur1.setPhysicsState({ impostor: BABYLON.PhysicsEngine.BoxImpostor, mass: 0});
+    var wallFace = new BABYLON.Mesh.CreatePlane("wallFace", 1000, world.scenes[world.zone_id].scene);
+    wallFace.material = wallMaterial;
+    wallFace.position = new BABYLON.Vector3(0, 0, 500);
+    wallFace.rotation = new BABYLON.Vector3(0, 0, 0);
+    wallFace.checkCollisions = true;
+    wallFace.renderingGroupId = 1;
 
-    //mur 2
+    var wallGauche = new BABYLON.Mesh.CreatePlane("wallGauche", 1000, world.scenes[world.zone_id].scene);
+    wallGauche.material = wallMaterial;
+    wallGauche.rotation = new BABYLON.Vector3(0, -Math.PI / 2, 0);
+    wallGauche.position = new BABYLON.Vector3(-500, 0, 0);
+    wallGauche.checkCollisions = true;
+    wallGauche.renderingGroupId = 1;
 
-    var Mur2 = BABYLON.Mesh.CreateBox("Mur2", 1, world.scenes[world.zone_id].scene);
-        Mur2.scaling = new BABYLON.Vector3(1000, 500, 1);
-        Mur2.position.x = 0;
-        Mur2.position.z = 500;
-        Mur2.position.y = 245;
-        Mur2.rotation.y = 0;
-        Mur2.checkCollisions = true;
-        Mur2.material = Mur1.material;
-        Mur2.setPhysicsState({ impostor: BABYLON.PhysicsEngine.BoxImpostor, mass: 0});
+    var wallDroite = new BABYLON.Mesh.CreatePlane("wallDroite", 1000, world.scenes[world.zone_id].scene);
+    wallDroite.material = wallMaterial;
+    wallDroite.rotation = new BABYLON.Vector3(0, Math.PI / 2, 0);
+    wallDroite.position = new BABYLON.Vector3(500, 0, 0);
+    wallDroite.checkCollisions = true;
+    wallDroite.renderingGroupId = 1;
 
-        //mur 3
-        var Mur3 = BABYLON.Mesh.CreateBox("Mur3", 1, world.scenes[world.zone_id].scene);
-        Mur3.scaling = new BABYLON.Vector3(1, 500, 1000);
-        Mur3.position.x = -500;
-        Mur3.position.z = 0;
-        Mur3.position.y = 245;
-        Mur3.rotation.y = 0;
-        Mur3.checkCollisions = true;
-        Mur3.material = Mur1.material;
-        Mur3.setPhysicsState({ impostor: BABYLON.PhysicsEngine.BoxImpostor, mass: 0});
+    var wallDerriere = new BABYLON.Mesh.CreatePlane("wallDerriere", 1000, world.scenes[world.zone_id].scene);
+    wallDerriere.material = wallMaterial;
+    wallDerriere.rotation = new BABYLON.Vector3(0, Math.PI, 0);
+    wallDerriere.position = new BABYLON.Vector3(0, 0, -500);
+    wallDerriere.checkCollisions = true;
+    wallDerriere.renderingGroupId = 1;
 
-        //mur 4
-        var Mur4 = BABYLON.Mesh.CreateBox("Mur4", 1, world.scenes[world.zone_id].scene);
-        Mur4.scaling = new BABYLON.Vector3(1, 500, 1000);
-        Mur4.position.x = 500;
-        Mur4.position.z = 0;
-        Mur4.position.y = 245;
-        Mur4.rotation.y = 0;
-        Mur4.checkCollisions = true;
-        Mur4.material = Mur1.material
-        Mur4.setPhysicsState({ impostor: BABYLON.PhysicsEngine.BoxImpostor, mass: 0});
+    var wallDessus = new BABYLON.Mesh.CreatePlane("wallDessus", 1000, world.scenes[world.zone_id].scene);
+    wallDessus.material = wallMaterial;
+    wallDessus.rotation = new BABYLON.Vector3(3 * Math.PI / 2, 0, 0);
+    wallDessus.position = new BABYLON.Vector3(0, 500, 0);
+    wallDessus.checkCollisions = true;
+    wallDessus.renderingGroupId = 1;
 
-        //plafond
-        var plafond = BABYLON.Mesh.CreateBox("plafond", 1, world.scenes[world.zone_id].scene);
-        plafond.scaling = new BABYLON.Vector3(1000, 0.1, 1000);
-        plafond.position.x = 0;
-        plafond.position.z = 0;
-        plafond.position.y = 495;
-        plafond.rotation.y = 0;
-        plafond.checkCollisions = true;
-        plafond.material = new BABYLON.StandardMaterial("pMaterial", world.scenes[world.zone_id].scene);
-        plafond.material.alpha = 0;
-        //plafond.material.diffuseTexture = new BABYLON.Texture("../img/cactus_mur.jpg", scene);
-        plafond.setPhysicsState({ impostor: BABYLON.PhysicsEngine.BoxImpostor, mass: 0});
+    // Création d'une material
+    var sMaterial = new BABYLON.StandardMaterial("skyboxMaterial", world.scenes[world.zone_id].scene);
+    sMaterial.backFaceCulling = false;
+    sMaterial.reflectionTexture = new BABYLON.CubeTexture("img/skybox/vertigo", world.scenes[world.zone_id].scene);
+    sMaterial.reflectionTexture.coordinatesMode = BABYLON.Texture.SKYBOX_MODE;
+    sMaterial.diffuseColor = new BABYLON.Color3(0, 0, 0);
+    sMaterial.specularColor = new BABYLON.Color3(0, 0, 0);
 
     return world.scenes[world.zone_id].scene;
 };
