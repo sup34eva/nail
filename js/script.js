@@ -288,8 +288,6 @@ save.onclick = function(e) {
             delete e.scene;
         });
 
-        console.log(fileWorld);
-
         var textToWrite = JSON.stringify(fileWorld);
 
         var textFileAsBlob = new File([textToWrite], "world.nail", {
@@ -307,7 +305,6 @@ loadInput.onchange = function() {
         var fr = new FileReader();
         fr.onloadend = function() {
             fileWorld = JSON.parse(fr.result);
-            console.log(fileWorld);
 
             //supprime tous les meshs du canvas
             world.scenes[world.zone_id].meshTab.forEach(function(mesh) {
@@ -434,6 +431,5 @@ loadInput.onchange = function() {
 
         }
         fr.readAsText(file);
-        console.log(world);
     }
     //********************************Fin Load**************************************
