@@ -1,5 +1,3 @@
-    var canvas = document.getElementById("renderCanvas");
-    var engine = new BABYLON.Engine(canvas, true);
     var fpsLabel = document.getElementById("fpsLabel");
     var camPosTxt = document.getElementById("camPosTxt");
 
@@ -7,12 +5,9 @@
     var grp_tab = [];//tableau de groupes
 
     var createScene = function() {
-        //scene
-        var scene = new BABYLON.Scene(engine);
-        scene.collisionsEnabled = true;
 
         // free camera (non-mesh)
-        var camera = new BABYLON.FreeCamera("camera1", new BABYLON.Vector3(0, 5, -10), scene);
+        var camera = new BABYLON.FreeCamera("camera1", new BABYLON.Vector3(0, 5, -10), zone.scenes[zone.zone_id]);
         camera.checkCollisions = true;
 
         // This targets the camera to scene origin
@@ -22,55 +17,55 @@
         camera.attachControl(canvas, true);
 
         //light
-        var hemLlight = new BABYLON.HemisphericLight("hemLlight", new BABYLON.Vector3(0, 1, 0), scene);
+        var hemLlight = new BABYLON.HemisphericLight("hemLlight", new BABYLON.Vector3(0, 1, 0), zone.scenes[zone.zone_id]);
         hemLlight.intensity = 250 / 400;
         hemLlight.diffuse = new BABYLON.Color3(153 / 255, 190 / 255, 221 / 255);
 
 
-        var dirLight = new BABYLON.DirectionalLight("dirLight", new BABYLON.Vector3(-0.8, -0.95, 0.9), scene);
+        var dirLight = new BABYLON.DirectionalLight("dirLight", new BABYLON.Vector3(-0.8, -0.95, 0.9), zone.scenes[zone.zone_id]);
         dirLight.intensity = 1;
         dirLight.diffuse = new BABYLON.Color3(245 / 255, 241 / 255, 214 / 255);
 
         //ground
-        var ground = BABYLON.Mesh.CreateGround("ground1", 250, 250, 2, scene);
+        var ground = BABYLON.Mesh.CreateGround("ground1", 250, 250, 2, zone.scenes[zone.zone_id]);
         ground.renderingGroupId = 1;
-        ground.material = new BABYLON.StandardMaterial("gMaterial", scene);
+        ground.material = new BABYLON.StandardMaterial("gMaterial", zone.scenes[zone.zone_id]);
         ground.material.specularColor = new BABYLON.Color3(0, 0, 0);
 
-        ground.material.diffuseTexture = new BABYLON.Texture("img/ground/diffuse.png", scene);
+        ground.material.diffuseTexture = new BABYLON.Texture("img/ground/diffuse.png", zone.scenes[zone.zone_id]);
         ground.material.diffuseTexture.uScale = 30;
         ground.material.diffuseTexture.vScale = 30;
 
-        ground.material.ambientTexture = new BABYLON.Texture("img/ground/ambient.png", scene);
+        ground.material.ambientTexture = new BABYLON.Texture("img/ground/ambient.png", zone.scenes[zone.zone_id]);
         ground.material.ambientTexture.uScale = 30;
         ground.material.ambientTexture.vScale = 30;
 
-        ground.material.specularTexture = new BABYLON.Texture("img/ground/specular.png", scene);
+        ground.material.specularTexture = new BABYLON.Texture("img/ground/specular.png", zone.scenes[zone.zone_id]);
         ground.material.specularTexture.uScale = 30;
         ground.material.specularTexture.vScale = 30;
 
-        ground.material.bumpTexture = new BABYLON.Texture("img/ground/normal.png", scene);
+        ground.material.bumpTexture = new BABYLON.Texture("img/ground/normal.png", zone.scenes[zone.zone_id]);
         ground.material.bumpTexture.uScale = 30;
         ground.material.bumpTexture.vScale = 30;
-        
+
         ground.checkCollisions = true;
         ground.position.y = -5;
         ground.receiveShadows = true;
 
         // Création d'une material
-        var sMaterial = new BABYLON.StandardMaterial("skyboxMaterial", scene);
+        var sMaterial = new BABYLON.StandardMaterial("skyboxMaterial", zone.scenes[zone.zone_id]);
         sMaterial.backFaceCulling = false;
-        sMaterial.reflectionTexture = new BABYLON.CubeTexture("img/skybox/vertigo", scene);
+        sMaterial.reflectionTexture = new BABYLON.CubeTexture("img/skybox/vertigo", zone.scenes[zone.zone_id]);
         sMaterial.reflectionTexture.coordinatesMode = BABYLON.Texture.SKYBOX_MODE;
         sMaterial.diffuseColor = new BABYLON.Color3(0, 0, 0);
         sMaterial.specularColor = new BABYLON.Color3(0, 0, 0);
 
         // Création d'un cube avec la material adaptée
-        var skybox = BABYLON.Mesh.CreateBox("skybox", 500, scene);
+        var skybox = BABYLON.Mesh.CreateBox("skybox", 500, zone.scenes[zone.zone_id]);
         skybox.material = sMaterial;
         skybox.infiniteDistance = true;
 
-        return scene;
+        return zone.scenes[zone.zone_id];
     };
     //****************Creation et gestion de MESH***********************************
     var meshCount = -1;
@@ -79,35 +74,35 @@
         var type = document.getElementById("mesh-type").value;
         switch (type) {
             case "box":
-                mesh = BABYLON.Mesh.CreateBox(nom.value, 2, scene);
+                mesh = BABYLON.Mesh.CreateBox(nom.value, 2, zone.scenes[zone.zone_id]);
                 break;
 
             case "sphere":
-                mesh = BABYLON.Mesh.CreateSphere(nom.value, 50, 2, scene);
+                mesh = BABYLON.Mesh.CreateSphere(nom.value, 50, 2, zone.scenes[zone.zone_id]);
                 break;
 
             case "cylinder":
-                mesh = BABYLON.Mesh.CreateCylinder(nom.value, 2, 2, 2, 50, 1, scene, false);
+                mesh = BABYLON.Mesh.CreateCylinder(nom.value, 2, 2, 2, 50, 1, zone.scenes[zone.zone_id], false);
                 break;
 
             case "pyramid":
-                mesh = BABYLON.Mesh.CreatePyramid4(nom.value, 2, 2, scene, false);
+                mesh = BABYLON.Mesh.CreatePyramid4(nom.value, 2, 2, zone.scenes[zone.zone_id], false);
                 break;
 
             case "line":
                 mesh = BABYLON.Mesh.CreateLines(nom.value, [
                     new BABYLON.Vector3(-1, 0, 0),
                     new BABYLON.Vector3(1, 0, 0),
-                ], scene);
+                ], zone.scenes[zone.zone_id]);
                 break;
 
             case "plane":
-                mesh = BABYLON.Mesh.CreatePlane(nom.value, 1, scene);
+                mesh = BABYLON.Mesh.CreatePlane(nom.value, 1, zone.scenes[zone.zone_id]);
                 mesh.scaling.x = 2;
                 break;
 
             case "circle":
-                mesh = new BABYLON.Mesh.CreateDisc(nom.value, 2, 50, scene);
+                mesh = new BABYLON.Mesh.CreateDisc(nom.value, 2, 50, zone.scenes[zone.zone_id]);
                 break;
 
             default:
@@ -118,7 +113,7 @@
         mesh.type = type;
         mesh.renderingGroupId = 1;
 
-        var colorMat = new BABYLON.StandardMaterial("color", scene);
+        var colorMat = new BABYLON.StandardMaterial("color", zone.scenes[zone.zone_id]);
         colorMat.diffuseColor = new BABYLON.Color3(R / 255, G / 255, B / 255);
         colorMat.backFaceCulling = false;
         mesh.material = colorMat;
@@ -218,12 +213,12 @@
     //***********Fin groupes************************************
 
 
-    var scene = createScene();
+    zone.scenes[zone.zone_id] = createScene();
 
     engine.runRenderLoop(function() {
-        scene.render();
+      zone.scenes[zone.zone_id].render();
         fpsLabel.innerHTML = engine.getFps().toFixed() + " fps";
-        camPosTxt.innerHTML = 'Position de la caméra X:' + scene.activeCamera.position.x.toFixed(2) + '&nbsp Y:' + scene.activeCamera.position.y.toFixed(2) + "&nbsp Z:" + scene.activeCamera.position.z.toFixed(2);
+        camPosTxt.innerHTML = 'Position de la caméra X:' + zone.scenes[zone.zone_id].activeCamera.position.x.toFixed(2) + '&nbsp Y:' + zone.scenes[zone.zone_id].activeCamera.position.y.toFixed(2) + "&nbsp Z:" + zone.scenes[zone.zone_id].activeCamera.position.z.toFixed(2);
     });
 
     //On Resize
@@ -248,7 +243,7 @@
             var objectsToWrite = {
                 meshs: meshs,
                 grp_tab: grp_tab
-                    //zones
+                    //zone
                     //links
             };
 
@@ -287,35 +282,35 @@
                     var mesh;
                     switch (e.type) {
                         case "box":
-                            mesh = BABYLON.Mesh.CreateBox(e.name, 2, scene);
+                            mesh = BABYLON.Mesh.CreateBox(e.name, 2, zone.scenes[zone.zone_id]);
                             break;
 
                         case "sphere":
-                            mesh = BABYLON.Mesh.CreateSphere(e.name, 50, 2, scene);
+                            mesh = BABYLON.Mesh.CreateSphere(e.name, 50, 2, zone.scenes[zone.zone_id]);
                             break;
 
                         case "cylinder":
-                            mesh = BABYLON.Mesh.CreateCylinder(e.name, 2, 2, 2, 50, 1, scene, false);
+                            mesh = BABYLON.Mesh.CreateCylinder(e.name, 2, 2, 2, 50, 1, zone.scenes[zone.zone_id], false);
                             break;
 
                         case "pyramid":
-                            mesh = BABYLON.Mesh.CreatePyramid4(e.name, 2, 2, scene, false);
+                            mesh = BABYLON.Mesh.CreatePyramid4(e.name, 2, 2, zone.scenes[zone.zone_id], false);
                             break;
 
                         case "line":
                             mesh = BABYLON.Mesh.CreateLines(e.name, [
                                 new BABYLON.Vector3(-1, 0, 0),
                                 new BABYLON.Vector3(1, 0, 0),
-                            ], scene);
+                            ], zone.scenes[zone.zone_id]);
                             break;
 
                         case "plane":
-                            mesh = BABYLON.Mesh.CreatePlane(e.name, 1, scene);
+                            mesh = BABYLON.Mesh.CreatePlane(e.name, 1, zone.scenes[zone.zone_id]);
                             mesh.scaling.x = 2;
                             break;
 
                         case "circle":
-                            mesh = new BABYLON.Mesh.CreateDisc(e.name, 2, 50, scene);
+                            mesh = new BABYLON.Mesh.CreateDisc(e.name, 2, 50, zone.scenes[zone.zone_id]);
                             break;
                     }
 
@@ -323,7 +318,7 @@
                     mesh.scaling = e.scaling;
 
                     //gestion du material
-                    mesh.material = new BABYLON.StandardMaterial("color", scene);
+                    mesh.material = new BABYLON.StandardMaterial("color", zone.scenes[zone.zone_id]);
                     mesh.material.diffuseColor = e.diffuseColor;
 
                     //ajout du bouton dans l'interface
