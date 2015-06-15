@@ -180,17 +180,17 @@ taillez.onchange = function() {
 
 var rotx = document.getElementById('rotx');
 rotx.onchange = function() {
-    meshTab[index].rotation.x = rotx.value / 100;
+    meshTab[index].rotation.x = rotx.value / 180 * Math.PI;
 };
 
 var roty = document.getElementById('roty');
 roty.onchange = function() {
-    meshTab[index].rotation.y = roty.value / 100;
+    meshTab[index].rotation.y = roty.value / 180 * Math.PI;
 };
 
 var rotz = document.getElementById('rotz');
 rotz.onchange = function() {
-    meshTab[index].rotation.z = rotz.value / 100;
+    meshTab[index].rotation.z = rotz.value / 180 * Math.PI;
 };
 
 var positiony = document.getElementById('posy');

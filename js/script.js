@@ -4,6 +4,11 @@
     var meshTab = []; //Tableau d'objets
     var grp_tab = [];//tableau de groupes
 
+    var DegToRad = function(deg)
+    {
+        return deg / 180 * Math.PI;
+    };
+
     var createScene = function() {
 
         // free camera (non-mesh)
@@ -27,7 +32,7 @@
         dirLight.diffuse = new BABYLON.Color3(245 / 255, 241 / 255, 214 / 255);
 
         //ground
-        var ground = BABYLON.Mesh.CreateGround("ground1", 250, 250, 2, zone.scenes[zone.zone_id]);
+        var ground = BABYLON.Mesh.CreateGround("ground1", 1000, 1000, 2, zone.scenes[zone.zone_id]);
         ground.renderingGroupId = 1;
         ground.material = new BABYLON.StandardMaterial("gMaterial", zone.scenes[zone.zone_id]);
         ground.material.specularColor = new BABYLON.Color3(0, 0, 0);
@@ -52,6 +57,46 @@
         ground.position.y = -5;
         ground.receiveShadows = true;
 
+        //creation des murs
+        var wallMaterial = new BABYLON.StandardMaterial("gMaterial", zone.scenes[zone.zone_id]);
+        wallMaterial.alpha  = 0;
+        wallMaterial.specularColor = new BABYLON.Color4(0, 0, 0, 0);
+
+        var wallFace = new BABYLON.Mesh.CreatePlane("wallFace", 1000, zone.scenes[zone.zone_id]);
+        wallFace.material = wallMaterial;
+        wallFace.position = new BABYLON.Vector3(0, 0, 500);
+        wallFace.rotation = new BABYLON.Vector3(0, 0, 0);
+        wallFace.checkCollisions = true;
+        wallFace.renderingGroupId = 1;
+
+        var wallGauche = new BABYLON.Mesh.CreatePlane("wallGauche", 1000, zone.scenes[zone.zone_id]);
+        wallGauche.material = wallMaterial;
+        wallGauche.rotation = new BABYLON.Vector3(0, -Math.PI / 2, 0);
+        wallGauche.position = new BABYLON.Vector3(-500, 0, 0);
+        wallGauche.checkCollisions = true;
+        wallGauche.renderingGroupId = 1;
+
+        var wallDroite = new BABYLON.Mesh.CreatePlane("wallDroite", 1000, zone.scenes[zone.zone_id]);
+        wallDroite.material = wallMaterial;
+        wallDroite.rotation = new BABYLON.Vector3(0, Math.PI / 2, 0);
+        wallDroite.position = new BABYLON.Vector3(500, 0, 0);
+        wallDroite.checkCollisions = true;
+        wallDroite.renderingGroupId = 1;
+
+        var wallDerriere = new BABYLON.Mesh.CreatePlane("wallDerriere", 1000, zone.scenes[zone.zone_id]);
+        wallDerriere.material = wallMaterial;
+        wallDerriere.rotation = new BABYLON.Vector3(0, Math.PI, 0);
+        wallDerriere.position = new BABYLON.Vector3(0, 0, -500);
+        wallDerriere.checkCollisions = true;
+        wallDerriere.renderingGroupId = 1;
+
+        var wallDessus = new BABYLON.Mesh.CreatePlane("wallDessus", 1000, zone.scenes[zone.zone_id]);
+        wallDessus.material = wallMaterial;
+        wallDessus.rotation = new BABYLON.Vector3(3 * Math.PI / 2, 0, 0);
+        wallDessus.position = new BABYLON.Vector3(0, 500, 0);
+        wallDessus.checkCollisions = true;
+        wallDessus.renderingGroupId = 1;
+
         // Création d'une material
         var sMaterial = new BABYLON.StandardMaterial("skyboxMaterial", zone.scenes[zone.zone_id]);
         sMaterial.backFaceCulling = false;
@@ -61,7 +106,7 @@
         sMaterial.specularColor = new BABYLON.Color3(0, 0, 0);
 
         // Création d'un cube avec la material adaptée
-        var skybox = BABYLON.Mesh.CreateBox("skybox", 500, zone.scenes[zone.zone_id]);
+        var skybox = BABYLON.Mesh.CreateBox("skybox", 2000, zone.scenes[zone.zone_id]);
         skybox.material = sMaterial;
         skybox.infiniteDistance = true;
 
