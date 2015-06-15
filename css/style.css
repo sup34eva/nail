@@ -152,5 +152,9 @@ input.file {
     cursor: pointer !important;
 }
 .nav>li.grp {
-    display: none;
+  display: none;
+}
+
+.panel-group{
+  margin-bottom: 7px;
 }
