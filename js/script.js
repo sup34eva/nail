@@ -1,55 +1,53 @@
 var fpsLabel = document.getElementById("fpsLabel");
 var camPosTxt = document.getElementById("camPosTxt");
+var currentzone = document.getElementById("currentzone");
 
 var createScene = function() {
 
-    // free camera (non-mesh)
-    var camera = new BABYLON.FreeCamera("camera1", new BABYLON.Vector3(0, 5, -10), world.scenes[world.zone_id].scene);
-    camera.checkCollisions = true;
+    var camera = new BABYLON.FreeCamera("camera1", new BABYLON.Vector3(0, 5, -10), world.scenes[world.zone_id].scene); //Creation d'une camera
+    camera.checkCollisions = true; //La camera peut rentrer en collision avec les objets
 
-    // This targets the camera to scene origin
     camera.setTarget(BABYLON.Vector3.Zero());
-    camera.maxZ = 10000;
-    // attach camera to canvas
-    camera.attachControl(canvas, true);
+    camera.maxZ = 10000; //Distance de vue max
+    camera.attachControl(canvas, true); //Met la camera dans le canvas
 
-    //light
+    //Lumiere hemispherique
     var hemLlight = new BABYLON.HemisphericLight("hemLlight", new BABYLON.Vector3(0, 1, 0), world.scenes[world.zone_id].scene);
     hemLlight.intensity = 250 / 400;
     hemLlight.diffuse = new BABYLON.Color3(153 / 255, 190 / 255, 221 / 255);
 
-
+    //Lumiere directionelle
     var dirLight = new BABYLON.DirectionalLight("dirLight", new BABYLON.Vector3(-0.8, -0.95, 0.9), world.scenes[world.zone_id].scene);
     dirLight.intensity = 1;
     dirLight.diffuse = new BABYLON.Color3(245 / 255, 241 / 255, 214 / 255);
 
-    //ground
+    //Sol avec toutes ses composantes
     var ground = BABYLON.Mesh.CreateGround("ground1", 1000, 1000, 2, world.scenes[world.zone_id].scene);
     ground.renderingGroupId = 1;
     ground.material = new BABYLON.StandardMaterial("gMaterial", world.scenes[world.zone_id].scene);
     ground.material.specularColor = new BABYLON.Color3(0, 0, 0);
-
+    //composante diffuse
     ground.material.diffuseTexture = new BABYLON.Texture("img/ground/diffuse.png", world.scenes[world.zone_id].scene);
     ground.material.diffuseTexture.uScale = 100;
     ground.material.diffuseTexture.vScale = 100;
-
+    //composante ambiante
     ground.material.ambientTexture = new BABYLON.Texture("img/ground/ambient.png", world.scenes[world.zone_id].scene);
     ground.material.ambientTexture.uScale = 100;
     ground.material.ambientTexture.vScale = 100;
-
+    //composante speculaire
     ground.material.specularTexture = new BABYLON.Texture("img/ground/specular.png", world.scenes[world.zone_id].scene);
     ground.material.specularTexture.uScale = 100;
     ground.material.specularTexture.vScale = 100;
-
+    //Normal map
     ground.material.bumpTexture = new BABYLON.Texture("img/ground/normal.png", world.scenes[world.zone_id].scene);
     ground.material.bumpTexture.uScale = 100;
     ground.material.bumpTexture.vScale = 100;
 
-    ground.checkCollisions = true;
+    ground.checkCollisions = true; //On ne peut pas le traverser
     ground.position.y = -5;
-    ground.receiveShadows = true;
+    ground.receiveShadows = true; //Recois les ombres
 
-    // Création d'une material
+    // Création d'un material
     var sMaterial = new BABYLON.StandardMaterial("skyboxMaterial", world.scenes[world.zone_id].scene);
     sMaterial.backFaceCulling = false;
     sMaterial.reflectionTexture = new BABYLON.CubeTexture("img/skybox/vertigo", world.scenes[world.zone_id].scene);
@@ -102,22 +100,15 @@ var createScene = function() {
     wallDessus.checkCollisions = true;
     wallDessus.renderingGroupId = 1;
 
-    // Création d'une material
-    var sMaterial = new BABYLON.StandardMaterial("skyboxMaterial", world.scenes[world.zone_id].scene);
-    sMaterial.backFaceCulling = false;
-    sMaterial.reflectionTexture = new BABYLON.CubeTexture("img/skybox/vertigo", world.scenes[world.zone_id].scene);
-    sMaterial.reflectionTexture.coordinatesMode = BABYLON.Texture.SKYBOX_MODE;
-    sMaterial.diffuseColor = new BABYLON.Color3(0, 0, 0);
-    sMaterial.specularColor = new BABYLON.Color3(0, 0, 0);
 
-    return world.scenes[world.zone_id].scene;
+    return world.scenes[world.zone_id].scene; //Retourne la scene
 };
 //****************Creation et gestion de MESH***********************************
-var meshCount = -1;
+var meshCount = -1; //Compteur de mesh
 
 function Mesh() {
     var type = document.getElementById("mesh-type").value;
-    switch (type) {
+    switch (type) { //Suivant la valeur du select creer l'objet
         case "box":
             mesh = BABYLON.Mesh.CreateBox(nom.value, 2, world.scenes[world.zone_id].scene);
             break;
@@ -210,10 +201,10 @@ picker.onchange = function() {
 var index = 0;
 
 function indexation(x) { //En fonction du bouton cliqué donne l'index du tableau
-    $(".grp").css("display", "none");
-    $(".ungrp").css("display", "block");
-    index = x;
-    positionx.value = world.scenes[world.zone_id].meshTab[index].position.x;
+    $(".grp").css("display", "none"); //Cache les boutons pour les groupes
+    $(".ungrp").css("display", "block"); //Montre les objets pour les boutons simples
+    index = x; //Change l'index courant avec l'index du bouton clique
+    positionx.value = world.scenes[world.zone_id].meshTab[index].position.x; // Change les valeurs des inputs avec celui de l'objet selectioné
     positiony.value = world.scenes[world.zone_id].meshTab[index].position.y;
     positionz.value = world.scenes[world.zone_id].meshTab[index].position.z;
     nom.value = world.scenes[world.zone_id].meshTab[index].name;
@@ -231,48 +222,47 @@ function indexation(x) { //En fonction du bouton cliqué donne l'index du tablea
 var btn_grp = document.getElementById('btn_grp');
 var grp_count = 0;
 btn_grp.onclick = function() { //Fonction groupe
-    btn_ok.style.display = "block";
+    btn_ok.style.display = "block";//Affiche le bouton ok
     Array.prototype.slice.call(document.getElementById("objets").querySelectorAll("[type=radio]")).forEach(function(e) {
-        e.type = "checkbox";
+        e.type = "checkbox";//Change tous les radio en checkbox
     });
 };
 
 //var index_grp = 0;
 function grp_index(x) {
-    $(".grp").css("display", "block");
-    $(".ungrp").css("display", "none");
-    index = x;
-    grp_nom.value = document.querySelector('[data-grp="'+ index +'"]').getAttribute("name");
+    $(".grp").css("display", "block"); //Cache les boutons pour les objets seuls
+    $(".ungrp").css("display", "none"); //Montre les boutons pour les objets de groupe
+    index = x; //Change l'index courant avec celui du bouton de groupe
+    grp_nom.value = document.querySelector('[data-grp="'+ index +'"]').getAttribute("name"); //Met la valeur du nom du groupe dans l'input
 }
 
 var nom = document.getElementById('name');
-nom.oninput = function() {
+nom.oninput = function() { //Fonction pour changer de nom d'objet seuls
     document.querySelector('[data-mesh="'+ index +'"]').innerHTML = '<input type="radio">' + nom.value;
     world.scenes[world.zone_id].meshTab[index].name = nom.value;
 };
 
 var grp_nom = document.getElementById('grp_name');
-grp_nom.oninput = function() {
+grp_nom.oninput = function() { //Fonction pour changer le nom d'un groupe
     document.querySelector('[data-grp="'+ index +'"]').setAttribute("name", grp_nom.value);
     document.querySelector('[data-grp="'+ index +'"]').innerHTML = '<input type="radio">' + grp_nom.value;
     world.scenes[world.zone_id].grp_tab[index].name = grp_nom.value;
-    console.log(grp_nom.value);
-    console.log(index);
 };
 
 //***********Fin groupes************************************
 
 
-world.scenes[world.zone_id].scene = createScene();
+world.scenes[world.zone_id].scene = createScene(); //Cree la scene
 
-engine.runRenderLoop(function() {
+engine.runRenderLoop(function() { //A chaque frame
   world.scenes[world.zone_id].scene.render();
-    fpsLabel.innerHTML = engine.getFps().toFixed() + " fps";
+    fpsLabel.innerHTML = engine.getFps().toFixed() + " fps"; //Montre le fps
+    //Montre la position de la camera
     camPosTxt.innerHTML = 'Position de la caméra X:' + world.scenes[world.zone_id].scene.activeCamera.position.x.toFixed(2) + '&nbsp Y:' + world.scenes[world.zone_id].scene.activeCamera.position.y.toFixed(2) + "&nbsp Z:" + world.scenes[world.zone_id].scene.activeCamera.position.z.toFixed(2);
 });
 
 //On Resize
-window.addEventListener("resize", function() {
+window.addEventListener("resize", function() { //Redimentioner la le canvas si la fenetre se redimentionne
     engine.resize();
 });
 
