@@ -18,7 +18,11 @@
             <li role="presentation" class="dropdown">
                 <a class="dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-expanded="false">
 
+
+
                   Fichier <span class="caret"></span>
+
+
 
                 </a>
                 <ul class="dropdown-menu" role="menu">
@@ -37,7 +41,11 @@
             <li role="presentation" class="dropdown">
                 <a class="dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-expanded="false">
 
+
+
                     Edition <span class="caret"></span>
+
+
 
                 </a>
                 <ul class="dropdown-menu" role="menu">
@@ -53,7 +61,11 @@
             <li role="presentation" class="dropdown">
                 <a class="dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-expanded="false">
 
+
+
                   ? <span class="caret"></span>
+
+
 
                 </a>
                 <ul class="dropdown-menu" role="menu">
@@ -73,7 +85,7 @@
         <aside class="col-md-2">
             <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
                 <div class="panel panel-default">
-                    <button type="button" class="nav-justified btn btn-primary collapsed" data-toggle="collapse" data-target="#collapseOne">
+                    <button type="button" class="nav-justified btn btn-primary collapsed" data-toggle="collapse" data-parent="#accordion" data-target="#collapseOne">
                         Objet
                     </button>
                     <div id="collapseOne" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOne">
@@ -92,6 +104,16 @@
                             <button class="btn btn-violet nav-justified" id="btn_grp">Grouper</button>
                             <button class="btn btn-violet2 nav-justified" id="btn_ok_grp">OK</button>
                             <div id="objets" data-toggle="buttons"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="panel panel-default">
+                    <button type="button" class="nav-justified btn btn-primary collapsed" data-toggle="collapse" data-parent="#accordion" data-target="#collapseTwo">
+                        Zones
+                    </button>
+                    <div id="collapseTwo" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingTwo">
+                        <div class="panel-body">
+                            <button class="btn btn-info nav-justified" id="zone_add">Ajouter</button>
                         </div>
                     </div>
                 </div>

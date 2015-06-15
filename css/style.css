@@ -54,14 +54,14 @@ p {
 }
 @media screen and (min-width: 1801px) {
     .collapse.in {
-        overflow: auto;
-        height: 800px;
+        overflow : auto;
+        height: 650px;
     }
 }
 @media screen and (max-width: 1800px) {
     .collapse.in {
-        overflow: auto;
-        height: 615px;
+        overflow : auto;
+        height: 550px;
     }
 }
 @media screen and (max-width: 1400px) {
