@@ -16,7 +16,7 @@ btn_add.onclick = function() {
     meshCount++; //index tu tableau d'objets
     index = meshCount;
 
-    meshTab[meshCount] = new Mesh(); //Instanciation d'un objet
+    world.scenes[world.zone_id].meshTab[meshCount] = new Mesh(); //Instanciation d'un objet
 
     var button = document.createElement("label"); // Cree un bouton
     button.innerHTML = '<input type="radio">' + document.getElementById('name').value; // Met un titre au bouton
@@ -43,10 +43,10 @@ var btn_sup = document.getElementById('btn_sup');
 btn_sup.onclick = function() {
     if (index >= 0) //si objet seul
     {
-        if (meshTab[index]) {
-            meshTab[index].dispose(); //Supprime l'élement dans le canvas
+        if (world.scenes[world.zone_id].meshTab[index]) {
+            world.scenes[world.zone_id].meshTab[index].dispose(); //Supprime l'élement dans le canvas
             document.getElementById(index).remove(); //Supprime le boutton
-            meshTab.splice(index, 1); //Supprime la case du tableau
+            world.scenes[world.zone_id].meshTab.splice(index, 1); //Supprime la case du tableau
             var nodes = document.getElementById("objets").childNodes;
             for (i = 0; i < nodes.length; i++) {
                 if (nodes[i].id > index) //Pour chaque élément ayant un id > a celui supprimer
@@ -106,7 +106,7 @@ var grp_posxp = document.getElementById('btnplusx');
 grp_posxp.onclick = function() //x plus
     {
         grp_tab[Math.abs(index) - 1].objects.forEach(function(element, index) {
-            meshTab[element].position.x++;
+            world.scenes[world.zone_id].meshTab[element].position.x++;
         })
     };
 
@@ -114,7 +114,7 @@ var grp_posxm = document.getElementById('btnmoinsx');
 grp_posxm.onclick = function() //x moins
     {
         grp_tab[Math.abs(index) - 1].objects.forEach(function(element, index) {
-            meshTab[element].position.x--;
+            world.scenes[world.zone_id].meshTab[element].position.x--;
         })
     };
 
@@ -122,7 +122,7 @@ var grp_posyp = document.getElementById('btnplusy');
 grp_posyp.onclick = function() //y plus
     {
         grp_tab[Math.abs(index) - 1].objects.forEach(function(element, index) {
-            meshTab[element].position.y++;
+            world.scenes[world.zone_id].meshTab[element].position.y++;
         })
     };
 
@@ -130,7 +130,7 @@ var grp_posym = document.getElementById('btnmoinsy');
 grp_posym.onclick = function() //y moins
     {
         grp_tab[Math.abs(index) - 1].objects.forEach(function(element, index) {
-            meshTab[element].position.y--;
+            world.scenes[world.zone_id].meshTab[element].position.y--;
         })
     };
 
@@ -138,7 +138,7 @@ var grp_poszp = document.getElementById('btnplusz');
 grp_poszp.onclick = function() //z plus
     {
         grp_tab[Math.abs(index) - 1].objects.forEach(function(element, index) {
-            meshTab[element].position.z++;
+            world.scenes[world.zone_id].meshTab[element].position.z++;
         })
     };
 
@@ -146,7 +146,7 @@ var grp_poszm = document.getElementById('btnmoinsz');
 grp_poszm.onclick = function() //z moins
     {
         grp_tab[Math.abs(index) - 1].objects.forEach(function(element, index) {
-            meshTab[element].position.z--;
+            world.scenes[world.zone_id].meshTab[element].position.z--;
         })
     };
 
@@ -161,55 +161,76 @@ check.onclick = function() {
 //******************Agrandissement synchro**************************************
 var taillex = document.getElementById('taillex');
 taillex.onchange = function() {
-    meshTab[index].scaling.x = taillex.value;
+    world.scenes[world.zone_id].meshTab[index].scaling.x = taillex.value;
     if (check.checked) {
-        meshTab[index].scaling.y = taillex.value;
-        meshTab[index].scaling.z = taillex.value;
+        world.scenes[world.zone_id].meshTab[index].scaling.y = taillex.value;
+        world.scenes[world.zone_id].meshTab[index].scaling.z = taillex.value;
     }
 };
 //*********************Modif meshs**********************************************
 var tailley = document.getElementById('tailley');
 tailley.onchange = function() {
-    meshTab[index].scaling.y = tailley.value;
+    world.scenes[world.zone_id].meshTab[index].scaling.y = tailley.value;
 };
 
 var taillez = document.getElementById('taillez');
 taillez.onchange = function() {
-    meshTab[index].scaling.z = taillez.value;
+    world.scenes[world.zone_id].meshTab[index].scaling.z = taillez.value;
 };
 
 var rotx = document.getElementById('rotx');
 rotx.onchange = function() {
-    meshTab[index].rotation.x = rotx.value / 180 * Math.PI;
+    world.scenes[world.zone_id].meshTab[index].rotation.x = rotx.value / 180 * Math.PI;
 };
 
 var roty = document.getElementById('roty');
 roty.onchange = function() {
-    meshTab[index].rotation.y = roty.value / 180 * Math.PI;
+    world.scenes[world.zone_id].meshTab[index].rotation.y = roty.value / 180 * Math.PI;
 };
 
 var rotz = document.getElementById('rotz');
 rotz.onchange = function() {
-    meshTab[index].rotation.z = rotz.value / 180 * Math.PI;
+    world.scenes[world.zone_id].meshTab[index].rotation.z = rotz.value / 180 * Math.PI;
 };
 
 var positiony = document.getElementById('posy');
 positiony.onchange = function() {
-    meshTab[index].position.y = positiony.value;
+    world.scenes[world.zone_id].meshTab[index].position.y = positiony.value;
 };
 
 var positionx = document.getElementById('posx');
 positionx.onchange = function() {
-    meshTab[index].position.x = positionx.value;
+    world.scenes[world.zone_id].meshTab[index].position.x = positionx.value;
 };
 
 var positionz = document.getElementById('posz');
 positionz.onchange = function() {
-    meshTab[index].position.z = positionz.value;
+    world.scenes[world.zone_id].meshTab[index].position.z = positionz.value;
 };
 
 var camReset = document.getElementById('camReset');
 camReset.onclick = function() {
     console.log("click");
-    scene.activeCamera.position = new BABYLON.Vector3(0, 0, 0);
+    world.scenes[world.zone_id].scene.activeCamera.position = new BABYLON.Vector3(0, 0, 0);
+};
+
+var zoneadd = document.getElementById('zone_add');
+zoneadd.onclick = function() {
+  world.zone_id = world.scenes.push({
+    meshTab : meshTab,
+    grp_tab : grp_tab,
+    scene : new BABYLON.Scene(engine)
+  })-1;
+  world.scenes[world.zone_id].scene.collisionsEnabled = true;
+  var init = new createScene();
+  var button = document.createElement("label"); // Cree un bouton
+  button.innerHTML = '<input type="radio">' + world.name + world.zone_id; // Met un titre au bouton
+  button.setAttribute("id", world.zone_id); // L'id sera l'index du tableau
+  button.setAttribute("onClick", "zoneCharge(parseInt(this.id))"); // Donne la function qui gere quel bouton est cliqué
+  ["btn", "btn-success", "nav-justified"].forEach(function(e) {
+      button.classList.add(e)
+  }); // Ajoute des class
+  document.getElementById("zones").appendChild(button); // Ajoute le bouton dans la page
+  $("#objets").empty();
+  meshCount = 0;
 };
