@@ -218,6 +218,11 @@ camReset.onclick = function() {
   world.scenes[world.zone_id].scene.activeCamera.position = new BABYLON.Vector3(0, 0, 0);
 };
 
+var linker = document.getElementById('linker');
+linker.onclick = function() {
+    world.scenes[world.zone_id].meshTab[index].linker = check_link.value;
+};
+
 var zoneadd = document.getElementById('zone_add');
 zoneadd.onclick = function() {
   world.zone_count ++;

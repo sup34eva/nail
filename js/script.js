@@ -160,6 +160,7 @@ function Mesh() {
     }
 
     mesh.type = type;
+    mesh.linker = -1;
     mesh.renderingGroupId = 1;
 
     var colorMat = new BABYLON.StandardMaterial("color", world.scenes[world.zone_id].scene);
@@ -279,136 +280,170 @@ window.addEventListener("resize", function() {
 var save = document.getElementById("saveLink");
 save.onclick = function(e) {
 
-        var meshs = world.scenes[world.zone_id].meshTab.map(function(mesh) {
-            return {
-                type: mesh.type,
-                position: mesh.position,
-                scaling: mesh.scaling,
-                diffuseColor: mesh.material.diffuseColor,
-                name: mesh.name
-            };
+        var fileWorld = world;
+
+        fileWorld.scenes.forEach(function(e) {
+
+            e.meshTab = e.meshTab.map(function(mesh) {
+                return {
+                    type: mesh.type,
+                    position: mesh.position,
+                    scaling: mesh.scaling,
+                    diffuseColor: mesh.material.diffuseColor,
+                    name: mesh.name
+                };
+            });
+
+            //suppression de la scene
+            delete e.scene;
         });
 
-        var objectsToWrite = {
-            meshs: meshs,
-            grp_tab: grp_tab
-                //zone
-                //links
-        };
+        console.log(fileWorld);
 
-        var textToWrite = JSON.stringify(objectsToWrite);
+        var textToWrite = JSON.stringify(fileWorld);
 
         var textFileAsBlob = new File([textToWrite], "world.nail", {
             type: 'application/octet-stream'
         });
 
         save.href = window.URL.createObjectURL(textFileAsBlob);
-
     }
-    //*******************************Fin Save***************************************
 
 //***************************Load***********************************************
 var loadInput = document.getElementById("load");
-
 loadInput.onchange = function() {
         var file = loadInput.files[0];
 
         var fr = new FileReader();
         fr.onloadend = function() {
-            var data = JSON.parse(fr.result);
-            console.log(data);
+            fileWorld = JSON.parse(fr.result);
+            console.log(fileWorld);
 
             //supprime tous les meshs du canvas
             world.scenes[world.zone_id].meshTab.forEach(function(mesh) {
                 mesh.dispose();
             });
+            world.scenes[world.zone_id].meshTab = [];
+            world.zone_id = 0;
             //supprime les boutons
             $("#objets").empty();
-            world.scenes[world.zone_id].meshTab = [];
+            $("#zones").empty();
 
-            var meshCount = 0;
-            data.meshs.forEach(function(e) {
-                var mesh;
-                switch (e.type) {
-                    case "box":
-                        mesh = BABYLON.Mesh.CreateBox(e.name, 2, world.scenes[world.zone_id].scene);
-                        break;
 
-                    case "sphere":
-                        mesh = BABYLON.Mesh.CreateSphere(e.name, 50, 2, world.scenes[world.zone_id].scene);
-                        break;
+            var sceneCount = 0;
+            fileWorld.scenes.forEach(function(forScenes){
+                world.scenes[sceneCount] = {
+                    "scene" : createScene(),
+                    "meshTab" : [],
+                    "grp_tab" : []
+                };
 
-                    case "cylinder":
-                        mesh = BABYLON.Mesh.CreateCylinder(e.name, 2, 2, 2, 50, 1, world.scenes[world.zone_id].scene, false);
-                        break;
+                var meshCount = 0;
+                forScenes.meshTab.forEach(function(forMeshTab){
 
-                    case "pyramid":
-                        mesh = BABYLON.Mesh.CreatePyramid4(e.name, 2, 2, world.scenes[world.zone_id].scene, false);
-                        break;
+                    if(forMeshTab != null)
+                    {
+                        switch (forMeshTab.type) {
+                            case "box":
+                                world.scenes[sceneCount].meshTab[meshCount] = BABYLON.Mesh.CreateBox(forMeshTab.name, 2, world.scenes[sceneCount].scene);
+                                break;
 
-                    case "line":
-                        mesh = BABYLON.Mesh.CreateLines(e.name, [
-                            new BABYLON.Vector3(-1, 0, 0),
-                            new BABYLON.Vector3(1, 0, 0),
-                        ], world.scenes[world.zone_id].scene);
-                        break;
+                            case "sphere":
+                                world.scenes[sceneCount].meshTab[meshCount] = BABYLON.Mesh.CreateSphere(forMeshTab.name, 50, 2, world.scenes[sceneCount].scene);
+                                break;
 
-                    case "plane":
-                        mesh = BABYLON.Mesh.CreatePlane(e.name, 1, world.scenes[world.zone_id].scene);
-                        mesh.scaling.x = 2;
-                        break;
+                            case "cylinder":
+                                world.scenes[sceneCount].meshTab[meshCount] = BABYLON.Mesh.CreateCylinder(forMeshTab.name, 2, 2, 2, 50, 1, world.scenes[sceneCount].scene, false);
+                                break;
 
-                    case "circle":
-                        mesh = new BABYLON.Mesh.CreateDisc(e.name, 2, 50, world.scenes[world.zone_id].scene);
-                        break;
+                            case "pyramid":
+                                world.scenes[sceneCount].meshTab[meshCount] = BABYLON.Mesh.CreatePyramid4(forMeshTab.name, 2, 2, world.scenes[sceneCount].scene, false);
+                                break;
 
-                    case "trapezoid":
-                        mesh = new BABYLON.Mesh.CreateTrapezoid(e.name, 1, 2, 1, 50, world.scenes[world.zone_id].scene);
-                        break;
-                }
+                            case "line":
+                                world.scenes[sceneCount].meshTab[meshCount] = BABYLON.Mesh.CreateLines(forMeshTab.name, [
+                                    new BABYLON.Vector3(-1, 0, 0),
+                                    new BABYLON.Vector3(1, 0, 0),
+                                ], world.scenes[sceneCount].scene);
+                                break;
 
-                mesh.position = e.position;
-                mesh.scaling = e.scaling;
+                            case "plane":
+                                world.scenes[sceneCount].meshTab[meshCount] = BABYLON.Mesh.CreatePlane(forMeshTab.name, 1, world.scenes[sceneCount].scene);
+                                mesh.scaling.x = 2;
+                                break;
 
-                //gestion du material
-                mesh.material = new BABYLON.StandardMaterial("color", world.scenes[world.zone_id].scene);
-                mesh.material.diffuseColor = e.diffuseColor;
+                            case "circle":
+                                world.scenes[sceneCount].meshTab[meshCount] = new BABYLON.Mesh.CreateDisc(forMeshTab.name, 2, 50, world.scenes[sceneCount].scene);
+                                break;
 
-                //ajout du bouton dans l'interface
+                            case "trapezoid":
+                                world.scenes[sceneCount].meshTab[meshCount] = new BABYLON.Mesh.CreateTrapezoid(forMeshTab.name, 1, 2, 1, 50, world.scenes[sceneCount].scene);
+                                break;
+                        }
+
+
+                        world.scenes[sceneCount].meshTab[meshCount].position = forMeshTab.position;
+                        world.scenes[sceneCount].meshTab[meshCount].scaling = forMeshTab.scaling;
+                        world.scenes[sceneCount].meshTab[meshCount].renderingGroupId = 1;
+
+                        //gestion du material
+                        world.scenes[sceneCount].meshTab[meshCount].material = new BABYLON.StandardMaterial("color", world.scenes[sceneCount].scene);
+                        world.scenes[sceneCount].meshTab[meshCount].material.diffuseColor = forMeshTab.diffuseColor;
+
+                        //ajout du bouton dans l'interface
+                        var button = document.createElement("label"); // Cree un bouton
+                        button.innerHTML = '<input type="radio">' + forMeshTab.name; // Met un titre au bouton
+                        button.dataset.mesh = meshCount;
+                        button.onclick = function(e){
+                            indexation(this.dataset.mesh)
+                        };
+                        ["btn", "btn-success", "nav-justified"].forEach(function(e) {
+                            button.classList.add(e)
+                        }); // Ajoute des class
+                        document.getElementById("objets").appendChild(button); // Ajoute le bouton dans la page
+                    }
+
+                    meshCount++;
+                });
+
+                world.scenes[sceneCount].grp_tab = forScenes.grp_tab;
+
+                var grpCount = 0;
+                world.scenes[sceneCount].grp_tab.forEach(function(e) {
+                    //ajout du bouton de groupe
+                    var button = document.createElement("label"); // Cree un bouton
+                    button.innerHTML = '<input type="radio">' + e.name; // Met un titre au bouton
+                    button.dataset.grp = grp_count;
+                    button.onclick = function(e){
+                        grp_index(this.dataset.grp);
+                    };
+                    ["btn", "btn-violet", "nav-justified"].forEach(function(e) {
+                        button.classList.add(e)
+                    }); // Ajoute des class
+                    document.getElementById("objets").appendChild(button); // Ajoute le bouton dans la page
+
+                    grpCount++;
+                });
+
+                //ajout du bouton de zone
                 var button = document.createElement("label"); // Cree un bouton
-                button.innerHTML = '<input type="radio">' + e.name; // Met un titre au bouton
-                button.setAttribute("id", meshCount); // L'id sera l'index du tableau
-                button.setAttribute("onClick", "indexation(parseInt(this.id))"); // Donne la function qui gere quel bouton est cliqué
+                button.innerHTML = '<input type="radio">' + 'zone ' + sceneCount; // Met un titre au bouton
+                button.dataset.zone = sceneCount;
+                button.onclick = function(e){
+                    zoneCharge(this.dataset.zone);
+                };
                 ["btn", "btn-success", "nav-justified"].forEach(function(e) {
                     button.classList.add(e)
                 }); // Ajoute des class
-                document.getElementById("objets").appendChild(button); // Ajoute le bouton dans la page
+                document.getElementById("zones").appendChild(button); // Ajoute le bouton dans la page
+                //currentzone.innerHTML = 'Zone : ' + sceneCount;
 
-                //ajout dans le tableau
-                world.scenes[world.zone_id].meshTab[meshCount] = mesh;
-                meshCount++;
 
-            });
-
-            grp_tab = data.grp_tab;
-
-            var grp_count = 0;
-            grp_tab.forEach(function(e) {
-                //ajout du bouton de groupe
-                var button = document.createElement("label"); // Cree un bouton
-                button.innerHTML = '<input type="radio">' + e.name; // Met un titre au bouton
-                button.setAttribute("id", grp_count); // L'id sera l'index du tableau
-                button.setAttribute("name", "Groupe");
-                button.setAttribute("onClick", "grp_index(parseInt(this.id))"); // Donne la function qui gere quel bouton est cliqué
-                ["btn", "btn-violet", "nav-justified"].forEach(function(e) {
-                    button.classList.add(e)
-                }); // Ajoute des class
-                document.getElementById("objets").appendChild(button); // Ajoute le bouton dans la page
-
-                grp_count++;
+                sceneCount ++;
             });
 
         }
         fr.readAsText(file);
+        console.log(world);
     }
     //********************************Fin Load**************************************
