@@ -18,7 +18,11 @@
             <li role="presentation" class="dropdown">
                 <a class="dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-expanded="false">
 
+
+
                   Fichier <span class="caret"></span>
+
+
 
                 </a>
                 <ul class="dropdown-menu" role="menu">
@@ -31,13 +35,17 @@
                             </div>
                         </div>
                     </li>
-                    <li><a data-toggle="modal" data-target="#modalSave">Enregistrer sous</a></li>
+                    <li><a id="saveLink" href="#" target="_blank">Enregistrer sous</a></li>
                 </ul>
             </li>
             <li role="presentation" class="dropdown">
                 <a class="dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-expanded="false">
 
+
+
                     Edition <span class="caret"></span>
+
+
 
                 </a>
                 <ul class="dropdown-menu" role="menu">
@@ -53,7 +61,11 @@
             <li role="presentation" class="dropdown">
                 <a class="dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-expanded="false">
 
+
+
                   ? <span class="caret"></span>
+
+
 
                 </a>
                 <ul class="dropdown-menu" role="menu">
@@ -71,24 +83,29 @@
             <canvas id="renderCanvas"></canvas>
         </section>
         <aside class="col-md-2">
-          <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
-            <div class="panel panel-default">
-              <button type="button" class="nav-justified btn btn-primary collapsed" data-toggle="collapse" data-parent="#accordion" data-target="#collapseOne">
-                Objet
-              </button>
-              <div id="collapseOne" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOne">
-                <div class="panel-body">
-                  <select class="nav-justified" id="mesh-type">
-                    <option value="box">Cube</option>
-                    <option value="sphere">Sphere</option>
-                    <option value="cylinder">Cylindre</option>
-                    <option value="pyramid">Pyramide</option>
-                  </select>
-                  <button class="btn btn-info nav-justified" id="btn_add">Ajouter</button>
-                  <button class="nav-justified btn btn-danger" id="btn_sup">Supprimer</button>
-                  <button class="btn btn-violet nav-justified" id="btn_grp">Grouper</button>
-                  <button class="btn btn-violet2 nav-justified" id="btn_ok_grp">OK</button>
-                  <div id="objets" data-toggle="buttons"></div>
+            <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
+                <div class="panel panel-default">
+                    <button type="button" class="nav-justified btn btn-primary collapsed" data-toggle="collapse" data-parent="#accordion" data-target="#collapseOne">
+                        Objet
+                    </button>
+                    <div id="collapseOne" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOne">
+                        <div class="panel-body">
+                            <select class="nav-justified" id="mesh-type">
+                                <option value="box">Cube</option>
+                                <option value="sphere">Sphere</option>
+                                <option value="cylinder">Cylindre</option>
+                                <option value="pyramid">Pyramide</option>
+                                <option value="line">Ligne</option>
+                                <option value="plane">Rectangle</option>
+                                <option value="circle">Cercle</option>
+                            </select>
+                            <button class="btn btn-info nav-justified" id="btn_add">Ajouter</button>
+                            <button class="nav-justified btn btn-danger" id="btn_sup">Supprimer</button>
+                            <button class="btn btn-violet nav-justified" id="btn_grp">Grouper</button>
+                            <button class="btn btn-violet2 nav-justified" id="btn_ok_grp">OK</button>
+                            <div id="objets" data-toggle="buttons"></div>
+                        </div>
+                    </div>
                 </div>
               </div>
             </div>
@@ -101,9 +118,7 @@
                   <button class="btn btn-info nav-justified" id="zone_add">Ajouter</button>
                   <button class="btn btn-danger nav-justified" id="zone_sup">Supprimer</button>
                 </div>
-              </div>
             </div>
-          </div>
         </aside>
         <footer class="col-md-12">
             <ul class="nav nav-tabs espace">
@@ -177,40 +192,17 @@
         </footer>
     </div>
 
-    <!-- Modal Save-->
-    <form class="modal fade" id="modalSave" tabindex="-1" role="dialog" aria-labelledby="modalSave" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                    <h4 class="modal-title" id="myModalLabel">Enregistrer sous</h4>
-                </div>
-                <div class="modal-body">
-                    <div class="input-group">
-                        <input type="text" class="form-control" id="fileNameInput" placeholder="World">
-                        <div class="input-group-addon">.nail</div>
-                    </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="reset" class="btn btn-default" data-dismiss="modal">Annuler</button>
-                    <button id="save" type="submit" class="btn btn-primary">Enregistrer</button>
-                </div>
-            </div>
-        </div>
-    </form>
-
     <!-- Babylon.js -->
-    <script src="./js/babylon/cannon.js"></script>
-    <script src="./js/babylon/Oimo.js"></script>
-    <script src="./js/babylon/babylon.2.0.debug.js"></script>
+    <script src="http://www.babylonjs.com/cannon.js"></script>
+    <script src="http://www.babylonjs.com/Oimo.js"></script>
+    <script src="http://www.babylonjs.com/babylon.js"></script>
 
     <script src="js/jquery-2.1.3.min.js"></script>
     <script src="js/bootstrap.min.js"></script>
     <script src="js/zones.js"></script>
     <script src="js/script.js"></script>
     <script src="js/actions.js"></script>
+    <script src="js/objets.js"></script>
 
 
 </body>
