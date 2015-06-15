@@ -92,14 +92,14 @@ btn_ok.onclick = function() { //Fonction groupe
         }); // Ajoute des class
         document.getElementById("objets").appendChild(button); // Ajoute le bouton dans la page
         grp_count--;
-        Array.prototype.slice.call(document.getElementById("objets").querySelectorAll("[type=checkbox]")).forEach(function(e) {
-            e.type = "radio";
-            e.checked = false;
-        });
     } else {
         alert("Selectionnez au moins 2 objets.");
         btn_ok.style.display = "none";
     }
+    Array.prototype.slice.call(document.getElementById("objets").querySelectorAll("[type=checkbox]")).forEach(function(e) {
+        e.type = "radio";
+        e.checked = false;
+    });
 };
 //*********************Modif groupe*********************************************
 var grp_posxp = document.getElementById('btnplusx');
