@@ -228,7 +228,7 @@ function indexation(x) { //En fonction du bouton cliqué donne l'index du tablea
 //*********Groups****************************************
 
 var btn_grp = document.getElementById('btn_grp');
-var grp_count = -1;
+var grp_count = 0;
 btn_grp.onclick = function() { //Fonction groupe
     btn_ok.style.display = "block";
     Array.prototype.slice.call(document.getElementById("objets").querySelectorAll("[type=radio]")).forEach(function(e) {
@@ -241,20 +241,20 @@ function grp_index(x) {
     $(".grp").css("display", "block");
     $(".ungrp").css("display", "none");
     index = x;
-    grp_nom.value = document.getElementById(index).getAttribute("name");
+    grp_nom.value = document.querySelector('[data-grp="'+ index +'"]').getAttribute("name");
 }
 
 var nom = document.getElementById('name');
 nom.oninput = function() {
-    document.getElementById(index).innerHTML = '<input type="radio">' + nom.value;
+    document.querySelector('[data-mesh="'+ index +'"]').innerHTML = '<input type="radio">' + nom.value;
     world.scenes[world.zone_id].meshTab[index].name = nom.value;
 };
 
 var grp_nom = document.getElementById('grp_name');
 grp_nom.oninput = function() {
-    document.getElementById(index).setAttribute("name", grp_nom.value);
-    document.getElementById(index).innerHTML = '<input type="radio">' + grp_nom.value;
-    grp_tab[Math.abs(index) - 1].name = grp_nom.value;
+    document.querySelector('[data-grp="'+ index +'"]').setAttribute("name", grp_nom.value);
+    document.querySelector('[data-grp="'+ index +'"]').innerHTML = '<input type="radio">' + grp_nom.value;
+    world.scenes[world.zone_id].grp_tab[index].name = grp_nom.value;
     console.log(grp_nom.value);
     console.log(index);
 };
